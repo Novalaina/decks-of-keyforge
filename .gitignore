@@ -21,7 +21,7 @@
 /card-imgs/**/*.png
 
 application-nocommit.yml
-scripts/local-db-dump/
+scripts/db-backups/
 scripts-local/
 *.dump
 

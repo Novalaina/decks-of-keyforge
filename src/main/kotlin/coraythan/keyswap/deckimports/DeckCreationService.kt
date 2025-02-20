@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import coraythan.keyswap.House
 import coraythan.keyswap.cards.*
 import coraythan.keyswap.cards.dokcards.DokCardCacheService
+import coraythan.keyswap.cards.dokcards.toLegacyUrlFriendlyCardTitle
 import coraythan.keyswap.config.BadRequestException
 import coraythan.keyswap.decks.DeckRepo
 import coraythan.keyswap.decks.DeckSasValuesSearchableRepo
@@ -48,6 +49,7 @@ class DeckCreationService(
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     fun updateDeck(mvDeck: KeyForgeDeckDto) {
+        log.info("Update deck ${mvDeck.data.name}")
         saveKeyForgeDeck(mvDeck.data, false, deckRepo.findByKeyforgeId(mvDeck.data.id))
     }
 
@@ -81,15 +83,31 @@ class DeckCreationService(
         val checkCards =
             (keyforgeDeck.cards ?: keyforgeDeck._links?.cards)
                 ?: error("Cards in the deck ${keyforgeDeck.id} are null.")
-        val cleanCards = checkCards.filter {
-            // Skip stupid tide card
-            it != "37377d67-2916-4d45-b193-bea6ecd853e3"
-        }
+        val cleanCards = checkCards
+            .filter {
+                // Skip stupid tide card
+                it != "37377d67-2916-4d45-b193-bea6ecd853e3"
+            }
 
         val cardsListWithToken =
             cleanCards.map { cardRepo.findByIdOrNull(it) ?: error("No card for card id $it") }
 
-        val cardsList = cardsListWithToken.filter { !it.token }
+        val cardsList = cardsListWithToken
+            .filter { !it.token }
+            .let {
+                if (keyforgeDeck.expansion == Expansion.MENAGERIE_2024.expansionNumber) {
+                    it.map { card ->
+                        if (card.cardTitle.toLegacyUrlFriendlyCardTitle() == "its-coming") {
+                            // Fix the stupid card number in its coming Menagerie
+                            card.copy(cardNumber = "999")
+                        } else {
+                            card
+                        }
+                    }
+                } else {
+                    it
+                }
+            }
 
         val badCard = cardsList
             .filter { disallowCards.contains(it.cardTitle) }
@@ -115,12 +133,18 @@ class DeckCreationService(
             val deckToSave = keyforgeDeck.toDeck(updateDeck, tokenId).withBonusIcons(bonusIconSimpleCards)
 
             try {
-                val savedDeck = if (updateDeck != null) deckRepo.save(deckToSave) else saveDeck(
-                    deckToSave,
-                    houses,
-                    cardsList,
-                    token
-                )
+                val savedDeck = if (updateDeck != null) {
+                    // Do this so we make sure we fix any bad card ids
+                    val validatedDeck = validateAndRateDeck(deckToSave, houses, cardsList, token?.cardTitle)
+                    deckRepo.save(validatedDeck)
+                } else {
+                    saveDeck(
+                        deckToSave,
+                        houses,
+                        cardsList,
+                        token
+                    )
+                }
                 return savedDeck.id
             } catch (e: DataIntegrityViolationException) {
                 if (e.message?.contains("deck_keyforge_id_uk") == true) {

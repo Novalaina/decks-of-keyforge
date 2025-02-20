@@ -34,7 +34,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
 
-private const val lockCountDecks = "PT8H"
+private const val lockCountDecks = "PT4H"
 
 @Transactional
 @Service

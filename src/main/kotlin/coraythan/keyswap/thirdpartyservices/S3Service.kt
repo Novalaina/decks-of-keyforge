@@ -3,8 +3,6 @@ package coraythan.keyswap.thirdpartyservices
 import aws.sdk.kotlin.runtime.auth.credentials.StaticCredentialsProvider
 import aws.sdk.kotlin.services.s3.S3Client
 import aws.sdk.kotlin.services.s3.model.DeleteObjectRequest
-import aws.sdk.kotlin.services.s3.model.HeadObjectRequest
-import aws.sdk.kotlin.services.s3.model.NotFound
 import aws.sdk.kotlin.services.s3.model.PutObjectRequest
 import aws.sdk.kotlin.services.s3control.model.S3ObjectMetadata
 import aws.smithy.kotlin.runtime.auth.awscredentials.Credentials
@@ -13,14 +11,21 @@ import aws.smithy.kotlin.runtime.http.engine.crt.CrtHttpEngine
 import kotlinx.coroutines.runBlocking
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
+import org.springframework.web.client.HttpClientErrorException
+import org.springframework.web.client.RestTemplate
 import org.springframework.web.multipart.MultipartFile
 import java.util.*
 
 @Service
 class S3Service(
+    @Value("\${aws-access-key}")
+    private val awsAccesskey: String,
     @Value("\${aws-secret-key}")
     private val awsSecretkey: String,
+
+    private val restTemplate: RestTemplate,
 ) {
 
     private val log = LoggerFactory.getLogger(this::class.java)
@@ -38,7 +43,7 @@ class S3Service(
         region = "us-west-2"
         credentialsProvider = StaticCredentialsProvider(
             credentials = Credentials(
-                accessKeyId = "AKIAJDCMSGEGUEAQIVLQ",
+                accessKeyId = awsAccesskey,
                 secretAccessKey = awsSecretkey
             )
         )
@@ -77,27 +82,19 @@ class S3Service(
 
     private fun cardObjKey(cardUrl: String) = "$cardImagesFolder/$cardUrl.png"
 
-    suspend fun checkIfCardImageExists(cardUrl: String): Boolean {
+    fun checkIfCardImageExists(cardUrl: String): Boolean {
 
         val objKey = cardObjKey(cardUrl)
-
-        var found = false
-
-        s3Client().use { s3 ->
-
-            try {
-                s3.headObject(HeadObjectRequest {
-                    bucket = cardImagesBucket
-                    key = objKey
-                })
-                log.debug("Already have card image for $cardUrl")
-                found = true
-            } catch (e: NotFound) {
-                log.debug("Found no image for $cardUrl so uploading it fresh!")
-                found = false
+        try {
+            restTemplate.headForHeaders("https://keyforge-card-images.s3-us-west-2.amazonaws.com/$objKey")
+            return true
+        } catch (e: HttpClientErrorException) {
+            if (e.statusCode == HttpStatus.UNAUTHORIZED) {
+                // Expected status code when a card does not exist
+                return false
             }
+            throw e
         }
-        return found
     }
 
     suspend fun addCardImage(image: ByteArray, cardUrl: String) {

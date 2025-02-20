@@ -1,7 +1,9 @@
 package coraythan.keyswap.cards.dokcards
 
 import coraythan.keyswap.House
-import coraythan.keyswap.cards.*
+import coraythan.keyswap.cards.Card
+import coraythan.keyswap.cards.CardsVersionService
+import coraythan.keyswap.cards.Rarity
 import coraythan.keyswap.thirdpartyservices.S3Service
 import coraythan.keyswap.thirdpartyservices.S3Service.Companion.cardImagesFolder
 import kotlinx.coroutines.runBlocking
@@ -40,143 +42,15 @@ class DokCardUpdateService(
         }
 
         if (updatedCards) {
-            runBlocking {
-                uploadImagesForCards(cards)
-            }
+            uploadImagesForCards(cards)
             versionService.revVersion()
         }
         return updatedCards
     }
 
-//    suspend fun uploadAllCardsFromKFDecks() {
-//        val manualUploadCards = mutableListOf<String>()
-//        dokCardRepo.findAll()
-//            .forEach {
-//                if (it.houses.isEmpty()) {
-//                    if (!uploadCard(it, null)) {
-//                        manualUploadCards.add(it.cardTitle)
-//                    }
-//                } else {
-//                    it.houses.forEach { house ->
-//                        if (!uploadCard(it, house)) {
-//                            manualUploadCards.add("${it.cardTitle} - $house")
-//                        }
-//                    }
-//                }
-//            }
-//
-//        log.info("All done uploading cards from all KF decks! Do these manually: $manualUploadCards")
-//    }
+    fun uploadImagesForCards(cardsToUpload: List<Card>) {
 
-//    private suspend fun uploadCard(card: DokCard, house: House?): Boolean {
-//        val titleMod = cardUrl(card.cardTitle, house, false)
-//
-//        val alreadyExists = s3Service.checkIfCardImageExists(titleMod)
-//
-//        if (alreadyExists) {
-//            log.info("Didn't need to upload ${card.cardTitle}")
-//            return true
-//        } else {
-//
-//            val possibleCards = cardRepo.findByCardTitle(card.cardTitle)
-//                .filter { it.frontImage.contains("mastervault-storage-prod.s3") && !it.anomaly }
-//
-//            if (possibleCards.isEmpty()) {
-//
-//                if (house != null) {
-//
-//                    val filters = if (card.cardTitle.contains("Evil Twin")) {
-//                        DeckFilters(
-//                            title = "Evil Twin",
-//                            cards = listOf(
-//                                DeckCardQuantity(
-//                                    cardNames = listOf(card.cardTitle),
-//                                    quantity = 1,
-//                                )
-//                            ),
-//                        )
-//                    } else {
-//                        DeckFilters(
-//                            cards = listOf(
-//                                DeckCardQuantity(
-//                                    cardNames = listOf(card.cardTitle),
-//                                    quantity = 1,
-//                                )
-//                            ),
-//                        )
-//                    }
-//
-//                    val deckToCheck = deckSearchService.filterDecks(filters, 0)
-//
-//                    val deckId = deckToCheck.decks
-//                        .firstOrNull()
-//                    if (deckId == null) {
-//                        log.error("No deck possible for card ${card.cardTitle} house $house")
-//                        return false
-//                    } else {
-//                        val kfDeck = keyforgeApi.findDeck(deckId.keyforgeId, withCards = true)
-//
-//                        val kfCard = kfDeck?._linked?.cards?.firstOrNull {
-//                            if (card.cardTitle.contains("Evil Twin")) {
-//                                it.card_title == card.cardTitle.replace(" – Evil Twin", "")
-//                            } else {
-//                                it.card_title == card.cardTitle
-//                            }
-//                        }?.toCard()
-//
-//                        if (kfCard == null) {
-//                            log.error("No card front image possible for card ${card.cardTitle} house $house in deck ${deckId.keyforgeId}")
-//                            return false
-//                        } else {
-//                            log.info("Doing it the hard way! Attempt upload for card image $titleMod")
-//                            attemptCardUpload(titleMod, kfCard)
-//
-//                            Thread.sleep(15000)
-//                            return true
-//                        }
-//
-//                    }
-//
-//                } else {
-//                    log.error("There were no valid options for ${card.cardTitle} with house $house")
-//                    return false
-//                }
-//
-//            } else {
-//                log.info("Attempt upload for card image $titleMod")
-//                attemptCardUpload(titleMod, possibleCards.first())
-//                return true
-//            }
-//
-//        }
-//    }
-
-//    suspend fun uploadAllCards() {
-//
-//        val findCards: List<Card> = Expansion.entries
-//            .flatMap { cardRepo.findByExpansion(it.expansionNumber) }
-//            .filter { it.frontImage.contains("mastervault-storage-prod.s3") }
-//            .distinctBy {
-//                if (it.anomaly) {
-//                    Pair(it.cardTitle, "anomaly")
-//                } else if (it.maverick) {
-//                    val dokCard = dokCardRepo.findByCardTitleUrl(it.cardTitle.toLegacyUrlFriendlyCardTitle())
-//                    if (dokCard?.houses?.size == 1) {
-//                        Pair(it.cardTitle, dokCard.houses.first())
-//                    } else {
-//                        Unit
-//                    }
-//                } else {
-//                    Pair(it.cardTitle, it.house)
-//                }
-//            }
-//
-//        uploadImagesForCards(findCards)
-//    }
-
-    suspend fun uploadImagesForCards(cardsToUpload: List<Card>) {
-
-        log.info("Upload images for ${cardsToUpload.size} cards")
+        log.info("Upload images for ${cardsToUpload.map { it.cardTitle }}")
 
         cardsToUpload.forEach { card ->
 
@@ -193,7 +67,7 @@ class DokCardUpdateService(
         }
     }
 
-    private suspend fun attemptCardUpload(titleMod: String, card: Card) {
+    private fun attemptCardUpload(titleMod: String, card: Card) {
         val headers = HttpHeaders()
         headers.accept = listOf(MediaType.APPLICATION_OCTET_STREAM)
 
@@ -209,7 +83,9 @@ class DokCardUpdateService(
 
             if (response.statusCode == HttpStatus.OK && byteArray != null) {
 
-                s3Service.addCardImage(byteArray, titleMod)
+                runBlocking {
+                    s3Service.addCardImage(byteArray, titleMod)
+                }
 
             } else {
                 log.warn("No card for ${card.cardTitle} ${card.id}")

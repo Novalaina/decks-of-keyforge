@@ -2,6 +2,7 @@ package coraythan.keyswap
 
 import coraythan.keyswap.cards.TokenService
 import coraythan.keyswap.cards.dokcards.DokCardCacheService
+import coraythan.keyswap.deckimports.DeckImporterService
 import coraythan.keyswap.synergy.FixSynergies
 import coraythan.keyswap.users.search.UserSearchService
 import org.slf4j.LoggerFactory
@@ -16,11 +17,14 @@ class RunOnStart(
     private val fixSynergies: FixSynergies,
     private val userSearchService: UserSearchService,
     private val tokenService: TokenService,
+    private val deckImporterService: DeckImporterService,
 ) : CommandLineRunner {
 
     private val log = LoggerFactory.getLogger(this::class.java)
 
     override fun run(vararg args: String?) {
+
+        deckImporterService.findMenagerieIdsToFix()
 
         tokenService.loadTokens()
         cardCache.loadCards()

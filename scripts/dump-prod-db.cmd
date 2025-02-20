@@ -1,0 +1,1 @@
+pg_dump --host keyswap-prod.cik0ar7sipfl.us-west-2.rds.amazonaws.com --username coraythan --dbname keyswap --no-owner --no-privileges --create --clean --format c --compress=7 --no-unlogged-table-data --verbose --file .\db-backups\dok-prod-db.backup

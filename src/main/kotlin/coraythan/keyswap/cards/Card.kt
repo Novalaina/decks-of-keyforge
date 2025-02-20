@@ -68,21 +68,14 @@ data class Card(
 
     fun isEvilTwin() = this.cardTitle.contains(evilTwinCardName)
 
-    fun toDoKCard(copyInto: DokCard? = null) = if (copyInto == null) DokCard(
-        cardTitle = this.cardTitle,
-        cardTitleUrl = this.cardTitle.toLegacyUrlFriendlyCardTitle(),
-        houses = if (this.maverick || this.anomaly) listOf() else listOf(this.house),
-        cardType = this.cardType,
-        amber = this.amber,
-        power = this.power,
-        armor = this.armor,
-        big = this.big == true,
-        token = this.token,
-        evilTwin = this.isEvilTwin(),
-        cardText = this.cardText,
-        flavorText = this.flavorText,
-        traits = this.traits.toList(),
-    ) else copyInto.copy(
+    fun dokCardNumber() = if (expansion == Expansion.MENAGERIE_2024.expansionNumber && cardTitle.toLegacyUrlFriendlyCardTitle() == "its-coming") {
+        // Fix stupid problem with veylan analyst and its coming having same card number in menagerie
+        "999"
+    } else {
+        cardNumber
+    }
+
+    fun toDoKCard(copyInto: DokCard? = null) = copyInto?.copy(
         cardTitle = this.cardTitle,
         cardTitleUrl = this.cardTitle.toLegacyUrlFriendlyCardTitle(),
         houses = if (this.maverick || this.anomaly) listOf() else listOf(this.house),
@@ -97,6 +90,21 @@ data class Card(
         flavorText = this.flavorText,
         traits = this.traits.toList(),
     )
+        ?: DokCard(
+            cardTitle = this.cardTitle,
+            cardTitleUrl = this.cardTitle.toLegacyUrlFriendlyCardTitle(),
+            houses = if (this.maverick || this.anomaly) listOf() else listOf(this.house),
+            cardType = this.cardType,
+            amber = this.amber,
+            power = this.power,
+            armor = this.armor,
+            big = this.big == true,
+            token = this.token,
+            evilTwin = this.isEvilTwin(),
+            cardText = this.cardText,
+            flavorText = this.flavorText,
+            traits = this.traits.toList(),
+        )
 
 }
 

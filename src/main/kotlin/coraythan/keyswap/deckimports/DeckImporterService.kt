@@ -6,6 +6,7 @@ import coraythan.keyswap.config.SchedulingConfig
 import coraythan.keyswap.decks.DeckPageService
 import coraythan.keyswap.decks.DeckPageType
 import coraythan.keyswap.decks.DeckRepo
+import coraythan.keyswap.decks.DeckSasValuesSearchableRepo
 import coraythan.keyswap.expansions.Expansion
 import coraythan.keyswap.expansions.activeExpansions
 import coraythan.keyswap.scheduledStart
@@ -33,8 +34,32 @@ class DeckImporterService(
     private val deckRepo: DeckRepo,
     private val deckPageService: DeckPageService,
     private val deckCreationService: DeckCreationService,
+    private val deckSasValuesSearchableRepo: DeckSasValuesSearchableRepo,
 ) {
     private val log = LoggerFactory.getLogger(this::class.java)
+
+    private var menagerieIdsToFix = mutableSetOf<String>()
+
+    fun findMenagerieIdsToFix() {
+        log.info("Find menagerie ids to fix")
+        menagerieIdsToFix = deckSasValuesSearchableRepo.findByCardNamesContainsAndExpansionIs("~Ultra Gravitron1", 722)
+            .map {
+                it.deck.keyforgeId
+            }
+            .toMutableSet()
+    }
+
+    @Scheduled(
+        fixedDelayString = "PT1M",
+        initialDelayString = "PT30S"
+    )
+    fun fixItsComingMenagerie() {
+        val fixDeck = menagerieIdsToFix.first()
+        log.info("Start fixing its coming Menagerie deck id $fixDeck . Decks left to fix: ${menagerieIdsToFix.count()}")
+        this.updateDeck(fixDeck)
+        menagerieIdsToFix.remove(fixDeck)
+        log.info("Done fixing its coming Menagerie deck id $fixDeck . Decks left to fix: ${menagerieIdsToFix.count()}")
+    }
 
     @Scheduled(
         fixedDelayString = lockImportNewDecksFor,
@@ -72,7 +97,14 @@ class DeckImporterService(
                             }.contains(it.expansion)
                         }) {
 
-                        log.info("Stopping deck import. Unknown expansion number among ${decks.data.map { it.expansion }}. Request URL: https://www.keyforgegame.com/api/decks/v2${keyforgeApi.findDecksRequestUrl(currentPage, withCards = true)}")
+                        log.info(
+                            "Stopping deck import. Unknown expansion number among ${decks.data.map { it.expansion }}. Request URL: https://www.keyforgegame.com/api/decks/v2${
+                                keyforgeApi.findDecksRequestUrl(
+                                    currentPage,
+                                    withCards = true
+                                )
+                            }"
+                        )
                         break
                     } else {
 
@@ -100,8 +132,9 @@ class DeckImporterService(
                             deckImportingUpToDate = true
                             log.info(
                                 "Stopped getting decks. Found $decksToSaveCount in this page. Added ${results.size} < $keyforgeApiDeckPageSize new decks. Expansions: ${
-                                    decks.data.map { 
-                                        Expansion.forExpansionNumberNullable(it.expansion)?.toString() ?: "Unknown expansion with id: ${it.expansion}"
+                                    decks.data.map {
+                                        Expansion.forExpansionNumberNullable(it.expansion)
+                                            ?.toString() ?: "Unknown expansion with id: ${it.expansion}"
                                     }.toSortedSet()
                                 }"
                             )

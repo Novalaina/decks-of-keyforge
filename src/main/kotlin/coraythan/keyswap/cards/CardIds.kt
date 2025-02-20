@@ -11,7 +11,9 @@ data class CardIds(
     companion object {
         fun fromCards(cards: List<Card>): CardIds {
             return CardIds(cards.groupBy { it.house }.mapValues { houseToCards ->
-                houseToCards.value.map { CardNumberSetPairOld(it.expansion, it.cardNumber, it.enhanced) }
+                houseToCards.value.map {
+                    CardNumberSetPairOld(it.expansion, it.dokCardNumber(), it.enhanced)
+                }
             })
         }
     }

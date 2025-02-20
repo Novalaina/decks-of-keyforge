@@ -14,15 +14,14 @@ import net.javacrumbs.shedlock.spring.annotation.EnableSchedulerLock
 import org.slf4j.LoggerFactory
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
-import org.springframework.boot.web.client.RestTemplateBuilder
 import org.springframework.context.annotation.Bean
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder
 import org.springframework.scheduling.TaskScheduler
 import org.springframework.scheduling.annotation.EnableScheduling
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.web.client.RestTemplate
-import java.time.Duration
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZonedDateTime
@@ -75,10 +74,14 @@ class KeyswapApplication() {
     }
 
     @Bean
-    fun restTemplate(builder: RestTemplateBuilder): RestTemplate = builder
-        .setConnectTimeout(Duration.ofSeconds(30))
-        .setReadTimeout(Duration.ofSeconds(30))
-        .build()
+    fun restTemplate(): RestTemplate {
+        val restTemplate = RestTemplate()
+        val requestFactory = HttpComponentsClientHttpRequestFactory()
+        requestFactory.setConnectTimeout(30000)
+        requestFactory.setConnectionRequestTimeout(30000)
+        restTemplate.requestFactory = requestFactory
+        return restTemplate
+    }
 
     @Bean
     fun bCryptPasswordEncoder() = BCryptPasswordEncoder()

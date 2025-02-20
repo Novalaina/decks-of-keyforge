@@ -45,18 +45,23 @@ class DokCardUpdateDao(
         val cardExpansion = Expansion.forExpansionNumber(card.expansion)
         val dokCard = card.toDoKCard()
         val savedDokCard = dokCardRepo.saveAndFlush(dokCard)
-        val dokCardExpansion = DokCardExpansion(
-            cardNumber = card.cardNumber,
-            expansion = cardExpansion,
-            rarity = card.rarity,
-            wins = card.expansionWins?.get(cardExpansion)?.wins ?: 0,
-            losses = card.expansionWins?.get(cardExpansion)?.losses ?: 0,
-            card = savedDokCard,
-        )
-        dokCardExpansionRepo.saveAndFlush(dokCardExpansion)
+        val cardNumber = card.dokCardNumber()
+        var dokCardExpansion = dokCardExpansionRepo.findByExpansionAndCardNumber(cardExpansion, cardNumber)
+        if (dokCardExpansion == null) {
+            dokCardExpansion = DokCardExpansion(
+                cardNumber = cardNumber,
+                expansion = cardExpansion,
+                rarity = card.rarity,
+                wins = card.expansionWins?.get(cardExpansion)?.wins ?: 0,
+                losses = card.expansionWins?.get(cardExpansion)?.losses ?: 0,
+                card = savedDokCard,
+            )
+            log.info("Save dok card expansion $dokCardExpansion for card ${card.cardTitle}")
+            dokCardExpansionRepo.saveAndFlush(dokCardExpansion)
+        }
         val extraInfo = extraCardInfoService.saveNewExtraCardInfo(savedDokCard)
 
-        cardCache.updateCache(cardExpansion, card.cardNumber, extraInfo)
+        cardCache.updateCache(cardExpansion, cardNumber, extraInfo)
         updatedCards = true
 
         this.log.info("Creating Card: ${card.cardTitle} -- ${dokCardExpansion.expansion}-${dokCardExpansion.cardNumber}-${if (card.maverick) "mav" else if (card.anomaly) "anom" else savedDokCard.houses.toString()}")
@@ -73,13 +78,14 @@ class DokCardUpdateDao(
         val cardExpansion = Expansion.forExpansionNumber(card.expansion)
         val existingExpansions = existingCard.expansions
 
-        val preexistingExpansion = dokCardExpansionRepo.findByExpansionAndCardNumber(cardExpansion, card.cardNumber)
+        val cardNumber = card.dokCardNumber()
+        val preexistingExpansion = dokCardExpansionRepo.findByExpansionAndCardNumber(cardExpansion, cardNumber)
 
         val extraInfo = cardCache.findByCardNameUrl(cardNameUrl)
         var updatedDokCard = existingCard
         if (preexistingExpansion == null) {
             val newExpansion = DokCardExpansion(
-                cardNumber = card.cardNumber,
+                cardNumber = cardNumber,
                 expansion = Expansion.forExpansionNumber(card.expansion),
                 rarity = card.rarity,
                 wins = card.expansionWins?.get(cardExpansion)?.wins ?: 0,
@@ -122,7 +128,7 @@ class DokCardUpdateDao(
             updated = true
         }
         if (updated) {
-            cardCache.updateCache(cardExpansion, card.cardNumber, extraInfo.copy(dokCard = updatedDokCard))
+            cardCache.updateCache(cardExpansion, cardNumber, extraInfo.copy(dokCard = updatedDokCard))
             updatedCards = true
         }
         return updated
