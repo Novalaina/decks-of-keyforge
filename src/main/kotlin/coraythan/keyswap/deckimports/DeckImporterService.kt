@@ -6,7 +6,6 @@ import coraythan.keyswap.config.SchedulingConfig
 import coraythan.keyswap.decks.DeckPageService
 import coraythan.keyswap.decks.DeckPageType
 import coraythan.keyswap.decks.DeckRepo
-import coraythan.keyswap.decks.DeckSasValuesSearchableRepo
 import coraythan.keyswap.expansions.Expansion
 import coraythan.keyswap.expansions.activeExpansions
 import coraythan.keyswap.scheduledStart
@@ -34,32 +33,8 @@ class DeckImporterService(
     private val deckRepo: DeckRepo,
     private val deckPageService: DeckPageService,
     private val deckCreationService: DeckCreationService,
-    private val deckSasValuesSearchableRepo: DeckSasValuesSearchableRepo,
 ) {
     private val log = LoggerFactory.getLogger(this::class.java)
-
-    private var menagerieIdsToFix = mutableSetOf<String>()
-
-    fun findMenagerieIdsToFix() {
-        log.info("Find menagerie ids to fix")
-        menagerieIdsToFix = deckSasValuesSearchableRepo.findByCardNamesContainsAndExpansionIs("~Ultra Gravitron1", 722)
-            .map {
-                it.deck.keyforgeId
-            }
-            .toMutableSet()
-    }
-
-    @Scheduled(
-        fixedDelayString = "PT1M",
-        initialDelayString = "PT30S"
-    )
-    fun fixItsComingMenagerie() {
-        val fixDeck = menagerieIdsToFix.first()
-        log.info("Start fixing its coming Menagerie deck id $fixDeck . Decks left to fix: ${menagerieIdsToFix.count()}")
-        this.updateDeck(fixDeck)
-        menagerieIdsToFix.remove(fixDeck)
-        log.info("Done fixing its coming Menagerie deck id $fixDeck . Decks left to fix: ${menagerieIdsToFix.count()}")
-    }
 
     @Scheduled(
         fixedDelayString = lockImportNewDecksFor,

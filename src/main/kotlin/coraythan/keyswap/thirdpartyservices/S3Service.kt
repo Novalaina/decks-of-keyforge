@@ -89,8 +89,8 @@ class S3Service(
             restTemplate.headForHeaders("https://keyforge-card-images.s3-us-west-2.amazonaws.com/$objKey")
             return true
         } catch (e: HttpClientErrorException) {
-            if (e.statusCode == HttpStatus.UNAUTHORIZED) {
-                // Expected status code when a card does not exist
+            if (e.statusCode == HttpStatus.UNAUTHORIZED || e.statusCode == HttpStatus.FORBIDDEN) {
+                // Expected status codes when a card does not exist
                 return false
             }
             throw e

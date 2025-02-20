@@ -14,8 +14,6 @@ interface DeckSasValuesSearchableRepo : CrudRepository<DeckSasValuesSearchable, 
     fun findSasForDeckId(@Param(value = "deckId") deckId: Long): Int
 
     fun findByDeckId(deckId: Long): DeckSasValuesSearchable
-
-    fun findByCardNamesContainsAndExpansionIs(value: String, expansion: Int): List<DeckSasValuesSearchable>
 }
 
 @Transactional
