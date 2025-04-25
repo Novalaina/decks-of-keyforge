@@ -31,6 +31,7 @@ export enum ExpansionNumber {
     MoM = 874,
     MCW = 892,
     D = 907,
+    VM25 = 939
 }
 
 export const displayMyDecksLinksFor = [
@@ -56,6 +57,7 @@ export const activeExpansions = [
     Expansion.GRIM_REMINDERS,
     Expansion.VAULT_MASTERS_2023,
     Expansion.VAULT_MASTERS_2024,
+    Expansion.VAULT_MASTERS_2025,
     Expansion.UNCHAINED_2022,
     Expansion.MENAGERIE_2024,
     Expansion.MARTIAN_CIVIL_WAR,
@@ -82,6 +84,7 @@ export const activeSasExpansions = [
     Expansion.TOKENS_OF_CHANGE,
     Expansion.MORE_MUTATION,
     Expansion.DISCOVERY,
+    Expansion.VAULT_MASTERS_2025,
 ]
 
 export const activeCardExpansions = [
@@ -115,6 +118,7 @@ export const expansionsWithCards = [
     Expansion.MORE_MUTATION,
     Expansion.TOKENS_OF_CHANGE,
     Expansion.DISCOVERY,
+    Expansion.VAULT_MASTERS_2025,
 ]
 
 export const recentExpansions = [
@@ -166,6 +170,7 @@ export const expansionInfos: ExpansionInfo[] = [
     {expansionNumber: ExpansionNumber.MoM, name: "More Mutation", abbreviation: "MoM", backendEnum: Expansion.MORE_MUTATION},
     {expansionNumber: ExpansionNumber.ToC, name: "Tokens of Change", abbreviation: "ToC", backendEnum: Expansion.TOKENS_OF_CHANGE, hasTokens: true},
     {expansionNumber: ExpansionNumber.D, name: "Discovery", abbreviation: "D", backendEnum: Expansion.DISCOVERY},
+    {expansionNumber: ExpansionNumber.VM25, name: "Vault M 25", abbreviation: "VM25", backendEnum: Expansion.VAULT_MASTERS_2025},
 ]
 
 export const activeExpansionInfos: ExpansionInfo[] = expansionInfos.filter(info => activeExpansions.includes(info.backendEnum))

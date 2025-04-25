@@ -134,6 +134,19 @@ enum class Expansion(
         907,
         "D",
         setOf(House.Brobnar, House.Dis, House.Logos, House.Sanctum, House.StarAlliance, House.Shadows, House.Untamed),
+    ),
+    VAULT_MASTERS_2025(
+        939,
+        "VM25",
+        setOf(
+            House.Ekwidon,
+            House.Geistoid,
+            House.Logos,
+            House.Mars,
+            House.Saurian,
+            House.Shadows,
+            House.Unfathomable,
+        )
     );
 
     companion object {
@@ -163,6 +176,7 @@ val activeExpansions = setOf(
     Expansion.TOKENS_OF_CHANGE,
     Expansion.MORE_MUTATION,
     Expansion.DISCOVERY,
+    Expansion.VAULT_MASTERS_2025,
 )
 
 // Include Expansions which have had SAS scores created and are tournament legal
@@ -180,4 +194,5 @@ val includeInGlobalStats = setOf(
     Expansion.TOKENS_OF_CHANGE,
     Expansion.MORE_MUTATION,
     Expansion.DISCOVERY,
+    Expansion.VAULT_MASTERS_2025,
 )
