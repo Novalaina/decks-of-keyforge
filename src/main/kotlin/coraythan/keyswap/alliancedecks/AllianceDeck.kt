@@ -68,18 +68,16 @@ data class AllianceDeck(
         val restrictedCardsList = mapOf(
             "Befuddle" to 100,
             "Chronus" to 100,
-            "Control the Weak" to 100,
-            "Dark Æmber Vault" to 1,
-            "FOF Transponder" to 100,
             "Ghostform" to 100,
             "Hallafest" to 1,
+            "Heart of the Forest" to 100,
             "Infurnace" to 100,
+            "Jervi" to 100,
+            "Key Abduction" to 1,
             "Legionary Trainer" to 100,
-            "Library Access" to 1,
-            "Martian Generosity" to 1,
             "Stealth Mode" to 100,
-            "Timetraveller" to 100,
             "United Action" to 100,
+            "Winds of Death" to 100
         )
 
         fun determineIfValid(deck: GenericDeck, cards: List<DokCardInDeck>): Boolean {
