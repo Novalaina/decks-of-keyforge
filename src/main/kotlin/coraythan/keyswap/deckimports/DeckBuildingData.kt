@@ -15,7 +15,8 @@ data class DeckBuildingData(
     val alliance: Boolean = false,
 ) {
     val bonusIcons = DeckBonusIcons(
-        cards.entries
+        cards
+            .entries
             .map { houses ->
                 BonusIconHouse(
                     house = houses.key,
@@ -28,13 +29,18 @@ data class DeckBuildingData(
                                 bonusDamage = theoryCard.bonusDamage,
                                 bonusDraw = theoryCard.bonusDraw,
                                 bonusDiscard = theoryCard.bonusDiscard,
-                                bonusBobnar = theoryCard.bonusBobnar,
-                                bonusDis = theoryCard.bonusDis,
-                                bonusEkwidon = theoryCard.bonusEkwidon,
-                                bonusGeistoid = theoryCard.bonusGeistoid,
-                                bonusLogos = theoryCard.bonusLogos,
-                                bonusMars = theoryCard.bonusMars,
-                                bonusSkyborn = theoryCard.bonusSkyborn,
+                                bonusBobnar = theoryCard.bonusHouses.contains(House.Brobnar),
+                                bonusDis = theoryCard.bonusHouses.contains(House.Dis),
+                                bonusEkwidon = theoryCard.bonusHouses.contains(House.Ekwidon),
+                                bonusGeistoid = theoryCard.bonusHouses.contains(House.Geistoid),
+                                bonusLogos = theoryCard.bonusHouses.contains(House.Logos),
+                                bonusMars = theoryCard.bonusHouses.contains(House.Mars),
+                                bonusSkyborn = theoryCard.bonusHouses.contains(House.Skyborn),
+                                bonusSanctum = theoryCard.bonusHouses.contains(House.Sanctum),
+                                bonusSaurian = theoryCard.bonusHouses.contains(House.Saurian),
+                                bonusShadows = theoryCard.bonusHouses.contains(House.Shadows),
+                                bonusStarAlliance = theoryCard.bonusHouses.contains(House.StarAlliance),
+                                bonusUntamed = theoryCard.bonusHouses.contains(House.Untamed),
                             )
                         }
                 )
@@ -50,11 +56,5 @@ data class TheoryCard(
     val bonusDamage: Int = 0,
     val bonusDraw: Int = 0,
     val bonusDiscard: Int = 0,
-    val bonusBobnar: Boolean = false,
-    val bonusDis: Boolean = false,
-    val bonusEkwidon: Boolean = false,
-    val bonusGeistoid: Boolean = false,
-    val bonusLogos: Boolean = false,
-    val bonusMars: Boolean = false,
-    val bonusSkyborn: Boolean = false,
+    val bonusHouses: Set<House> = emptySet(),
 )

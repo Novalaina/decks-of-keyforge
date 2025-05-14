@@ -252,27 +252,9 @@ const CardLine = observer((props: CardAsLineProps & { fullCard: FrontendCard }) 
                     {[...Array(card.bonusDiscard ?? 0)].map((n, idx) => (
                         <EnhancementIcon type={EnhancementType.DISCARD} key={idx}/>
                     ))}
-                    {card.bonusBobnar && (
-                        <EnhancementIcon type={EnhancementType.BROBNAR}/>
-                    )}
-                    {card.bonusDis && (
-                        <EnhancementIcon type={EnhancementType.DIS}/>
-                    )}
-                    {card.bonusEkwidon && (
-                        <EnhancementIcon type={EnhancementType.EKWIDON}/>
-                    )}
-                    {card.bonusGeistoid && (
-                        <EnhancementIcon type={EnhancementType.GEISTOID}/>
-                    )}
-                    {card.bonusLogos && (
-                        <EnhancementIcon type={EnhancementType.LOGOS}/>
-                    )}
-                    {card.bonusMars && (
-                        <EnhancementIcon type={EnhancementType.MARS}/>
-                    )}
-                    {card.bonusSkyborn && (
-                        <EnhancementIcon type={EnhancementType.SKYBORN}/>
-                    )}
+                    {card.bonusHouses?.map((house) => (
+                        <EnhancementIcon type={house} key={house}/>
+                    ))}
                 </Box>
             )}
             {card.anomaly ? (

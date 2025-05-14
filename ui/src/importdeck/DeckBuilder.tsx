@@ -48,12 +48,20 @@ class DeckBuilderStore {
             return false
         }
         const entries = Object.entries(this.currentDeck!.cards)
-        if (entries.length !== 3) {
+        if (deck.expansion === Expansion.PROPHETIC_VISIONS) {
+            if (entries.length !== 4 || this.currentDeck!.cards[House.Prophecy] == null) {
+                return false
+            }
+        } else if (entries.length !== 3) {
             return false
         }
         let valid = true
         entries.forEach((value: [string, TheoryCard[]]) => {
-            if (value[1].length !== 12) {
+            if (value[0] === House.Prophecy) {
+                if (value[1].length !== 4) {
+                    valid = false
+                }
+            } else if (value[1].length !== 12) {
                 valid = false
             }
         })
@@ -96,27 +104,19 @@ class DeckBuilderStore {
             case EnhancementType.DRAW:
                 enhanceThis.bonusDraw += change
                 break
-            case EnhancementType.BROBNAR:
-                enhanceThis.bonusBobnar = add
-                break
-            case EnhancementType.DIS:
-                enhanceThis.bonusDis = add
-                break
-            case EnhancementType.EKWIDON:
-                enhanceThis.bonusEkwidon = add
-                break
-            case EnhancementType.GEISTOID:
-                enhanceThis.bonusGeistoid = add
-                break
-            case EnhancementType.LOGOS:
-                enhanceThis.bonusLogos = add
-                break
-            case EnhancementType.MARS:
-                enhanceThis.bonusMars = add
-                break
-            case EnhancementType.SKYBORN:
-                enhanceThis.bonusSkyborn = add
-                break
+        }
+    }
+
+    enhanceCardHouses = (house: House, add: boolean) => {
+        if (this.enhanceCardDialogInfo == null) {
+            log.warn("No card available to enhance")
+            return
+        }
+        const enhanceThis = this.currentDeck!.cards[this.enhanceCardDialogInfo.house]![this.enhanceCardDialogInfo.cardIdx]
+        if (add) {
+            enhanceThis.bonusHouses.push(house)
+        } else {
+            enhanceThis.bonusHouses.splice(enhanceThis.bonusHouses.indexOf(house), 1)
         }
     }
 
@@ -139,13 +139,7 @@ class DeckBuilderStore {
                     bonusDamage: 0,
                     bonusDiscard: 0,
                     bonusDraw: 0,
-                    bonusBobnar: false,
-                    bonusDis: false,
-                    bonusEkwidon: false,
-                    bonusGeistoid: false,
-                    bonusLogos: false,
-                    bonusMars: false,
-                    bonusSkyborn: false,
+                    bonusHouses: [],
                 })
                 this.currentDeck!.cards[house] = sortBy(houseCards, (card: TheoryCard) => cardStore.fullCardFromCardName(card.name)?.cardType)
                 cardHolder.option = ""
@@ -167,13 +161,7 @@ class DeckBuilderStore {
                 bonusDamage: card.bonusDamage ?? 0,
                 bonusDiscard: card.bonusDiscard ?? 0,
                 bonusDraw: card.bonusDraw ?? 0,
-                bonusBobnar: card.bonusBobnar ?? false,
-                bonusDis: card.bonusDis ?? false,
-                bonusEkwidon: card.bonusEkwidon ?? false,
-                bonusGeistoid: card.bonusGeistoid ?? false,
-                bonusLogos: card.bonusLogos ?? false,
-                bonusMars: card.bonusMars ?? false,
-                bonusSkyborn: card.bonusSkyborn ?? false,
+                bonusHouses: card.bonusHouses ?? [],
             }))
         })
         this.currentDeck = {
@@ -203,6 +191,13 @@ export class DisplayCardsInHouseEditable extends React.Component<{
             }
         })))
         const showEnhanced = ExtendedExpansionUtils.allowsEnhancements(expansion)
+
+        let maxCardsReached
+        if (house === House.Prophecy) {
+            maxCardsReached = cards.length >= 4
+        } else {
+            maxCardsReached = cards.length >= 12
+        }
 
         return (
             <div style={{display: "flex", flexDirection: "column", width: 240}}>
@@ -243,14 +238,14 @@ export class DisplayCardsInHouseEditable extends React.Component<{
                     )
                 })}
                 <div style={{flexGrow: 1}}/>
-                {cards.length < 12 ? (
+                {!maxCardsReached && (
                     <SingleCardSearchSuggest
                         selected={deckBuilderStore.addCardHandler(house)}
                         style={{marginTop: spacing(1)}}
                         placeholder={"Add Card"}
                         names={searchSuggestCardNames}
                     />
-                ) : null}
+                )}
             </div>
         )
 

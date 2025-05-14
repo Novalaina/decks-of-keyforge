@@ -190,7 +190,8 @@ data class Deck(
             forTrade = forTrade.falseToNull(),
             wishlistCount = wishlistCount.zeroToNull(),
             funnyCount = funnyCount.zeroToNull(),
-            housesAndCards = housesAndCards?.addBonusIcons(bonusIcons()) ?: listOf(),
+            housesAndCards = housesAndCards?.filter { it.house != House.Prophecy }?.addBonusIcons(bonusIcons()) ?: listOf(),
+            prophecies = housesAndCards?.firstOrNull { it.house == House.Prophecy }?.cards,
 
             lastSasUpdate = lastUpdate?.toLocalDateWithOffsetMinutes(-420)?.toString().emptyToNull(),
 
@@ -301,14 +302,34 @@ data class BonusIconsCard(
     val bonusLogos: Boolean = false,
     val bonusMars: Boolean = false,
     val bonusSkyborn: Boolean = false,
-)
+    val bonusSanctum: Boolean = false,
+    val bonusSaurian: Boolean = false,
+    val bonusShadows: Boolean = false,
+    val bonusStarAlliance: Boolean = false,
+    val bonusUntamed: Boolean = false,
+) {
+    fun bonusHouses() = setOfNotNull(
+        if (bonusBobnar) House.Brobnar else null,
+        if (bonusDis) House.Dis else null,
+        if (bonusEkwidon) House.Ekwidon else null,
+        if (bonusGeistoid) House.Geistoid else null,
+        if (bonusLogos) House.Logos else null,
+        if (bonusMars) House.Mars else null,
+        if (bonusSkyborn) House.Skyborn else null,
+        if (bonusSanctum) House.Sanctum else null,
+        if (bonusSaurian) House.Saurian else null,
+        if (bonusShadows) House.Shadows else null,
+        if (bonusStarAlliance) House.StarAlliance else null,
+        if (bonusUntamed) House.Untamed else null,
+    )
+}
 
 fun List<DokCardInDeck>.withBonusIcons(icons: DeckBonusIcons): List<DokCardInDeck> {
     if (icons.bonusIconHouses.isEmpty()) return this
     return this.groupBy { it.house }
         .map { houseAndCards ->
             val bonusIconsCards =
-                icons.bonusIconHouses.first { it.house == houseAndCards.key }.bonusIconCards.toMutableList()
+                icons.bonusIconHouses.firstOrNull { it.house == houseAndCards.key }?.bonusIconCards?.toMutableList() ?: mutableListOf()
             houseAndCards.value.map { dokCardInDeck ->
                 val bonusIcons =
                     bonusIconsCards.find { cardIcons -> cardIcons.cardTitle.toLegacyUrlFriendlyCardTitle() == dokCardInDeck.card.cardTitle.toLegacyUrlFriendlyCardTitle() }
@@ -319,13 +340,7 @@ fun List<DokCardInDeck>.withBonusIcons(icons: DeckBonusIcons): List<DokCardInDec
                     bonusDamage = bonusIcons?.bonusDamage ?: 0,
                     bonusDraw = bonusIcons?.bonusDraw ?: 0,
                     bonusDiscard = bonusIcons?.bonusDiscard ?: 0,
-                    bonusBobnar = bonusIcons?.bonusBobnar ?: false,
-                    bonusDis = bonusIcons?.bonusDis ?: false,
-                    bonusEkwidon = bonusIcons?.bonusEkwidon ?: false,
-                    bonusGeistoid = bonusIcons?.bonusGeistoid ?: false,
-                    bonusLogos = bonusIcons?.bonusLogos ?: false,
-                    bonusMars = bonusIcons?.bonusMars ?: false,
-                    bonusSkyborn = bonusIcons?.bonusSkyborn ?: false,
+                    bonusHouses = bonusIcons?.bonusHouses() ?: emptySet(),
                 )
             }
         }

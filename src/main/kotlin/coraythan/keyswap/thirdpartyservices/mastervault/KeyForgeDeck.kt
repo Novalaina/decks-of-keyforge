@@ -35,7 +35,12 @@ data class KeyForgeDeck(
             "geistoid",
             "logos",
             "mars",
-            "skyborn"
+            "skyborn",
+            "sanctum",
+            "saurian",
+            "shadows",
+            "star-alliance",
+            "untamed",
         )
     }
 
@@ -74,13 +79,18 @@ data class KeyForgeDeck(
                                     bonusDamage = iconsForCard.second.count { icon -> icon == "damage" },
                                     bonusDraw = iconsForCard.second.count { icon -> icon == "draw" },
                                     bonusDiscard = iconsForCard.second.count { icon -> icon == "discard" },
-                                    bonusBobnar = iconsForCard.second.any { icon -> icon == "brobnar" },
-                                    bonusDis = iconsForCard.second.any { icon -> icon == "dis" },
-                                    bonusEkwidon = iconsForCard.second.any { icon -> icon == "ekwidon" },
-                                    bonusGeistoid = iconsForCard.second.any { icon -> icon == "geistoid" },
-                                    bonusLogos = iconsForCard.second.any { icon -> icon == "logos" },
-                                    bonusMars = iconsForCard.second.any { icon -> icon == "mars" },
-                                    bonusSkyborn = iconsForCard.second.any { icon -> icon == "skyborn" },
+                                    bonusBobnar = iconsForCard.second.any { icon -> icon == House.Brobnar.masterVaultValue.lowercase() },
+                                    bonusDis = iconsForCard.second.any { icon -> icon == House.Dis.masterVaultValue.lowercase() },
+                                    bonusEkwidon = iconsForCard.second.any { icon -> icon == House.Ekwidon.masterVaultValue.lowercase() },
+                                    bonusGeistoid = iconsForCard.second.any { icon -> icon == House.Geistoid.masterVaultValue.lowercase() },
+                                    bonusLogos = iconsForCard.second.any { icon -> icon == House.Logos.masterVaultValue.lowercase() },
+                                    bonusMars = iconsForCard.second.any { icon -> icon == House.Mars.masterVaultValue.lowercase() },
+                                    bonusSkyborn = iconsForCard.second.any { icon -> icon == House.Skyborn.masterVaultValue.lowercase() },
+                                    bonusSanctum = iconsForCard.second.any { icon -> icon == House.Sanctum.masterVaultValue.lowercase() },
+                                    bonusSaurian = iconsForCard.second.any { icon -> icon == House.Saurian.masterVaultValue.lowercase() },
+                                    bonusShadows = iconsForCard.second.any { icon -> icon == House.Shadows.masterVaultValue.lowercase() },
+                                    bonusStarAlliance = iconsForCard.second.any { icon -> icon == House.StarAlliance.masterVaultValue.lowercase() },
+                                    bonusUntamed = iconsForCard.second.any { icon -> icon == House.Untamed.masterVaultValue.lowercase() },
                                 )
                             }
                         }

@@ -10,28 +10,34 @@ enum class Expansion(
     val houses: Set<House>,
     val hasTokens: Boolean = false,
     val tournamentLegal: Boolean = true,
-    val singleHouse: Boolean = false
+    val singleHouse: Boolean = false,
+    val active: Boolean = true,
+    val includeInStatistics: Boolean = false,
 ) {
     CALL_OF_THE_ARCHONS(
         341,
         "CotA",
-        setOf(House.Brobnar, House.Dis, House.Logos, House.Mars, House.Sanctum, House.Shadows, House.Untamed)
+        setOf(House.Brobnar, House.Dis, House.Logos, House.Mars, House.Sanctum, House.Shadows, House.Untamed),
+        includeInStatistics = true
     ),
     AGE_OF_ASCENSION(
         435,
         "AoA",
-        setOf(House.Brobnar, House.Dis, House.Logos, House.Mars, House.Sanctum, House.Shadows, House.Untamed)
+        setOf(House.Brobnar, House.Dis, House.Logos, House.Mars, House.Sanctum, House.Shadows, House.Untamed),
+        includeInStatistics = true
     ),
     WORLDS_COLLIDE(
         452,
         "WC",
-        setOf(House.Brobnar, House.Dis, House.Logos, House.StarAlliance, House.Saurian, House.Shadows, House.Untamed)
+        setOf(House.Brobnar, House.Dis, House.Logos, House.StarAlliance, House.Saurian, House.Shadows, House.Untamed),
+        includeInStatistics = true
     ),
-    ANOMALY_EXPANSION(453, "AE", setOf(), tournamentLegal = false),
+    ANOMALY_EXPANSION(453, "AE", setOf(), tournamentLegal = false, active = false),
     MASS_MUTATION(
         479,
         "MM",
-        setOf(House.StarAlliance, House.Dis, House.Logos, House.Saurian, House.Sanctum, House.Shadows, House.Untamed)
+        setOf(House.StarAlliance, House.Dis, House.Logos, House.Saurian, House.Sanctum, House.Shadows, House.Untamed),
+        includeInStatistics = true
     ),
     DARK_TIDINGS(
         496,
@@ -44,7 +50,8 @@ enum class Expansion(
             House.Sanctum,
             House.Shadows,
             House.Untamed
-        )
+        ),
+        includeInStatistics = true
     ),
     WINDS_OF_EXCHANGE(
         600,
@@ -59,6 +66,7 @@ enum class Expansion(
             House.Unfathomable
         ),
         hasTokens = true,
+        includeInStatistics = true
     ),
     UNCHAINED_2022(
         601, "UC22", setOf(
@@ -72,10 +80,13 @@ enum class Expansion(
         609,
         "VM23",
         setOf(House.Brobnar, House.Mars, House.Logos, House.Untamed, House.Dis, House.StarAlliance, House.Saurian),
-        hasTokens = true
+        hasTokens = true,
+        includeInStatistics = true
     ),
     GRIM_REMINDERS(
-        700, "GR", setOf(
+        700,
+        "GR",
+        setOf(
             House.Brobnar,
             House.Ekwidon,
             House.Geistoid,
@@ -83,7 +94,8 @@ enum class Expansion(
             House.StarAlliance,
             House.Unfathomable,
             House.Untamed,
-        )
+        ),
+        includeInStatistics = true
     ),
     MENAGERIE_2024(
         722, "MN24", setOf(
@@ -104,23 +116,27 @@ enum class Expansion(
             House.StarAlliance,
             House.Unfathomable,
             House.Untamed
-        )
+        ),
+        includeInStatistics = true
     ),
     AEMBER_SKIES(
         800,
         "AS",
         setOf(House.Brobnar, House.Dis, House.Ekwidon, House.Geistoid, House.Logos, House.Mars, House.Skyborn),
+        includeInStatistics = true
     ),
     TOKENS_OF_CHANGE(
         855,
         "ToC",
         setOf(House.Logos, House.Redemption, House.Shadows, House.Skyborn, House.Untamed),
         hasTokens = true,
+        includeInStatistics = true
     ),
     MORE_MUTATION(
         874,
         "MoM",
         setOf(House.StarAlliance, House.Dis, House.Logos, House.Saurian, House.Sanctum, House.Shadows, House.Untamed),
+        includeInStatistics = true
     ),
     MARTIAN_CIVIL_WAR(
         892,
@@ -134,6 +150,7 @@ enum class Expansion(
         907,
         "D",
         setOf(House.Brobnar, House.Dis, House.Logos, House.Sanctum, House.StarAlliance, House.Shadows, House.Untamed),
+        includeInStatistics = true
     ),
     VAULT_MASTERS_2025(
         939,
@@ -146,6 +163,20 @@ enum class Expansion(
             House.Saurian,
             House.Shadows,
             House.Unfathomable,
+        ),
+        includeInStatistics = true
+    ),
+    PROPHETIC_VISIONS(
+        886,
+        "PV",
+        setOf(
+            House.Dis,
+            House.Logos,
+            House.Sanctum,
+            House.Saurian,
+            House.Shadows,
+            House.StarAlliance,
+            House.Untamed,
         )
     );
 
@@ -159,40 +190,7 @@ enum class Expansion(
     }
 }
 
-val activeExpansions = setOf(
-    Expansion.CALL_OF_THE_ARCHONS,
-    Expansion.AGE_OF_ASCENSION,
-    Expansion.WORLDS_COLLIDE,
-    Expansion.MASS_MUTATION,
-    Expansion.DARK_TIDINGS,
-    Expansion.WINDS_OF_EXCHANGE,
-    Expansion.UNCHAINED_2022,
-    Expansion.VAULT_MASTERS_2023,
-    Expansion.GRIM_REMINDERS,
-    Expansion.MENAGERIE_2024,
-    Expansion.VAULT_MASTERS_2024,
-    Expansion.MARTIAN_CIVIL_WAR,
-    Expansion.AEMBER_SKIES,
-    Expansion.TOKENS_OF_CHANGE,
-    Expansion.MORE_MUTATION,
-    Expansion.DISCOVERY,
-    Expansion.VAULT_MASTERS_2025,
-)
+val activeExpansions = Expansion.entries.filter { it.active }
 
 // Include Expansions which have had SAS scores created and are tournament legal
-val includeInGlobalStats = setOf(
-    Expansion.CALL_OF_THE_ARCHONS,
-    Expansion.AGE_OF_ASCENSION,
-    Expansion.WORLDS_COLLIDE,
-    Expansion.MASS_MUTATION,
-    Expansion.DARK_TIDINGS,
-    Expansion.WINDS_OF_EXCHANGE,
-    Expansion.VAULT_MASTERS_2023,
-    Expansion.GRIM_REMINDERS,
-    Expansion.VAULT_MASTERS_2024,
-    Expansion.AEMBER_SKIES,
-    Expansion.TOKENS_OF_CHANGE,
-    Expansion.MORE_MUTATION,
-    Expansion.DISCOVERY,
-    Expansion.VAULT_MASTERS_2025,
-)
+val includeInGlobalStats = Expansion.entries.filter { it.includeInStatistics }

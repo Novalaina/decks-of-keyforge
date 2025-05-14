@@ -78,6 +78,8 @@ data class KeyForgeCard(
             "Upgrade" -> CardType.Upgrade
             "The Tide" -> null
             "Token Creature" -> CardType.TokenCreature
+            "Evil Twin Creature" -> CardType.Creature
+            "Prophecy" -> CardType.Prophecy
             else -> throw IllegalStateException("Weird card type $dumbCardType")
         }
     }

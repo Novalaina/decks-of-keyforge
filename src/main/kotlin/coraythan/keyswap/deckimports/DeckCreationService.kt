@@ -113,10 +113,12 @@ class DeckCreationService(
             .filter { disallowCards.contains(it.cardTitle) }
             .map { it.cardTitle }
 
-        val allHousesHave12 = cardsList
-            .groupBy { it.house }
-            .values
-            .all { it.size == 12 }
+        val allHousesHave12 =
+            cardsList
+                .filter { it.house != House.Prophecy }
+                .groupBy { it.house }
+                .values
+                .all { it.size == 12 }
 
         if (allHousesHave12 && badCard.size < 2) {
             val token = cardsListWithToken.firstOrNull { it.token }
@@ -159,8 +161,7 @@ class DeckCreationService(
                 // importSkippedDecksService.addImportSkippedDeck(keyforgeDeck.id)
             } else {
                 throw BadRequestException(
-                    "Master Vault currently has a bug with Revenants, so importing " +
-                            "most decks with them is turned off. This deck includes $badCard"
+                    if (allHousesHave12) "Found some bad cards: $badCard" else "Not all houses have 12 cards"
                 )
             }
         }
@@ -171,7 +172,7 @@ class DeckCreationService(
         val deckAndCards = makeBasicDeckFromDeckBuilderData(deck)
         return validateAndRateDeck(
             deckAndCards.first,
-            deck.cards.keys.toList(),
+            deck.cards.keys.toList().filter { it != House.Prophecy },
             deckAndCards.second,
             deck.tokenTitle,
             deck.alliance
@@ -258,7 +259,10 @@ class DeckCreationService(
         if (expansion.singleHouse && !alliance) {
             if (cards.size != 12) error("Deck $id must have 12 cards.")
             if (houses.toSet().size != 1) error("Deck $id must have 1 house.")
-        } else {
+        } else if (expansion == Expansion.PROPHETIC_VISIONS) {
+            if (cards.size != 40) error("Deck $id must have 40 cards (four prophecies).")
+            if (houses.toSet().size != 3) error("Deck $id must have 3 houses.")
+        } else  {
             if (cards.size != 36) error("Deck $id must have 36 cards.")
             if (houses.toSet().size != 3) error("Deck $id must have 3 houses.")
         }

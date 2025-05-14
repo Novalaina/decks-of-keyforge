@@ -98,6 +98,7 @@ export class DeckViewSmall extends React.Component<DeckViewSmallProps> {
                     <div style={{display: "flex"}}>
                         <Box display={"flex"} flexDirection={"column"} flexGrow={1}>
                             <CardContent style={{paddingBottom: 0, width: compact ? undefined : 544}}>
+                                <DisplayProphecies deck={deck} compact={compact}/>
                                 <DisplayAllCardsByHouse deck={deck} compact={compact} fake={!!fake}/>
                                 <Box display={"flex"} flexDirection={"column"} mt={1}>
                                     <OwnersList owners={ownersFiltered}/>
@@ -161,6 +162,80 @@ export class DeckViewSmall extends React.Component<DeckViewSmallProps> {
     }
 }
 
+const DisplayProphecies = observer((props: { deck: DeckSearchResult, compact: boolean }) => {
+        const {deck, compact} = props
+        const prophecies = deck.prophecies
+        if (prophecies == null) {
+            return null
+        }
+        if (!compact) {
+            const prophecyWidth = 160
+            return (
+                <Box mb={1} display={"grid"} gridTemplateColumns={"1fr 1fr 1fr"} gridGap={spacing(1)}>
+                    <HouseLabel
+                        house={House.Prophecy}
+                        title={true}
+                        synergyDetails={deck.synergyDetails}
+                        iconSize={44}
+                    />
+
+                    <Box>
+                        {prophecies.slice(0, 2).map(prophecy => (
+                            <CardAsLine
+                                key={prophecy.cardTitle}
+                                card={prophecy}
+                                cardActualHouse={House.Prophecy}
+                                deck={deck}
+                                width={prophecyWidth}
+                            />
+                        ))}
+                    </Box>
+                    <Box>
+                        {prophecies.slice(2, 4).map(prophecy => (
+                            <CardAsLine
+                                key={prophecy.cardTitle}
+                                card={prophecy}
+                                cardActualHouse={House.Prophecy}
+                                deck={deck}
+                                width={prophecyWidth}
+                            />
+                        ))}
+                    </Box>
+                </Box>
+
+            )
+        }
+        return (
+            <Box mb={1}>
+                <Box display={"flex"} mb={0.5}>
+                    <HouseLabel
+                        house={House.Prophecy}
+                        title={true}
+                        synergyDetails={deck.synergyDetails}
+                    />
+                </Box>
+                <Divider/>
+                <Box
+                    display={"grid"}
+                    gridColumnGap={spacing(1)}
+                    gridTemplateColumns={"1fr 1fr"}
+                    mt={0.5}
+                >
+                    {prophecies.map(prophecy => (
+                        <CardAsLine
+                            key={prophecy.cardTitle}
+                            card={prophecy}
+                            cardActualHouse={House.Prophecy}
+                            deck={deck}
+                            width={smallDeckViewCardLineWidth}
+                        />
+                    ))}
+                </Box>
+            </Box>
+        )
+    }
+)
+
 const DisplayAllCardsByHouse = observer((props: { deck: DeckSearchResult, compact: boolean, fake: boolean }) => {
     const {deck, compact, fake} = props
 
@@ -172,7 +247,7 @@ const DisplayAllCardsByHouse = observer((props: { deck: DeckSearchResult, compac
     }
 
     return (
-        <div style={{display: "flex", justifyContent: "space-between", width: "100%"}}>
+        <Box display={"grid"} gridTemplateColumns={"1fr 1fr 1fr"} gridGap={spacing(1)}>
             {deck.housesAndCards.map((cardsForHouse) => (
                 <DisplayCardsInHouse
                     key={cardsForHouse.house}
@@ -181,13 +256,13 @@ const DisplayAllCardsByHouse = observer((props: { deck: DeckSearchResult, compac
                     fake={fake}
                 />
             ))}
-        </div>
+        </Box>
     )
 })
 
 const DisplayAllCardsByHouseCompact = observer((props: { deck: DeckSearchResult, fake: boolean }) => {
     return (
-        <div style={{display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center"}}>
+        <div style={{display: "flex", flexDirection: "column"}}>
             {props.deck.housesAndCards.map((cardsForHouse) => (
                 <DisplayCardsInHouse
                     key={cardsForHouse.house} {...cardsForHouse}
@@ -243,7 +318,7 @@ const DisplayCardsInHouse = observer((props: {
             <Divider style={{marginTop: 4}}/>
             {compact ?
                 (
-                    <div style={{display: "flex"}}>
+                    <Box display={"grid"} gridTemplateColumns={"1fr 1fr"} gridColumnGap={spacing(1)}>
                         <div style={{marginRight: spacing(1)}}>
                             {cards.slice(0, 6).map((card, idx) => (
                                 <CardAsLine
@@ -270,7 +345,7 @@ const DisplayCardsInHouse = observer((props: {
                                 />
                             ))}
                         </div>
-                    </div>
+                    </Box>
                 )
                 :
                 cards.map((card, idx) => (

@@ -8,6 +8,7 @@ import {DeckType} from "../../generated-src/DeckType"
 import {AllianceHouseInfo} from "../../generated-src/AllianceHouseInfo"
 import {TokenInfo} from "../../generated-src/TokenInfo"
 import {TokenCreationValues} from "../../generated-src/TokenCreationValues"
+import { SimpleCard } from "../../generated-src/SimpleCard"
 
 export interface DeckWithSynergyInfo {
     deck: DeckSearchResult
@@ -80,6 +81,7 @@ export interface DeckSearchResult {
 
     twinId?: string
     tokenInfo?: TokenInfo
+    prophecies?: SimpleCard[]
     hauntingOdds?: number
 
     allianceHouses?: AllianceHouseInfo[]

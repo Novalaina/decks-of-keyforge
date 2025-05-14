@@ -151,55 +151,19 @@ export const CreateTheoreticalDeck = observer(() => {
                                 hasBonus={(currentCardToEnhance?.bonusDraw ?? 0) > 0}
                             />
 
-                            {deckBuilderStore.enhanceCardDialogInfo?.house !== House.Brobnar && (
-                                <AddEnhanceIcon
-                                    type={EnhancementType.BROBNAR}
-                                    hasBonus={!!currentCardToEnhance?.bonusBobnar}
-                                    isHouse={true}
-                                />
-                            )}
-                            {deckBuilderStore.enhanceCardDialogInfo?.house !== House.Dis && (
-                                <AddEnhanceIcon
-                                    type={EnhancementType.DIS}
-                                    hasBonus={!!currentCardToEnhance?.bonusDis}
-                                    isHouse={true}
-                                />
-                            )}
-                            {deckBuilderStore.enhanceCardDialogInfo?.house !== House.Ekwidon && (
-                                <AddEnhanceIcon
-                                    type={EnhancementType.EKWIDON}
-                                    hasBonus={!!currentCardToEnhance?.bonusEkwidon}
-                                    isHouse={true}
-                                />
-                            )}
-                            {deckBuilderStore.enhanceCardDialogInfo?.house !== House.Geistoid && (
-                                <AddEnhanceIcon
-                                    type={EnhancementType.GEISTOID}
-                                    hasBonus={!!currentCardToEnhance?.bonusGeistoid}
-                                    isHouse={true}
-                                />
-                            )}
-                            {deckBuilderStore.enhanceCardDialogInfo?.house !== House.Logos && (
-                                <AddEnhanceIcon
-                                    type={EnhancementType.LOGOS}
-                                    hasBonus={!!currentCardToEnhance?.bonusLogos}
-                                    isHouse={true}
-                                />
-                            )}
-                            {deckBuilderStore.enhanceCardDialogInfo?.house !== House.Mars && (
-                                <AddEnhanceIcon
-                                    type={EnhancementType.MARS}
-                                    hasBonus={!!currentCardToEnhance?.bonusMars}
-                                    isHouse={true}
-                                />
-                            )}
-                            {deckBuilderStore.enhanceCardDialogInfo?.house !== House.Skyborn && (
-                                <AddEnhanceIcon
-                                    type={EnhancementType.SKYBORN}
-                                    hasBonus={!!currentCardToEnhance?.bonusSkyborn}
-                                    isHouse={true}
-                                />
-                            )}
+                            {housesStore.getHousesSelectedTrue()
+                                .filter(house => house !== House.Prophecy)
+                                .map(house => {
+                                    if (deckBuilderStore.enhanceCardDialogInfo?.house === house) {
+                                        return null
+                                    }
+                                    return (
+                                        <AddEnhanceHouseIcon
+                                            house={house}
+                                            hasBonus={!!currentCardToEnhance?.bonusHouses.includes(house)}
+                                        />
+                                    )
+                                })}
                         </Box>
                     </DialogContent>
                     <DialogActions>
@@ -227,54 +191,68 @@ export const CreateTheoreticalDeck = observer(() => {
                 {Utils.isDev() && (
                     <KeyButton
                         onClick={() => {
-                            deckBuilderStore.currentDeck!.cards["Shadows"] = cardStore.allCards.slice(0, 12).map(card => ({
-                                name: card.cardTitle,
-                                enhanced: false,
-                                bonusAember: 0,
-                                bonusCapture: 0,
-                                bonusDamage: 0,
-                                bonusDiscard: 0,
-                                bonusDraw: 0,
-                                bonusBobnar: false,
-                                bonusDis: false,
-                                bonusEkwidon: false,
-                                bonusGeistoid: false,
-                                bonusLogos: false,
-                                bonusMars: false,
-                                bonusSkyborn: false,
-                            }))
-                            deckBuilderStore.currentDeck!.cards["Dis"] = cardStore.allCards.slice(0, 12).map(card => ({
-                                name: card.cardTitle,
-                                enhanced: false,
-                                bonusAember: 0,
-                                bonusCapture: 0,
-                                bonusDamage: 0,
-                                bonusDiscard: 0,
-                                bonusDraw: 0,
-                                bonusBobnar: false,
-                                bonusDis: false,
-                                bonusEkwidon: false,
-                                bonusGeistoid: false,
-                                bonusLogos: false,
-                                bonusMars: false,
-                                bonusSkyborn: false,
-                            }))
-                            deckBuilderStore.currentDeck!.cards["Logos"] = cardStore.allCards.slice(0, 12).map(card => ({
-                                name: card.cardTitle,
-                                enhanced: false,
-                                bonusAember: 0,
-                                bonusCapture: 0,
-                                bonusDamage: 0,
-                                bonusDiscard: 0,
-                                bonusDraw: 0,
-                                bonusBobnar: false,
-                                bonusDis: false,
-                                bonusEkwidon: false,
-                                bonusGeistoid: false,
-                                bonusLogos: false,
-                                bonusMars: false,
-                                bonusSkyborn: false,
-                            }))
+                            deckBuilderStore.currentDeck!.cards["Shadows"] = cardStore.allCards
+                                .filter(card => card.houses.includes(House.Shadows))
+                                .slice(0, 12).map(card => ({
+                                    name: card.cardTitle,
+                                    enhanced: false,
+                                    bonusAember: 0,
+                                    bonusCapture: 0,
+                                    bonusDamage: 0,
+                                    bonusDiscard: 0,
+                                    bonusDraw: 0,
+                                    bonusHouses: [],
+                                }))
+                            deckBuilderStore.currentDeck!.cards["Dis"] = cardStore.allCards
+                                .filter(card => card.houses.includes(House.Dis))
+                                .slice(0, 12).map(card => ({
+                                    name: card.cardTitle,
+                                    enhanced: false,
+                                    bonusAember: 0,
+                                    bonusCapture: 0,
+                                    bonusDamage: 0,
+                                    bonusDiscard: 0,
+                                    bonusDraw: 0,
+                                    bonusHouses: [],
+                                }))
+                            deckBuilderStore.currentDeck!.cards["Logos"] = cardStore.allCards
+                                .filter(card => card.houses.includes(House.Logos))
+                                .slice(0, 12).map(card => ({
+                                    name: card.cardTitle,
+                                    enhanced: false,
+                                    bonusAember: 0,
+                                    bonusCapture: 0,
+                                    bonusDamage: 0,
+                                    bonusDiscard: 0,
+                                    bonusDraw: 0,
+                                    bonusHouses: [],
+                                }))
+
+                            deckBuilderStore.currentDeck!.cards["Logos"] = cardStore.allCards
+                                .filter(card => card.houses.includes(House.Logos))
+                                .slice(0, 12).map(card => ({
+                                    name: card.cardTitle,
+                                    enhanced: false,
+                                    bonusAember: 0,
+                                    bonusCapture: 0,
+                                    bonusDamage: 0,
+                                    bonusDiscard: 0,
+                                    bonusDraw: 0,
+                                    bonusHouses: [],
+                                }))
+
+                            if (deckBuilderStore.currentDeck!.cards["Prophecy"] != null) {
+                                deckBuilderStore.currentDeck!.cards["Prophecy"] = cardStore.allCards.filter(card => card.cardType === "Prophecy").slice(0, 4).map(card => ({
+                                    name: card.cardTitle,
+                                    enhanced: false,
+                                    bonusAember: 0,
+                                    bonusCapture: 0,
+                                    bonusDamage: 0,
+                                    bonusDiscard: 0,
+                                    bonusDraw: 0,
+                                    bonusHouses: [],
+                                }))
+                            }
                         }}
                     >
                         Add test cards
@@ -290,20 +268,41 @@ export const CreateTheoreticalDeck = observer(() => {
     )
 })
 
-const AddEnhanceIcon = observer((props: { type: EnhancementType, hasBonus: boolean, isHouse?: boolean }) => {
+const AddEnhanceIcon = observer((props: { type: EnhancementType, hasBonus: boolean }) => {
     return (
         <Box display={"flex"} style={{gap: spacing(1)}} alignItems={"center"}>
             <EnhancementIcon type={props.type}/>
             <IconButton
                 size={"small"}
                 onClick={() => deckBuilderStore.enhanceCard(props.type, true)}
-                disabled={props.isHouse && props.hasBonus}
             >
                 <Add/>
             </IconButton>
             <IconButton
                 size={"small"}
                 onClick={() => deckBuilderStore.enhanceCard(props.type, false)}
+                disabled={!props.hasBonus}
+            >
+                <Remove/>
+            </IconButton>
+        </Box>
+    )
+})
+
+const AddEnhanceHouseIcon = observer((props: { house: House, hasBonus: boolean }) => {
+    return (
+        <Box display={"flex"} style={{gap: spacing(1)}} alignItems={"center"}>
+            <EnhancementIcon type={props.house}/>
+            <IconButton
+                size={"small"}
+                onClick={() => deckBuilderStore.enhanceCardHouses(props.house, true)}
+                disabled={props.hasBonus}
+            >
+                <Add/>
+            </IconButton>
+            <IconButton
+                size={"small"}
+                onClick={() => deckBuilderStore.enhanceCardHouses(props.house, false)}
                 disabled={!props.hasBonus}
             >
                 <Remove/>

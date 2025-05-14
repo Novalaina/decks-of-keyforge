@@ -116,7 +116,8 @@ enum class CardType {
     Artifact,
     Creature,
     Upgrade,
-    TokenCreature;
+    TokenCreature,
+    Prophecy;
 
     fun creatureBonus() = if (this == TokenCreature || this == Creature) StaticAercValues.creatureBonus else 0.0
 }

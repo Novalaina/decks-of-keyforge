@@ -20,7 +20,10 @@ enum class House(val masterVaultValue: String) {
     Skyborn("Skyborn"),
     StarAlliance("Star Alliance"),
     Unfathomable("Unfathomable"),
-    Untamed("Untamed");
+    Untamed("Untamed"),
+
+    // Keep Prophecy last for sorting purposes
+    Prophecy("Prophecy");
 
     companion object {
         fun fromMasterVaultValue(value: String): House? {

@@ -25,13 +25,7 @@ data class DokCardInDeck(
     val bonusDamage: Int = 0,
     val bonusDraw: Int = 0,
     val bonusDiscard: Int = 0,
-    val bonusBobnar: Boolean = false,
-    val bonusDis: Boolean = false,
-    val bonusEkwidon: Boolean = false,
-    val bonusGeistoid: Boolean = false,
-    val bonusLogos: Boolean = false,
-    val bonusMars: Boolean = false,
-    val bonusSkyborn: Boolean = false,
+    val bonusHouses: Set<House> = emptySet(),
 ) : Comparable<DokCardInDeck> {
     constructor(deck: GenericDeck, card: ExtraCardInfo, cardHouse: House, cardExpansion: Expansion) : this(
         card = card.dokCard,
@@ -52,27 +46,16 @@ data class DokCardInDeck(
     }
 
     @TsIgnore
-    val allHouses: Set<House> = setOfNotNull(
+    val allHouses: Set<House> = setOf(
         house,
-        if (bonusBobnar) House.Brobnar else null,
-        if (bonusDis) House.Dis else null,
-        if (bonusEkwidon) House.Ekwidon else null,
-        if (bonusGeistoid) House.Geistoid else null,
-        if (bonusLogos) House.Logos else null,
-        if (bonusMars) House.Mars else null,
-        if (bonusSkyborn) House.Skyborn else null,
-    )
+    ).plus(bonusHouses)
 
     val pipEnhanced: Boolean
         get() = bonusAember > 0 || bonusCapture > 0 || bonusDamage > 0 || bonusDraw > 0 || bonusDiscard > 0
 
     val enhanced: Boolean
         get() = bonusAember > 0 || bonusCapture > 0 || bonusDamage > 0 || bonusDraw > 0 || bonusDiscard > 0
-                || bonusBobnar || bonusDis || bonusEkwidon || bonusGeistoid || bonusLogos || bonusMars || bonusSkyborn
-
-    val enhancedHouses: Int
-        get() = listOf(bonusBobnar, bonusDis, bonusEkwidon, bonusGeistoid, bonusLogos, bonusMars, bonusSkyborn)
-            .count { it }
+                || bonusHouses.isNotEmpty()
 
     val totalAmber: Int
         get() = this.bonusAember + this.card.amber
@@ -102,13 +85,7 @@ data class DokCardInDeck(
             bonusAember = bonusAember,
             bonusDamage = bonusDamage,
             bonusDiscard = bonusDiscard,
-            bonusBobnar = bonusBobnar,
-            bonusDis = bonusDis,
-            bonusEkwidon = bonusEkwidon,
-            bonusGeistoid = bonusGeistoid,
-            bonusLogos = bonusLogos,
-            bonusMars = bonusMars,
-            bonusSkyborn = bonusSkyborn,
+            bonusHouses = bonusHouses,
         )
     }
 

@@ -17,6 +17,7 @@ import starAllianceImg from "./imgs/star-alliance.png"
 import unfathomableImg from "./imgs/unfathomable.png"
 import untamedImg from "./imgs/untamed.png"
 import redemptionImg from "./imgs/redemption.png"
+import prophecyImg from "./imgs/prophecy.svg"
 import skybornImg from "./imgs/skyborn.png"
 import { SynergyCombo } from "../generated-src/SynergyCombo"
 import { AercForCombos } from "../aerc/AercForCombos"
@@ -26,6 +27,7 @@ export interface HouseValue {
     house: House
     img: string
     displayName?: string
+    cardsOnly?: boolean
 }
 
 export const houseValuesArray: HouseValue[] = [
@@ -103,6 +105,11 @@ export const houseValuesArray: HouseValue[] = [
         img: skybornImg,
         displayName: "Skyborn"
     },
+    {
+        house: House.Prophecy,
+        img: prophecyImg,
+        cardsOnly: true,
+    },
 ]
     .map(value => {
         if (value.displayName == null) {
@@ -111,6 +118,8 @@ export const houseValuesArray: HouseValue[] = [
         }
         return value
     })
+
+export const deckHouses = houseValuesArray.filter(houseValue => !houseValue.cardsOnly)
 
 export const mmHouses = [...houseValuesArray]
 mmHouses.splice(0, 1)

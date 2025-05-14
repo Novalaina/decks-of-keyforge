@@ -133,20 +133,6 @@ export class UpdateExtraCardInfo extends React.Component<UpdateExtraCardInfoProp
     enhancementDiscard = "0"
     @observable
     enhancementDamage = "0"
-    @observable
-    enhancementBrobnar = "0"
-    @observable
-    enhancementDis = "0"
-    @observable
-    enhancementEkwidon = "0"
-    @observable
-    enhancementGeistoid = "0"
-    @observable
-    enhancementLogos = "0"
-    @observable
-    enhancementMars = "0"
-    @observable
-    enhancementSkyborn = "0"
 
     @observable
     traits: SynTraitValue[] = []
@@ -205,13 +191,6 @@ export class UpdateExtraCardInfo extends React.Component<UpdateExtraCardInfoProp
         this.enhancementDraw = extraCardInfo.enhancementDraw.toString()
         this.enhancementDiscard = extraCardInfo.enhancementDiscard.toString()
         this.enhancementDamage = extraCardInfo.enhancementDamage.toString()
-        this.enhancementBrobnar = extraCardInfo.enhancementBrobnar.toString()
-        this.enhancementDis = extraCardInfo.enhancementDis.toString()
-        this.enhancementEkwidon = extraCardInfo.enhancementEkwidon.toString()
-        this.enhancementGeistoid = extraCardInfo.enhancementGeistoid.toString()
-        this.enhancementLogos = extraCardInfo.enhancementLogos.toString()
-        this.enhancementMars = extraCardInfo.enhancementMars.toString()
-        this.enhancementSkyborn = extraCardInfo.enhancementSkyborn.toString()
 
         this.extraCardTypes = extraCardInfo.extraCardTypes ?? []
         this.traits = extraCardInfo.traits
@@ -275,13 +254,6 @@ export class UpdateExtraCardInfo extends React.Component<UpdateExtraCardInfoProp
             enhancementDraw: Number(this.enhancementDraw),
             enhancementDiscard: Number(this.enhancementDiscard),
             enhancementDamage: Number(this.enhancementDamage),
-            enhancementBrobnar: Number(this.enhancementBrobnar),
-            enhancementDis: Number(this.enhancementDis),
-            enhancementEkwidon: Number(this.enhancementEkwidon),
-            enhancementGeistoid: Number(this.enhancementGeistoid),
-            enhancementLogos: Number(this.enhancementLogos),
-            enhancementMars: Number(this.enhancementMars),
-            enhancementSkyborn: Number(this.enhancementSkyborn),
 
             extraCardTypes: this.extraCardTypes.length === 0 ? undefined : this.extraCardTypes,
             traits: this.traits,
@@ -486,41 +458,6 @@ export class UpdateExtraCardInfo extends React.Component<UpdateExtraCardInfoProp
                                         name={"bonus damage"}
                                         value={this.enhancementDamage}
                                         update={(event: EventValue) => this.enhancementDamage = event.target.value}
-                                    />
-                                    <InfoInput
-                                        name={"bonus brob"}
-                                        value={this.enhancementBrobnar}
-                                        update={(event: EventValue) => this.enhancementBrobnar = event.target.value}
-                                    />
-                                    <InfoInput
-                                        name={"bonus dis"}
-                                        value={this.enhancementDis}
-                                        update={(event: EventValue) => this.enhancementDis = event.target.value}
-                                    />
-                                    <InfoInput
-                                        name={"bonus ekwi"}
-                                        value={this.enhancementEkwidon}
-                                        update={(event: EventValue) => this.enhancementEkwidon = event.target.value}
-                                    />
-                                    <InfoInput
-                                        name={"bonus ghosts"}
-                                        value={this.enhancementGeistoid}
-                                        update={(event: EventValue) => this.enhancementGeistoid = event.target.value}
-                                    />
-                                    <InfoInput
-                                        name={"bonus logos"}
-                                        value={this.enhancementLogos}
-                                        update={(event: EventValue) => this.enhancementLogos = event.target.value}
-                                    />
-                                    <InfoInput
-                                        name={"bonus mars"}
-                                        value={this.enhancementMars}
-                                        update={(event: EventValue) => this.enhancementMars = event.target.value}
-                                    />
-                                    <InfoInput
-                                        name={"bonus skyborn"}
-                                        value={this.enhancementSkyborn}
-                                        update={(event: EventValue) => this.enhancementSkyborn = event.target.value}
                                     />
                                 </>
                             )}

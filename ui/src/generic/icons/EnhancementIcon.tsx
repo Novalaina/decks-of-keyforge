@@ -12,8 +12,14 @@ import EnhancedGeistoid from "../imgs/enhancements/geistoid.svg"
 import EnhancedLogos from "../imgs/enhancements/logos.svg"
 import EnhancedMars from "../imgs/enhancements/mars.svg"
 import EnhancedSkyborn from "../imgs/enhancements/skyborn.svg"
+import EnhancedSanctum from "../imgs/enhancements/sanctum.svg"
+import EnhancedSaurian from "../imgs/enhancements/saurian.svg"
+import EnhancedShadows from "../imgs/enhancements/shadows.svg"
+import EnhancedStarAlliance from "../imgs/enhancements/star-alliance.svg"
+import EnhancedUntamed from "../imgs/enhancements/untamed.svg"
+import { House } from "../../generated-src/House"
 
-export const EnhancementIcon = (props: { type: EnhancementType }) => {
+export const EnhancementIcon = (props: { type: EnhancementType | House }) => {
     let iconSrc
 
     if (props.type === EnhancementType.AEMBER) {
@@ -26,20 +32,30 @@ export const EnhancementIcon = (props: { type: EnhancementType }) => {
         iconSrc = EnhancedDraw
     } else if (props.type === EnhancementType.DISCARD) {
         iconSrc = EnhancedDiscard
-    } else if (props.type === EnhancementType.BROBNAR) {
+    } else if (props.type === House.Brobnar) {
         iconSrc = EnhancedBrobnar
-    } else if (props.type === EnhancementType.DIS) {
+    } else if (props.type === House.Dis) {
         iconSrc = EnhancedDis
-    } else if (props.type === EnhancementType.EKWIDON) {
+    } else if (props.type === House.Ekwidon) {
         iconSrc = EnhancedEkwidon
-    } else if (props.type === EnhancementType.GEISTOID) {
+    } else if (props.type === House.Geistoid) {
         iconSrc = EnhancedGeistoid
-    } else if (props.type === EnhancementType.LOGOS) {
+    } else if (props.type === House.Logos) {
         iconSrc = EnhancedLogos
-    } else if (props.type === EnhancementType.MARS) {
+    } else if (props.type === House.Mars) {
         iconSrc = EnhancedMars
-    } else if (props.type === EnhancementType.SKYBORN) {
+    } else if (props.type === House.Skyborn) {
         iconSrc = EnhancedSkyborn
+    } else if (props.type === House.Sanctum) {
+        iconSrc = EnhancedSanctum
+    } else if (props.type === House.Saurian) {
+        iconSrc = EnhancedSaurian
+    } else if (props.type === House.Shadows) {
+        iconSrc = EnhancedShadows
+    } else if (props.type === House.StarAlliance) {
+        iconSrc = EnhancedStarAlliance
+    } else if (props.type === House.Untamed) {
+        iconSrc = EnhancedUntamed
     } else {
         throw new Error(`No enhancement icon for ${props.type}`)
     }

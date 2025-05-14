@@ -5,14 +5,13 @@ import { spacing, themeStore } from "../config/MuiConfig"
 interface GraySidebarProps {
     width: number
     vertical?: boolean
-    style?: React.CSSProperties
     children?: React.ReactNode
 }
 
 @observer
 export class GraySidebar extends React.Component<GraySidebarProps> {
     render() {
-        const {width, vertical, style, ...rest} = this.props
+        const {width, vertical, children} = this.props
         return (
             <div
                 style={{
@@ -22,10 +21,10 @@ export class GraySidebar extends React.Component<GraySidebarProps> {
                     width,
                     margin: spacing(1),
                     borderRadius: "20px",
-                    ...style
                 }}
-                {...rest}
-            />
+            >
+                {children}
+            </div>
         )
     }
 }

@@ -14,7 +14,7 @@ import { UserLink } from "../user/UserLink"
 import { AboutGridItem } from "./AboutPage"
 import { DokLink } from "../generic/DokLink"
 
-export const latestVersion = "7.4"
+export const latestVersion = "7.5"
 
 const decFirstUpdateCards = new CardFilters()
 decFirstUpdateCards.aercHistory = true
@@ -46,6 +46,20 @@ export class ReleaseNotes extends React.Component {
                     </Typography>
                     {cardsUpdateLink}
                 </Paper>
+                <ReleaseNote
+                    releaseNumber={"7.5"}
+                    date={"5/14/2025"}
+                    expanded={true}
+                    releaseNotesWithHighlights={[
+                        {
+                            highlight: "Adding Prophetic Visions",
+                            note: "I've added initial support for Prophetic Visions decks, which have started " +
+                                "appearing on Master Vault. As of right now, you should be able to import and view " +
+                                "Prophetic Visions decks, but the cards are not yet rated. Expect to see card " +
+                                "ratings start to appear in SAS Preview when people start receiving their decks."
+                        },
+                    ]}
+                />
                 <ReleaseNote
                     releaseNumber={"7.4"}
                     date={"1/31/2025"}

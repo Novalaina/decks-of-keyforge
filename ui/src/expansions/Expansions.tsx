@@ -31,7 +31,8 @@ export enum ExpansionNumber {
     MoM = 874,
     MCW = 892,
     D = 907,
-    VM25 = 939
+    VM25 = 939,
+    PV = 886,
 }
 
 export const displayMyDecksLinksFor = [
@@ -65,6 +66,7 @@ export const activeExpansions = [
     Expansion.MORE_MUTATION,
     Expansion.TOKENS_OF_CHANGE,
     Expansion.DISCOVERY,
+    Expansion.PROPHETIC_VISIONS,
 ]
 
 export const activeSasExpansions = [
@@ -100,6 +102,7 @@ export const activeCardExpansions = [
     ExpansionNumber.ToC,
     ExpansionNumber.MoM,
     ExpansionNumber.D,
+    ExpansionNumber.PV,
 ]
 
 export const expansionsWithCards = [
@@ -112,19 +115,20 @@ export const expansionsWithCards = [
     Expansion.GRIM_REMINDERS,
     Expansion.VAULT_MASTERS_2023,
     Expansion.VAULT_MASTERS_2024,
+    Expansion.VAULT_MASTERS_2025,
     Expansion.MENAGERIE_2024,
     Expansion.MARTIAN_CIVIL_WAR,
     Expansion.AEMBER_SKIES,
     Expansion.MORE_MUTATION,
     Expansion.TOKENS_OF_CHANGE,
     Expansion.DISCOVERY,
-    Expansion.VAULT_MASTERS_2025,
+    Expansion.PROPHETIC_VISIONS,
 ]
 
 export const recentExpansions = [
+    Expansion.PROPHETIC_VISIONS,
     Expansion.AEMBER_SKIES,
     Expansion.GRIM_REMINDERS,
-    Expansion.MORE_MUTATION,
     Expansion.TOKENS_OF_CHANGE,
 ]
 
@@ -139,6 +143,7 @@ export const activeCardLinksExpansions = [
     Expansion.AEMBER_SKIES,
     Expansion.TOKENS_OF_CHANGE,
     Expansion.MORE_MUTATION,
+    Expansion.PROPHETIC_VISIONS,
 ]
 
 export const possibleCardExpansionsForExpansion = (exp: ExpansionNumber): ExpansionNumber[] => {
@@ -163,6 +168,7 @@ export const expansionInfos: ExpansionInfo[] = [
     {expansionNumber: ExpansionNumber.UC22, name: "Unchained", abbreviation: "UC22", backendEnum: Expansion.UNCHAINED_2022, hasTokens: true, tournamentIllegal: true},
     {expansionNumber: ExpansionNumber.VM23, name: "Vault M 23", abbreviation: "VM23", backendEnum: Expansion.VAULT_MASTERS_2023},
     {expansionNumber: ExpansionNumber.VM24, name: "Vault M 24", abbreviation: "VM24", backendEnum: Expansion.VAULT_MASTERS_2024},
+    {expansionNumber: ExpansionNumber.VM25, name: "Vault M 25", abbreviation: "VM25", backendEnum: Expansion.VAULT_MASTERS_2025},
     {expansionNumber: ExpansionNumber.GR, name: "Grim Reminders", abbreviation: "GR", backendEnum: Expansion.GRIM_REMINDERS},
     {expansionNumber: ExpansionNumber.MN24, name: "Menagerie", abbreviation: "MN24", backendEnum: Expansion.MENAGERIE_2024, hasTokens: true, tournamentIllegal: true},
     {expansionNumber: ExpansionNumber.MCW, name: "Martian Civil War", abbreviation: "MCW", backendEnum: Expansion.MARTIAN_CIVIL_WAR, hasTokens: true, tournamentIllegal: true},
@@ -170,7 +176,7 @@ export const expansionInfos: ExpansionInfo[] = [
     {expansionNumber: ExpansionNumber.MoM, name: "More Mutation", abbreviation: "MoM", backendEnum: Expansion.MORE_MUTATION},
     {expansionNumber: ExpansionNumber.ToC, name: "Tokens of Change", abbreviation: "ToC", backendEnum: Expansion.TOKENS_OF_CHANGE, hasTokens: true},
     {expansionNumber: ExpansionNumber.D, name: "Discovery", abbreviation: "D", backendEnum: Expansion.DISCOVERY},
-    {expansionNumber: ExpansionNumber.VM25, name: "Vault M 25", abbreviation: "VM25", backendEnum: Expansion.VAULT_MASTERS_2025},
+    {expansionNumber: ExpansionNumber.PV, name: "Prophetic Visions", abbreviation: "PV", backendEnum: Expansion.PROPHETIC_VISIONS},
 ]
 
 export const activeExpansionInfos: ExpansionInfo[] = expansionInfos.filter(info => activeExpansions.includes(info.backendEnum))

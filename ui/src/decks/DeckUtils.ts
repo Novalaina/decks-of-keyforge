@@ -1,77 +1,14 @@
-import {EnhancementType} from "../cards/EnhancementType";
-import {ExtendedExpansionUtils} from "../expansions/ExtendedExpansionUtils";
-import {cardStore} from "../cards/CardStore";
-import {FrontendCard} from "../generated-src/FrontendCard";
-import {userStore} from "../user/UserStore";
-import {SynergyTrait} from "../generated-src/SynergyTrait";
-import {log, roundToHundreds} from "../config/Utils";
-import {SynergyCombo} from "../generated-src/SynergyCombo";
-import {House} from "../generated-src/House";
-import {CsvData} from "../generic/CsvDownloadButton";
-import {userDeckStore} from "../userdeck/UserDeckStore";
-import {DeckSearchResult, TraitInDeckInfo} from "./models/DeckSearchResult";
+import { cardStore } from "../cards/CardStore"
+import { userStore } from "../user/UserStore"
+import { SynergyTrait } from "../generated-src/SynergyTrait"
+import { log, roundToHundreds } from "../config/Utils"
+import { SynergyCombo } from "../generated-src/SynergyCombo"
+import { House } from "../generated-src/House"
+import { CsvData } from "../generic/CsvDownloadButton"
+import { userDeckStore } from "../userdeck/UserDeckStore"
+import { DeckSearchResult, TraitInDeckInfo } from "./models/DeckSearchResult"
 
 export class DeckUtils {
-
-    static calculateBonusIcons = (deck: DeckSearchResult): Map<EnhancementType, number> | undefined => {
-        if (ExtendedExpansionUtils.allowsEnhancements(deck.expansion)) {
-
-            let enhancedAmber = 0
-            let enhancedCapture = 0
-            let enhancedDamage = 0
-            let enhancedDraw = 0
-            let enhancedDiscard = 0
-            let enhancedBrobnar = 0
-            let enhancedDis = 0
-            let enhancedEkwidon = 0
-            let enhancedGeistoid = 0
-            let enhancedLogos = 0
-            let enhancedMars = 0
-            let enhancedSkyborn = 0
-
-            const cards = deck.housesAndCards
-                .flatMap(house => house.cards.map(simpleCard => cardStore.fullCardFromCardName(simpleCard.cardTitle)))
-                .filter(card => card != null) as FrontendCard[]
-
-
-            cards.forEach(card => {
-                enhancedAmber += card.extraCardInfo.enhancementAmber
-                enhancedCapture += card.extraCardInfo.enhancementCapture
-                enhancedDamage += card.extraCardInfo.enhancementDamage
-                enhancedDraw += card.extraCardInfo.enhancementDraw
-                enhancedDiscard += card.extraCardInfo.enhancementDiscard
-                enhancedBrobnar += card.extraCardInfo.enhancementBrobnar ? 1 : 0
-                enhancedDis += card.extraCardInfo.enhancementDis ? 1 : 0
-                enhancedEkwidon += card.extraCardInfo.enhancementEkwidon ? 1 : 0
-                enhancedGeistoid += card.extraCardInfo.enhancementGeistoid ? 1 : 0
-                enhancedLogos += card.extraCardInfo.enhancementLogos ? 1 : 0
-                enhancedMars += card.extraCardInfo.enhancementMars ? 1 : 0
-                enhancedSkyborn += card.extraCardInfo.enhancementSkyborn ? 1 : 0
-            })
-
-            if (enhancedAmber + enhancedCapture + enhancedDamage + enhancedDraw + enhancedDiscard === 0) {
-                return undefined
-            }
-
-            const enhancements = new Map<EnhancementType, number>()
-            enhancements.set(EnhancementType.AEMBER, enhancedAmber)
-            enhancements.set(EnhancementType.CAPTURE, enhancedCapture)
-            enhancements.set(EnhancementType.DAMAGE, enhancedDamage)
-            enhancements.set(EnhancementType.DRAW, enhancedDraw)
-            enhancements.set(EnhancementType.DISCARD, enhancedDiscard)
-            enhancements.set(EnhancementType.BROBNAR, enhancedBrobnar)
-            enhancements.set(EnhancementType.DIS, enhancedDis)
-            enhancements.set(EnhancementType.EKWIDON, enhancedEkwidon)
-            enhancements.set(EnhancementType.GEISTOID, enhancedGeistoid)
-            enhancements.set(EnhancementType.LOGOS, enhancedLogos)
-            enhancements.set(EnhancementType.MARS, enhancedMars)
-            enhancements.set(EnhancementType.SKYBORN, enhancedSkyborn)
-
-            return enhancements
-        }
-
-        return undefined
-    }
 
     static findPrice = (deck: DeckSearchResult, myPriceOnly?: boolean): number | undefined => {
         const saleInfo = deck.deckSaleInfo
@@ -173,7 +110,8 @@ export class DeckUtils {
 
         const data = decks.map(deck => {
             const synergies = DeckUtils.synergiesRounded(deck)
-            const enhancements = DeckUtils.calculateBonusIcons(deck)
+            const cards = deck.housesAndCards
+                .flatMap(house => house.cards)
             const house1 = deck.housesAndCards[0]
             const house2 = deck.housesAndCards[1]
             const house3 = deck.housesAndCards[2]
@@ -225,17 +163,11 @@ export class DeckUtils {
                 deck.upgradeCount,
 
                 deck.rawAmber,
-                enhancements?.get(EnhancementType.CAPTURE) ?? 0,
-                enhancements?.get(EnhancementType.DAMAGE) ?? 0,
-                enhancements?.get(EnhancementType.DRAW) ?? 0,
-                enhancements?.get(EnhancementType.DISCARD) ?? 0,
-                enhancements?.get(EnhancementType.BROBNAR) ?? 0,
-                enhancements?.get(EnhancementType.DIS) ?? 0,
-                enhancements?.get(EnhancementType.EKWIDON) ?? 0,
-                enhancements?.get(EnhancementType.GEISTOID) ?? 0,
-                enhancements?.get(EnhancementType.LOGOS) ?? 0,
-                enhancements?.get(EnhancementType.MARS) ?? 0,
-                enhancements?.get(EnhancementType.SKYBORN) ?? 0,
+                cards.reduce((prev, next) => prev + (next.bonusCapture ?? 0), 0),
+                cards.reduce((prev, next) => prev + (next.bonusDamage ?? 0), 0),
+                cards.reduce((prev, next) => prev + (next.bonusDraw ?? 0), 0),
+                cards.reduce((prev, next) => prev + (next.bonusDiscard ?? 0), 0),
+                cards.flatMap(card => card.bonusHouses ?? []).join(", "),
 
                 deck.keyCheatCount,
                 deck.cardDrawCount,
@@ -297,13 +229,7 @@ export class DeckUtils {
             "Bonus Damage",
             "Bonus Draw",
             "Bonus Discard",
-            "Bonus Brobnar",
-            "Bonus Dis",
-            "Bonus Ekwidon",
-            "Bonus Geistoid",
-            "Bonus Logos",
-            "Bonus Mars",
-            "Bonus Skyborn",
+            "Bonus Houses",
 
             "Key Cheat Count",
             "Card Draw Count",

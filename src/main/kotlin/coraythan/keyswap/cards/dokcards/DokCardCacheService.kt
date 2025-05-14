@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.querydsl.core.types.dsl.BooleanExpression
 import com.querydsl.jpa.impl.JPAQueryFactory
+import coraythan.keyswap.House
 import coraythan.keyswap.cards.*
 import coraythan.keyswap.cards.extrainfo.ExtraCardInfo
 import coraythan.keyswap.cards.extrainfo.ExtraCardInfoRepo
@@ -69,9 +70,8 @@ class  DokCardCacheService(
             }"
         )
 
-        cardsCachedByUrlName = currentInfos.map { extraInfo ->
-            extraInfo.dokCard.cardTitleUrl to extraInfo
-        }.toMap()
+        cardsCachedByUrlName = currentInfos
+            .associateBy { extraInfo -> extraInfo.dokCard.cardTitleUrl }
 
         cardsCachedByNumberSet = currentInfos.flatMap { extraInfo ->
             extraInfo.dokCard.expansions
@@ -80,17 +80,13 @@ class  DokCardCacheService(
 
         tokenCards = currentInfos
             .filter { it.dokCard.token }
-            .map { extraInfo ->
-                extraInfo.dokCard.cardTitleUrl to extraInfo
-            }.toMap()
+            .associateBy { extraInfo -> extraInfo.dokCard.cardTitleUrl }
 
-        previousCardsCachedByUrlName = previousInfos.map { extraInfo ->
-            extraInfo.dokCard.cardTitleUrl to extraInfo
-        }.toMap()
+        previousCardsCachedByUrlName = previousInfos
+            .associateBy { extraInfo -> extraInfo.dokCard.cardTitleUrl }
 
-        futureCardsCachedByUrlName = nextInfos.map { extraInfo ->
-            extraInfo.dokCard.cardTitleUrl to extraInfo
-        }.toMap()
+        futureCardsCachedByUrlName = nextInfos
+            .associateBy { extraInfo -> extraInfo.dokCard.cardTitleUrl }
 
         futureCardsCachedByNumberSet = nextInfos.flatMap { extraInfo ->
             extraInfo.dokCard.expansions
@@ -99,9 +95,7 @@ class  DokCardCacheService(
 
         futureTokenCards = nextInfos
             .filter { it.dokCard.token }
-            .map { extraInfo ->
-                extraInfo.dokCard.cardTitleUrl to extraInfo
-            }.toMap()
+            .associateBy { extraInfo -> extraInfo.dokCard.cardTitleUrl }
 
         frontendCardsMapPrevious = CardsMap(previousCardsCachedByUrlName.map { it.key to it.value.toCardForFrontend() }.toMap())
         frontendCardsMapFuture = CardsMap(futureCardsCachedByUrlName.map { it.key to it.value.toCardForFrontend() }.toMap())
@@ -215,7 +209,15 @@ class  DokCardCacheService(
 
     fun deckToHouseAndCards(deck: GenericDeck): List<HouseAndCards> {
         if (!loaded) throw IllegalStateException("Site still loading cards")
-        val houses = deck.houses
+        val houses = deck.houses.let {
+            if (Expansion.forExpansionNumber(deck.expansion) == Expansion.PROPHETIC_VISIONS) {
+                // Add in Prophecies
+                it.plus(House.Prophecy)
+            } else {
+                it
+            }
+        }
+
         val cards = cardsForDeck(deck)
         return houses
             .map { house ->

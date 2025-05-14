@@ -194,7 +194,7 @@ object DeckSynergyService {
                             ?: TraitStrength.entries.sumOf { strength ->
                                 val matches: SynMatchInfo? = if (synergy.trait == SynergyTrait.enhancedHouses) {
                                     SynMatchInfo(
-                                        matches = mapOf(TraitStrength.STRONG to card.enhancedHouses),
+                                        matches = mapOf(TraitStrength.STRONG to card.bonusHouses.size),
                                         cardNames = card.allHouses.minus(card.house).map { it.masterVaultValue }
                                     )
                                 } else if (synergy.cardName == null) {
@@ -222,7 +222,7 @@ object DeckSynergyService {
                 val groupSynPercents = matchedTraits.map { groupSyns ->
                     val isPrimary = groupSyns.value.any { it.trait.primaryGroup }
                     val groupMax = groupSyns.value.find { it.trait.synergyGroupMax != 0 }?.trait?.synergyGroupMax
-                    val groupSynergy = groupSyns.value.map { it.percentSynergized }.sum()
+                    val groupSynergy = groupSyns.value.sumOf { it.percentSynergized }
                     if (isPrimary) {
                         generalGroupMax = groupSynergy
                     }
@@ -356,8 +356,7 @@ object DeckSynergyService {
                     synergies = matchedTraits.values.flatten()
                         .sortedBy { it.trait.synergyGroup },
                     netSynergy = synergyValues.sum(),
-                    aercScore = synergizedValues.map { it.value }
-                        .sum() + (card.card.cardType.creatureBonus()),
+                    aercScore = synergizedValues.sumOf { it.value } + (card.card.cardType.creatureBonus()),
 
                     amberControl = aValue.value,
                     expectedAmber = eValue.value,

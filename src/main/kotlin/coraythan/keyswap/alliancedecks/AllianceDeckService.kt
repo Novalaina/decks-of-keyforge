@@ -149,13 +149,7 @@ class AllianceDeckService(
                                 bonusDamage = it.bonusDamage,
                                 bonusDraw = it.bonusDraw,
                                 bonusDiscard = it.bonusDiscard,
-                                bonusBobnar = it.bonusBobnar,
-                                bonusDis = it.bonusDis,
-                                bonusEkwidon = it.bonusEkwidon,
-                                bonusGeistoid = it.bonusGeistoid,
-                                bonusLogos = it.bonusLogos,
-                                bonusMars = it.bonusMars,
-                                bonusSkyborn = it.bonusSkyborn,
+                                bonusHouses = it.bonusHouses,
                             )
                         }
                 },

@@ -8,7 +8,7 @@ object HouseEnhancementAlgorithm {
     fun generateHouseEnhancementCombos(cards: List<DokCardInDeck>): List<SynergyCombo> {
         return cards
             .mapNotNull { cardWithIcons ->
-                if (cardWithIcons.enhancedHouses > 0) {
+                if (cardWithIcons.bonusHouses.isNotEmpty()) {
                     val card = cardWithIcons.card
 
                     val ep = cardWithIcons.extraCardInfo.realEffectivePower
