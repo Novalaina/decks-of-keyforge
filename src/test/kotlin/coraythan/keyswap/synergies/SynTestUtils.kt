@@ -36,7 +36,6 @@ fun testCard(
         ),
         house = house,
         rarity = Rarity.Common,
-        bonusMars = bonusMars,
     )
 }
 

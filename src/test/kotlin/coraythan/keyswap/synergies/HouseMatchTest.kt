@@ -64,7 +64,7 @@ class HouseMatchTest {
                     house = House.Ekwidon,
                     bonusMars = true,
                     cardType = CardType.Creature,
-                )
+                ).copy(bonusHouses = setOf(House.Mars))
             }
         )
 
