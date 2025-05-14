@@ -39,7 +39,7 @@ data class KeyForgeDeck(
             "sanctum",
             "saurian",
             "shadows",
-            "star-alliance",
+            "star alliance",
             "untamed",
         )
     }
