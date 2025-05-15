@@ -172,6 +172,7 @@ enum class Expansion(
         setOf(
             House.Dis,
             House.Logos,
+            House.Redemption,
             House.Sanctum,
             House.Saurian,
             House.Shadows,

@@ -45,7 +45,7 @@ export const displayMyDecksLinksFor = [
     Expansion.GRIM_REMINDERS,
     Expansion.AEMBER_SKIES,
     Expansion.TOKENS_OF_CHANGE,
-    Expansion.MORE_MUTATION,
+    Expansion.PROPHETIC_VISIONS,
 ]
 
 export const activeExpansions = [

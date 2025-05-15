@@ -35,6 +35,7 @@ data class DeckBuildingData(
                                 bonusGeistoid = theoryCard.bonusHouses.contains(House.Geistoid),
                                 bonusLogos = theoryCard.bonusHouses.contains(House.Logos),
                                 bonusMars = theoryCard.bonusHouses.contains(House.Mars),
+                                bonusRedemption = theoryCard.bonusHouses.contains(House.Redemption),
                                 bonusSkyborn = theoryCard.bonusHouses.contains(House.Skyborn),
                                 bonusSanctum = theoryCard.bonusHouses.contains(House.Sanctum),
                                 bonusSaurian = theoryCard.bonusHouses.contains(House.Saurian),

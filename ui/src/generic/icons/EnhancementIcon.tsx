@@ -12,12 +12,15 @@ import EnhancedGeistoid from "../imgs/enhancements/geistoid.svg"
 import EnhancedLogos from "../imgs/enhancements/logos.svg"
 import EnhancedMars from "../imgs/enhancements/mars.svg"
 import EnhancedSkyborn from "../imgs/enhancements/skyborn.svg"
-import EnhancedSanctum from "../imgs/enhancements/sanctum.svg"
-import EnhancedSaurian from "../imgs/enhancements/saurian.svg"
-import EnhancedShadows from "../imgs/enhancements/shadows.svg"
-import EnhancedStarAlliance from "../imgs/enhancements/star-alliance.svg"
-import EnhancedUntamed from "../imgs/enhancements/untamed.svg"
 import { House } from "../../generated-src/House"
+import { RedemptionEnhancedIcon } from "../imgs/enhancements/RedemptionEnhancedIcon"
+import { StarAllianceEnhancedIcon } from "../imgs/enhancements/StarAllianceEnhancedIcon"
+import { SanctumEnhancedIcon } from "../imgs/enhancements/SanctumEnhancedIcon"
+import { SaurianEnhancedIcon } from "../imgs/enhancements/SaurianEnhancedIcon"
+import { ShadowsEnhancedIcon } from "../imgs/enhancements/ShadowsEnhancedIcon"
+import { UntamedEnhancedIcon } from "../imgs/enhancements/UntamedEnhancedIcon"
+
+export const EnhancementIconSize = 16
 
 export const EnhancementIcon = (props: { type: EnhancementType | House }) => {
     let iconSrc
@@ -44,23 +47,25 @@ export const EnhancementIcon = (props: { type: EnhancementType | House }) => {
         iconSrc = EnhancedLogos
     } else if (props.type === House.Mars) {
         iconSrc = EnhancedMars
+    } else if (props.type === House.Redemption) {
+        return <RedemptionEnhancedIcon/>
     } else if (props.type === House.Skyborn) {
         iconSrc = EnhancedSkyborn
     } else if (props.type === House.Sanctum) {
-        iconSrc = EnhancedSanctum
+        return <SanctumEnhancedIcon/>
     } else if (props.type === House.Saurian) {
-        iconSrc = EnhancedSaurian
+        return <SaurianEnhancedIcon/>
     } else if (props.type === House.Shadows) {
-        iconSrc = EnhancedShadows
+        return <ShadowsEnhancedIcon/>
     } else if (props.type === House.StarAlliance) {
-        iconSrc = EnhancedStarAlliance
+        return <StarAllianceEnhancedIcon/>
     } else if (props.type === House.Untamed) {
-        iconSrc = EnhancedUntamed
+        return <UntamedEnhancedIcon/>
     } else {
         throw new Error(`No enhancement icon for ${props.type}`)
     }
 
     return (
-        <img alt={props.type} src={iconSrc} style={{width: 16, height: 16}}/>
+        <img alt={props.type} src={iconSrc} style={{width: EnhancementIconSize, height: EnhancementIconSize}}/>
     )
 }
