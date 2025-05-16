@@ -13,4 +13,5 @@ data class AllianceDeckHouses(
     val houseThree: House,
     val owned: Boolean,
     val tokenName: String?,
+    val propheciesDeckId: String?,
 )

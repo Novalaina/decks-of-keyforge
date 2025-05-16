@@ -13,7 +13,10 @@ import coraythan.keyswap.deckimports.TheoryCard
 import coraythan.keyswap.decks.DeckRepo
 import coraythan.keyswap.decks.SortDirection
 import coraythan.keyswap.decks.UserHolder
-import coraythan.keyswap.decks.models.*
+import coraythan.keyswap.decks.models.DeckCount
+import coraythan.keyswap.decks.models.DeckSearchResult
+import coraythan.keyswap.decks.models.DeckWithSynergyInfo
+import coraythan.keyswap.decks.models.DecksPage
 import coraythan.keyswap.expansions.Expansion
 import coraythan.keyswap.patreon.PatreonRewardsTier
 import coraythan.keyswap.sasupdate.SasVersionService
@@ -110,12 +113,12 @@ class AllianceDeckService(
                 Pair(toSave.houseTwo, toSave.houseTwoDeckId),
                 Pair(toSave.houseThree, toSave.houseThreeDeckId),
             ),
-            toSave.tokenName
+            toSave.tokenName,
+            toSave.propheciesDeckId
         )
 
-        log.info("Save unique alliance deck houses decks id: $allianceDeckUniqueKey")
-
         var allianceDeck = allianceDeckRepo.findFirst1ByHousesUniqueId(allianceDeckUniqueKey).firstOrNull()
+        log.info("Alliance deck houses decks id: $allianceDeckUniqueKey exists already? ${allianceDeck != null}")
 
         if (allianceDeck == null) {
             val deckHousePairs = listOf(
@@ -128,8 +131,10 @@ class AllianceDeckService(
             val expansion = deckOne.expansionEnum
             if (expansion == Expansion.MARTIAN_CIVIL_WAR) {
                 if (deckTwo.expansionEnum != deckThree.expansionEnum) {
-                    throw BadRequestException("When building a Martian Civil War deck the other two houses must be " +
-                            "from the same expansion.")
+                    throw BadRequestException(
+                        "When building a Martian Civil War deck the other two houses must be " +
+                                "from the same expansion."
+                    )
                 }
             } else if (deckHousePairs.any { it.first.expansionEnum != expansion }) {
                 throw BadRequestException("All decks in alliance must be same expansion.")
@@ -152,6 +157,23 @@ class AllianceDeckService(
                                 bonusHouses = it.bonusHouses,
                             )
                         }
+                }.let { cardsByHouse ->
+                    if (expansion == Expansion.PROPHETIC_VISIONS) {
+                        val propheciesDeck = if (toSave.propheciesDeckId == toSave.houseOneDeckId) {
+                            deckOne
+                        } else if (toSave.propheciesDeckId == toSave.houseTwoDeckId) {
+                            deckTwo
+                        } else if (toSave.propheciesDeckId == toSave.houseThreeDeckId) {
+                            deckThree
+                        } else {
+                            throw BadRequestException("No prophecies deck provided.")
+                        }
+                        val prophecies = cardCache.cardsForDeck(propheciesDeck)
+                            .filter { it.house == House.Prophecy }
+                        cardsByHouse.plus(Pair(House.Prophecy, prophecies.map { TheoryCard(it.card.cardTitle) }))
+                    } else {
+                        cardsByHouse
+                    }
                 },
                 expansion = expansion,
                 tokenTitle = toSave.tokenName,

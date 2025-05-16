@@ -381,7 +381,7 @@ const AddHouseToAlliance = observer((props: {
     deckName: string,
     house: House,
     expansion: Expansion,
-    tokenName?: string
+    tokenName?: string,
 }) => {
     const {deckId, deckName, house, expansion, tokenName} = props
 

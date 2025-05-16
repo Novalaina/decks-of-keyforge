@@ -92,15 +92,21 @@ data class AllianceDeck(
             return true
         }
 
-        fun uniqueHousesId(housesAndDeckIds: List<Pair<House, String>>, tokenName: String?): String {
+        fun uniqueHousesId(
+            housesAndDeckIds: List<Pair<House, String>>,
+            tokenName: String?,
+            propheciesDeckId: String?
+        ): String {
             val sorted = housesAndDeckIds.sortedBy { it.first }
             val toJoin = sorted.map { "${it.first}::${it.second}" }
             val houses = toJoin.joinToString("&&")
-            return if (tokenName == null) {
-                houses
-            } else {
-                "$houses&($tokenName)"
-            }
+            return houses
+                .let {
+                    if (tokenName == null) it else "$it&($tokenName)"
+                }
+                .let {
+                    if (propheciesDeckId == null) it else "$it&(propheciesDeckId=$propheciesDeckId)"
+                }
         }
 
         fun fromDeck(deck: Deck, cards: List<DokCardInDeck>, discoverer: KeyUser): AllianceDeck {
@@ -191,7 +197,8 @@ data class AllianceDeck(
             sasRating = synergies?.sasRating ?: -1,
             synergyRating = synergies?.synergyRating ?: -1,
             antisynergyRating = synergies?.antisynergyRating ?: -1,
-            housesAndCards = housesAndCards?.filter { it.house != House.Prophecy }?.addBonusIcons(bonusIcons()) ?: listOf(),
+            housesAndCards = housesAndCards?.filter { it.house != House.Prophecy }?.addBonusIcons(bonusIcons())
+                ?: listOf(),
             prophecies = housesAndCards?.firstOrNull { it.house == House.Prophecy }?.cards,
             tokenInfo = token?.toTokenInfo(),
             hauntingOdds = synergies?.hauntingOdds,

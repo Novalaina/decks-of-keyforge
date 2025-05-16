@@ -76,6 +76,7 @@ export class AllianceDeckStore implements DeckStoreInterface {
             houseThreeDeckId: deckThree!.deckId,
             owned: keyLocalStorage.genericStorage.addAllianceToMyAlliances !== false,
             tokenName: deck.tokenName,
+            propheciesDeckId: deck.propheciesDeckId,
         }
         const response: AxiosResponse<string> = await axios.post(`${AllianceDeckStore.SECURE_CONTEXT}`, allianceDeckSaveInfo)
 

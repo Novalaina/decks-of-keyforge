@@ -4,7 +4,8 @@ import {
     FormControlLabel,
     IconButton,
     List,
-    ListItem, MenuItem,
+    ListItem,
+    MenuItem,
     Paper,
     Switch,
     TextField,
@@ -27,7 +28,7 @@ import { House } from "../generated-src/House"
 import { Expansion } from "../generated-src/Expansion"
 import { ExpansionIcon } from "../expansions/ExpansionIcon"
 import { userDeckStore } from "../userdeck/UserDeckStore"
-import { log, prettyJson } from "../config/Utils"
+import { uniqBy } from "lodash"
 
 export const AllianceDeckPopover = observer(() => {
 
@@ -43,8 +44,6 @@ export const AllianceDeckPopover = observer(() => {
     const tokenNames = decks
         .filter(deck => deck.tokenName != null)
         .map(deck => deck.tokenName!)
-
-    log.info(`Found tokenNames: ${prettyJson(tokenNames)}`)
 
     return (
         <Box style={{
@@ -66,7 +65,7 @@ export const AllianceDeckPopover = observer(() => {
                 )}
                 <List>
                     {decks.map(deck => (
-                        <ListItem key={deck.deckId}>
+                        <ListItem key={deck.house}>
                             <Box width={screenStore.screenSizeXs() ? 144 : 280} display={"flex"} alignItems={"center"}>
                                 <HouseImage house={deck.house} size={24}/>
                                 <Typography
@@ -98,6 +97,23 @@ export const AllianceDeckPopover = observer(() => {
                             {tokenNames.map((tokenName) => (
                                 <MenuItem key={tokenName} value={tokenName}>
                                     {tokenName}
+                                </MenuItem>
+                            ))}
+                        </TextField>
+                    </Box>
+                )}
+                {decks[0].expansion === Expansion.PROPHETIC_VISIONS && (
+                    <Box mx={2} mb={2}>
+                        <TextField
+                            select={true}
+                            label={"Prophecies Deck"}
+                            value={keyLocalStorage.allianceDeckSaveInfo.propheciesDeckId}
+                            onChange={(event) => keyLocalStorage.setPropheciesDeck(event.target.value)}
+                            fullWidth={true}
+                        >
+                            {uniqBy(decks, "deckId").map((prophecyDeck) => (
+                                <MenuItem key={prophecyDeck.deckId} value={prophecyDeck.deckId}>
+                                    {prophecyDeck.deckName}
                                 </MenuItem>
                             ))}
                         </TextField>
@@ -158,6 +174,7 @@ export const AllianceDeckPopover = observer(() => {
 export interface AllianceDeckSaveInfo {
     houses: AllianceDeckNameId[]
     tokenName?: string
+    propheciesDeckId?: string
 }
 
 export interface AllianceDeckNameId {

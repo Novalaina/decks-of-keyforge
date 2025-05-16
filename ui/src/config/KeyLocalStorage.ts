@@ -202,12 +202,20 @@ class KeyLocalStorage {
         if (this.allianceDeckSaveInfo.tokenName == null && tokenName != null) {
             this.allianceDeckSaveInfo.tokenName = tokenName
         }
+        if (expansion === Expansion.PROPHETIC_VISIONS && this.allianceDeckSaveInfo.propheciesDeckId == null) {
+            this.allianceDeckSaveInfo.propheciesDeckId = deckId
+        }
         this.allianceDeckSaveInfo.houses.push(allianceDeckNameId)
         this.localStorage.setItem(Keys.ALLIANCE_DECKS, JSON.stringify(this.allianceDeckSaveInfo))
     }
 
     setAllianceToken = (tokenName: string) => {
         this.allianceDeckSaveInfo.tokenName = tokenName
+        this.localStorage.setItem(Keys.ALLIANCE_DECKS, JSON.stringify(this.allianceDeckSaveInfo))
+    }
+
+    setPropheciesDeck = (deckId: string) => {
+        this.allianceDeckSaveInfo.propheciesDeckId = deckId
         this.localStorage.setItem(Keys.ALLIANCE_DECKS, JSON.stringify(this.allianceDeckSaveInfo))
     }
 
