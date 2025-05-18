@@ -154,6 +154,15 @@ class CardService(
     fun findByExpansionCardName(expansion: Int, cardName: String, enhanced: Boolean = false) =
         cardRepo.findByExpansionAndCardTitleAndEnhanced(expansion, cardName, enhanced).firstOrNull()
 
-    fun findByCardName(cardName: String) = cardRepo.findFirstByCardTitleAndMaverickFalse(cardName)
+    fun findByCardName(cardName: String): Card {
+        try {
+            return cardRepo.findFirstByCardTitleAndMaverickFalse(cardName)
+        } catch (exception: Exception) {
+            // This is weird, but let's try with maverick true and switch the maverick. Some cards are only named one
+            // way as mavericks.
+            return cardRepo.findFirstByCardTitle(cardName)
+                .copy(maverick = false)
+        }
+    }
 
 }

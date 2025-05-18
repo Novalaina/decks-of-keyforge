@@ -13,7 +13,7 @@ plugins {
 }
 
 group = "coraythan"
-version = "653"
+version = "654"
 
 kotlin {
     compilerOptions {

@@ -43,14 +43,10 @@ class DeckCreationService(
 ) {
     private val log = LoggerFactory.getLogger(this::class.java)
 
-    private val disallowCards = listOf<String>(
-//        "Cincinnatus Resurrexit",
-    )
-
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     fun updateDeck(mvDeck: KeyForgeDeckDto) {
         log.info("Update deck ${mvDeck.data.name}")
-        saveKeyForgeDeck(mvDeck.data, false, deckRepo.findByKeyforgeId(mvDeck.data.id))
+        saveKeyForgeDeck(mvDeck.data, deckRepo.findByKeyforgeId(mvDeck.data.id))
     }
 
     /**
@@ -59,13 +55,12 @@ class DeckCreationService(
      * returns Pair(count, newCard)
      */
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    fun saveDecks(deck: List<KeyForgeDeck>, currentPage: Int? = null, saveForLater: Boolean = false): List<Long> {
+    fun saveDecks(deck: List<KeyForgeDeck>): List<Long> {
         val savedIds = mutableListOf<Long>()
         deck
             .forEach { keyforgeDeck ->
                 val savedId = if (deckRepo.findByKeyforgeId(keyforgeDeck.id) == null) saveKeyForgeDeck(
                     keyforgeDeck,
-                    saveForLater
                 ) else null
                 if (savedId != null) {
                     savedIds.add(savedId)
@@ -76,7 +71,6 @@ class DeckCreationService(
 
     private fun saveKeyForgeDeck(
         keyforgeDeck: KeyForgeDeck,
-        saveForLater: Boolean,
         updateDeck: Deck? = null,
     ): Long? {
 
@@ -109,10 +103,6 @@ class DeckCreationService(
                 }
             }
 
-        val badCard = cardsList
-            .filter { disallowCards.contains(it.cardTitle) }
-            .map { it.cardTitle }
-
         val allHousesHave12 =
             cardsList
                 .filter { it.house != House.Prophecy }
@@ -120,7 +110,7 @@ class DeckCreationService(
                 .values
                 .all { it.size == 12 }
 
-        if (allHousesHave12 && badCard.size < 2) {
+        if (allHousesHave12) {
             val token = cardsListWithToken.firstOrNull { it.token }
             val tokenId = if (token == null) null else tokenService.cardTitleToTokenId(token.cardTitle)
 
@@ -156,14 +146,9 @@ class DeckCreationService(
                 }
             }
         } else {
-            if (saveForLater) {
-                log.info("Skipping ${keyforgeDeck.name} for now because it has cards $badCard")
-                // importSkippedDecksService.addImportSkippedDeck(keyforgeDeck.id)
-            } else {
                 throw BadRequestException(
-                    if (allHousesHave12) "Found some bad cards: $badCard" else "Not all houses have 12 cards"
+                    "Not all houses have 12 cards. Cards: ${cardsList.groupBy { it.house }.map { it.value.map { card -> card.cardTitle } }}"
                 )
-            }
         }
         return null
     }
@@ -180,7 +165,7 @@ class DeckCreationService(
 
     }
 
-    fun rateDeck(inputDeck: Deck, majorRevision: Boolean = false): DeckSynergyInfo {
+    fun rateDeck(inputDeck: Deck): DeckSynergyInfo {
         val cards = dokCardCacheService.cardsForDeck(inputDeck)
         val token = dokCardCacheService.tokenForDeck(inputDeck)
         val deckSynergyInfo = DeckSynergyService.fromDeckWithCards(inputDeck, cards, token)
