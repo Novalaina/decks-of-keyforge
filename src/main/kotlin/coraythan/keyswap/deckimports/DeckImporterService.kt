@@ -91,7 +91,7 @@ class DeckImporterService(
                             cardService.importNewCardsForDeck(cards)
                         }
 
-                        val results = deckCreationService.saveDecks(decks.data, saveForLater = true)
+                        val results = deckCreationService.saveDecks(decks.data)
 
                         if (decksToSaveCount >= keyforgeApiDeckPageSize) {
                             val nextPage = currentPage + 1
