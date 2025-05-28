@@ -28,6 +28,8 @@ import { FrontendCard } from "../../generated-src/FrontendCard"
 import { HauntedIcon } from "../../generic/icons/HauntedIcon"
 import { SynTraitPlayer } from "../../generated-src/SynTraitPlayer"
 import { expansionInfoMap } from "../../expansions/Expansions"
+import { ProphecyIcon } from "../../generic/icons/ProphecyIcon"
+import { cardStore } from "../../cards/CardStore"
 
 interface AercCatProps {
     deck: DeckSearchResult
@@ -250,7 +252,7 @@ const expansionSpecificCounts = (props: AercCatProps, width: number | undefined)
             customMatches.push(`${deck.actionCount} Actions (more haunted)`)
         }
         let discardPips = 0
-            cards.forEach(card => discardPips += (card.extraCardInfo?.enhancementDiscard ?? 0))
+        cards.forEach(card => discardPips += (card.extraCardInfo?.enhancementDiscard ?? 0))
         if (discardPips > 0) {
             customMatches.push(`${discardPips} Discard Pips (more haunted)`)
         }
@@ -307,6 +309,55 @@ const expansionSpecificCounts = (props: AercCatProps, width: number | undefined)
                 title: "Tide",
                 subtitle1: "Manipulates Tide",
                 subtitle2: "Uses Tide"
+            }
+        }
+    }
+
+    if (deck.expansion === Expansion.PROPHETIC_VISIONS) {
+
+        const fullProphecyCards = deck.prophecies?.map(simpleProphecy => {
+            const fullCard = cardStore.fullCardFromCardName(simpleProphecy.cardTitle)!!
+            return cardStore.findExtraInfoToUse(fullCard)
+        }) ?? []
+
+        const prophecies: { prophecyName: string, prophecyOdds: number }[] = fullProphecyCards.map(extraInfo => {
+            const prophecy = extraInfo.traits?.find(trait => trait.trait === SynergyTrait.prophecy)
+
+            if (prophecy == null) {
+                return {prophecyName: extraInfo.cardName, prophecyOdds: 0}
+            }
+
+            let value = 0
+            if (prophecy.rating === 0) {
+                value = 5
+            } else if (prophecy.rating === 1) {
+                value = 10
+            } else if (prophecy.rating === 2) {
+                value = 15
+            } else if (prophecy.rating === 3) {
+                value = 20
+            } else if (prophecy.rating === 4) {
+                value = 25
+            }
+            return {prophecyName: extraInfo.cardName, prophecyOdds: value}
+        })
+
+        const prophecyOdds = prophecies.map(prophecy => prophecy.prophecyOdds)
+            .reduce((a, b) => a + b, 0)
+
+        const fatesCheckCard = (card: FrontendCard) => card.extraCardInfo?.synergies?.find(synergy => synergy.trait === SynergyTrait.fate)
+        const fates = (cards: FrontendCard[]) => cards.filter(fatesCheckCard)
+
+        return {
+            icon: <ProphecyIcon width={width}/>,
+            info: `${prophecyOdds}/${fates(cards).length}`,
+            cardsTips: {
+                customMatches: prophecies.map(prophecy => `${prophecy.prophecyName}: ${prophecy.prophecyOdds}%`),
+                matches: card => fatesCheckCard(card) != null,
+                cards,
+                title: "Prophecy",
+                subtitle1: "Fates",
+                subtitle3: "Prophetic Frequency"
             }
         }
     }

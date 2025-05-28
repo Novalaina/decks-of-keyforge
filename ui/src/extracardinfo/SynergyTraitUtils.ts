@@ -1,5 +1,5 @@
-import {Utils} from "../config/Utils"
-import {SynergyTrait} from "../generated-src/SynergyTrait"
+import { Utils } from "../config/Utils"
+import { SynergyTrait } from "../generated-src/SynergyTrait"
 
 const allSynergyTraits = Utils.enumValues(SynergyTrait) as SynergyTrait[]
 const firstSpecialIndex = allSynergyTraits.indexOf(SynergyTrait.enhanced)
@@ -64,8 +64,8 @@ export const synergyAndTraitGroups: SynTraitDisplayGroup[] = [
         description: `Use "any" for a wild cart trait that matches anything applicable. Like all artifacts or all ` +
             "creatures with even power.",
         traits: [SynergyTrait.any, SynergyTrait.scrapValue, SynergyTrait.preventsDamage],
-        synergyTraitsOnly: [SynergyTrait.haunted, SynergyTrait.alpha, SynergyTrait.omega],
-        traitTraitsOnly: [SynergyTrait.makesTokens,]
+        synergyTraitsOnly: [SynergyTrait.fate, SynergyTrait.haunted, SynergyTrait.alpha, SynergyTrait.omega],
+        traitTraitsOnly: [SynergyTrait.makesTokens, SynergyTrait.prophecy]
     },
     {
         groupName: "Single Card Enhancements",

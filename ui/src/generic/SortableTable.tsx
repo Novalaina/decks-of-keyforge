@@ -224,7 +224,12 @@ class SortableTableStore<T> {
     }
 }
 
-export const SortableTableContainer = (props: { title: string, children: React.ReactNode, controls?: React.ReactNode, titleTooltip?: string }) => {
+export const SortableTableContainer = (props: {
+    title: string,
+    children: React.ReactNode,
+    controls?: React.ReactNode,
+    titleTooltip?: string
+}) => {
     const {title, children, controls, titleTooltip} = props
     return (
         <Box>

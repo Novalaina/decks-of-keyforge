@@ -14,7 +14,7 @@ import { UserLink } from "../user/UserLink"
 import { AboutGridItem } from "./AboutPage"
 import { DokLink } from "../generic/DokLink"
 
-export const latestVersion = "7.5"
+export const latestVersion = "7.6"
 
 const decFirstUpdateCards = new CardFilters()
 decFirstUpdateCards.aercHistory = true
@@ -46,6 +46,19 @@ export class ReleaseNotes extends React.Component {
                     </Typography>
                     {cardsUpdateLink}
                 </Paper>
+                <ReleaseNote
+                    releaseNumber={"7.6"}
+                    date={"5/27/2025"}
+                    expanded={true}
+                    releaseNotesWithHighlights={[
+                        {
+                            highlight: "Adding Crucible Clash",
+                            note: "Also adding Crucible Clash! Same deal as Prophetic visions. You should be able " +
+                                "to view and import decks, and we'll work on rating cards when we have a full set " +
+                                "of cards in DoK."
+                        },
+                    ]}
+                />
                 <ReleaseNote
                     releaseNumber={"7.5"}
                     date={"5/14/2025"}

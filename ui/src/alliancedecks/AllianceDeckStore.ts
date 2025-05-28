@@ -109,22 +109,6 @@ export class AllianceDeckStore implements DeckStoreInterface {
             })
     }
 
-    findDeckWithCards = (keyforgeId: string) => {
-        if (this.simpleDecks.get(keyforgeId) == null) {
-            axios.get(`${AllianceDeckStore.CONTEXT}/search-result-with-cards/${keyforgeId}`)
-                .then((response: AxiosResponse) => {
-                    const deck: DeckSearchResult = response.data
-                    this.simpleDecks.set(keyforgeId, deck)
-                })
-        }
-    }
-
-    refreshDeckSearch = () => {
-        if (this.currentFilters) {
-            return this.searchDecks(this.currentFilters)
-        }
-    }
-
     searchDecks = async (filters: AllianceDeckFilters) => {
         this.searchingForDecks = true
         filters.pageSize = keyLocalStorage.deckPageSize

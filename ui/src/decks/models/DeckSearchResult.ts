@@ -82,6 +82,7 @@ export interface DeckSearchResult {
     twinId?: string
     tokenInfo?: TokenInfo
     prophecies?: SimpleCard[]
+    archonPower?: SimpleCard
     hauntingOdds?: number
 
     allianceHouses?: AllianceHouseInfo[]

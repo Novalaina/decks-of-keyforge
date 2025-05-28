@@ -13,6 +13,7 @@ enum class Expansion(
     val singleHouse: Boolean = false,
     val active: Boolean = true,
     val includeInStatistics: Boolean = false,
+    val expectedCardCount: Int = 36,
 ) {
     CALL_OF_THE_ARCHONS(
         341,
@@ -144,13 +145,21 @@ enum class Expansion(
         setOf(House.Elders, House.IronyxRebels),
         hasTokens = true,
         tournamentLegal = false,
-        singleHouse = true
+        singleHouse = true,
+        expectedCardCount = 12,
     ),
     DISCOVERY(
         907,
         "D",
         setOf(House.Brobnar, House.Dis, House.Logos, House.Sanctum, House.StarAlliance, House.Shadows, House.Untamed),
         includeInStatistics = true
+    ),
+    CRUCIBLE_CLASH(
+        918,
+        "CC",
+        setOf(House.Dis, House.Skyborn, House.Untamed),
+        includeInStatistics = false,
+        expectedCardCount = 37,
     ),
     VAULT_MASTERS_2025(
         939,
@@ -178,7 +187,8 @@ enum class Expansion(
             House.Shadows,
             House.StarAlliance,
             House.Untamed,
-        )
+        ),
+        expectedCardCount = 40,
     );
 
     companion object {

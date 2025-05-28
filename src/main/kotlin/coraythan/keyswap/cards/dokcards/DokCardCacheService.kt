@@ -213,6 +213,9 @@ class  DokCardCacheService(
             if (Expansion.forExpansionNumber(deck.expansion) == Expansion.PROPHETIC_VISIONS) {
                 // Add in Prophecies
                 it.plus(House.Prophecy)
+            } else if (Expansion.forExpansionNumber(deck.expansion) == Expansion.CRUCIBLE_CLASH) {
+                // Add in Archon Power
+                it.plus(House.ArchonPower)
             } else {
                 it
             }

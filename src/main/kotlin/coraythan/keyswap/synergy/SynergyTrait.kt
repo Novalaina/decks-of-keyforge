@@ -81,6 +81,7 @@ enum class SynergyTrait {
     lowersTide,
     replaysSelf,
     dangerousRandomPlay,
+    prophecy,
 
     // Automatically applied traits below here
 
@@ -105,6 +106,7 @@ enum class SynergyTrait {
     tokenCount,
     totalCreaturePower,
     totalArmor,
+    fate,
 
     // Special traits
     card,

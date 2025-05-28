@@ -4,6 +4,7 @@ import coraythan.keyswap.House
 import coraythan.keyswap.cards.CardType
 import coraythan.keyswap.cards.dokcards.DokCardInDeck
 import coraythan.keyswap.decks.models.GenericDeck
+import coraythan.keyswap.expansions.Expansion
 import coraythan.keyswap.roundToTwoSigDig
 import coraythan.keyswap.synergy.*
 import kotlin.math.roundToInt
@@ -55,6 +56,7 @@ data class DeckSynergyStats(
             SynergyTrait.totalCreaturePower to TraitVals(100, 30, 30, 15),
             SynergyTrait.totalArmor to TraitVals(10, 5),
             SynergyTrait.haunted to (TraitVals(100, 0)),
+            SynergyTrait.fate to (TraitVals(100, 0)),
             SynergyTrait.expectedAember to TraitVals(30, 12, 10, 3),
             SynergyTrait.capturedAmber to TraitVals(16, 8),
             SynergyTrait.targettedCapturedAmber to TraitVals(16, 8),
@@ -71,37 +73,43 @@ data class DeckSynergyStats(
                 deckStats = statsFromCards(
                     inputCards,
                     tokensCount = tokenValues?.tokensPerGame?.roundToInt() ?: 0,
-                    player = SynTraitPlayer.ANY
+                    player = SynTraitPlayer.ANY,
+                    expansion = deck.expansionEnum,
                 ),
                 deckStatsFriendly = statsFromCards(
                     inputCards,
                     tokensCount = tokenValues?.tokensPerGame?.roundToInt() ?: 0,
-                    player = SynTraitPlayer.FRIENDLY
+                    player = SynTraitPlayer.FRIENDLY,
+                    expansion = deck.expansionEnum,
                 ),
                 deckStatsEnemy = statsFromCards(
                     inputCards,
                     tokensCount = tokenValues?.tokensPerGame?.roundToInt() ?: 0,
-                    player = SynTraitPlayer.ENEMY
+                    player = SynTraitPlayer.ENEMY,
+                    expansion = deck.expansionEnum,
                 ),
                 houseStats = deck.houses.associateWith {
                     statsFromCards(
                         inputCards.filter { card -> card.allHouses.contains(it) },
                         tokensCount = if (tokenValues?.tokenHouse == it) tokenValues.tokensPerGame.roundToInt() else 0,
-                        player = SynTraitPlayer.ANY
+                        player = SynTraitPlayer.ANY,
+                        expansion = deck.expansionEnum,
                     )
                 },
                 houseStatsFriendly = deck.houses.associateWith {
                     statsFromCards(
                         inputCards.filter { card -> card.allHouses.contains(it) },
                         tokensCount = if (tokenValues?.tokenHouse == it) tokenValues.tokensPerGame.roundToInt() else 0,
-                        player = SynTraitPlayer.FRIENDLY
+                        player = SynTraitPlayer.FRIENDLY,
+                        expansion = deck.expansionEnum,
                     )
                 },
                 houseStatsEnemy = deck.houses.associateWith {
                     statsFromCards(
                         inputCards.filter { card -> card.allHouses.contains(it) },
                         tokensCount = 0,
-                        player = SynTraitPlayer.ENEMY
+                        player = SynTraitPlayer.ENEMY,
+                        expansion = deck.expansionEnum,
                     )
                 },
             )
@@ -110,7 +118,8 @@ data class DeckSynergyStats(
         private fun statsFromCards(
             inputCards: List<DokCardInDeck>,
             tokensCount: Int,
-            player: SynTraitPlayer
+            player: SynTraitPlayer,
+            expansion: Expansion,
         ): Map<SynergyTrait, DeckSynStatValue> {
             val capturePips = inputCards.sumOf { it.bonusCapture }
             val creatures = inputCards.filter {
@@ -167,6 +176,7 @@ data class DeckSynergyStats(
                     expectedAemberMap.map { "${it.first} +${it.second} Aember" }
                 ),
                 SynergyTrait.haunted to calculateHauntingPercent(inputCards, player),
+                SynergyTrait.fate to calculateProphecyPercent(inputCards, expansion),
                 SynergyTrait.capturedAmber to calculateCapturePercentWithTraits(
                     inputCards, setOf(SynergyTrait.capturesAmber, SynergyTrait.exalt), player
                 ),
@@ -277,6 +287,42 @@ data class DeckSynergyStats(
             return DeckSynStatValue.create(
                 hauntingScore.sumOf { it.first },
                 hauntingScore.map { it.second }
+            )
+        }
+
+        private fun calculateProphecyPercent(
+            cards: List<DokCardInDeck>,
+            expansion: Expansion,
+        ): DeckSynStatValue {
+            if (expansion != Expansion.PROPHETIC_VISIONS) {
+                return DeckSynStatValue.create(0)
+            }
+            val prophecyScore = cards.mapNotNull { dokCardInDeck ->
+
+                val traitValues = dokCardInDeck.extraCardInfo.traits.map {
+                    if (it.trait == SynergyTrait.prophecy) {
+                        when (it.strength()) {
+                            TraitStrength.EXTRA_WEAK -> 5
+                            TraitStrength.WEAK -> 10
+                            TraitStrength.NORMAL -> 15
+                            TraitStrength.STRONG -> 20
+                            TraitStrength.EXTRA_STRONG -> 25
+                        }
+                    } else {
+                        0
+                    }
+                }.sum()
+
+                if (traitValues == 0) {
+                    null
+                } else {
+                    traitValues to "${dokCardInDeck.card.cardTitle}: Frequency = $traitValues%"
+                }
+            }
+
+            return DeckSynStatValue.create(
+                prophecyScore.sumOf { it.first },
+                prophecyScore.map { it.second }
             )
         }
     }

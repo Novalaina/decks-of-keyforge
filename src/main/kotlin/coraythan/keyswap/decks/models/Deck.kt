@@ -190,8 +190,9 @@ data class Deck(
             forTrade = forTrade.falseToNull(),
             wishlistCount = wishlistCount.zeroToNull(),
             funnyCount = funnyCount.zeroToNull(),
-            housesAndCards = housesAndCards?.filter { it.house != House.Prophecy }?.addBonusIcons(bonusIcons()) ?: listOf(),
+            housesAndCards = housesAndCards?.filter { it.house.realHouse }?.addBonusIcons(bonusIcons()) ?: listOf(),
             prophecies = housesAndCards?.firstOrNull { it.house == House.Prophecy }?.cards,
+            archonPower = housesAndCards?.firstOrNull { it.house == House.ArchonPower }?.cards?.firstOrNull(),
 
             lastSasUpdate = lastUpdate?.toLocalDateWithOffsetMinutes(-420)?.toString().emptyToNull(),
 

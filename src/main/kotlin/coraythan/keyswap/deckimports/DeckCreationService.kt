@@ -5,7 +5,6 @@ import coraythan.keyswap.House
 import coraythan.keyswap.cards.*
 import coraythan.keyswap.cards.dokcards.DokCardCacheService
 import coraythan.keyswap.cards.dokcards.toLegacyUrlFriendlyCardTitle
-import coraythan.keyswap.config.BadRequestException
 import coraythan.keyswap.decks.DeckRepo
 import coraythan.keyswap.decks.DeckSasValuesSearchableRepo
 import coraythan.keyswap.decks.DeckSasValuesUpdatableRepo
@@ -39,7 +38,7 @@ class DeckCreationService(
     private val dokCardCacheService: DokCardCacheService,
     private val sasVersionService: SasVersionService,
     private val tokenService: TokenService,
-//    private val importSkippedDecksService: ImportSkippedDecksService,
+    private val importSkippedDeckRepo: ImportSkippedDeckRepo,
 ) {
     private val log = LoggerFactory.getLogger(this::class.java)
 
@@ -83,10 +82,11 @@ class DeckCreationService(
                 it != "37377d67-2916-4d45-b193-bea6ecd853e3"
             }
 
-        val cardsListWithToken =
+        // We handle Tokens in a special way, they are in this card list
+        val cardsListWithExtras =
             cleanCards.map { cardRepo.findByIdOrNull(it) ?: error("No card for card id $it") }
 
-        val cardsList = cardsListWithToken
+        val cardsList = cardsListWithExtras
             .filter { !it.token }
             .let {
                 if (keyforgeDeck.expansion == Expansion.MENAGERIE_2024.expansionNumber) {
@@ -103,15 +103,18 @@ class DeckCreationService(
                 }
             }
 
-        val allHousesHave12 =
+        val housesGrouped =
             cardsList
-                .filter { it.house != House.Prophecy }
+                .filter { it.house.realHouse }
                 .groupBy { it.house }
                 .values
+
+        val allHousesHave12 =
+            housesGrouped
                 .all { it.size == 12 }
 
         if (allHousesHave12) {
-            val token = cardsListWithToken.firstOrNull { it.token }
+            val token = cardsListWithExtras.firstOrNull { it.token }
             val tokenId = if (token == null) null else tokenService.cardTitleToTokenId(token.cardTitle)
 
             val expansion = Expansion.forExpansionNumber(keyforgeDeck.expansion)
@@ -146,9 +149,13 @@ class DeckCreationService(
                 }
             }
         } else {
-                throw BadRequestException(
-                    "Not all houses have 12 cards. Cards: ${cardsList.groupBy { it.house }.map { it.value.map { card -> card.cardTitle } }}"
-                )
+
+            if (!importSkippedDeckRepo.existsByDeckKeyforgeId(keyforgeDeck.id)) {
+                log.warn("Saving deck: ${keyforgeDeck.id} for later. Not all houses have 12 cards. Cards: ${cardsList.groupBy { it.house }.map { it.value.map { card -> card.cardTitle } }}")
+                importSkippedDeckRepo.save(ImportSkippedDeck(keyforgeDeck.id))
+            } else {
+                log.warn("Deck: ${keyforgeDeck.id} was already saved for later. Don't import it.")
+            }
         }
         return null
     }
@@ -157,7 +164,7 @@ class DeckCreationService(
         val deckAndCards = makeBasicDeckFromDeckBuilderData(deck)
         return validateAndRateDeck(
             deckAndCards.first,
-            deck.cards.keys.toList().filter { it != House.Prophecy },
+            deck.cards.keys.toList().filter { it.realHouse },
             deckAndCards.second,
             deck.tokenTitle,
             deck.alliance
@@ -241,14 +248,16 @@ class DeckCreationService(
         cards: List<Card>,
         alliance: Boolean = false
     ) {
+        if (expansion == Expansion.CRUCIBLE_CLASH && alliance) {
+            if (cards.size != 36) {
+                error("Deck $id must have ${expansion.expectedCardCount} cards.")
+            }
+        } else if (cards.size != expansion.expectedCardCount) {
+            error("Deck $id must have ${expansion.expectedCardCount} cards.")
+        }
         if (expansion.singleHouse && !alliance) {
-            if (cards.size != 12) error("Deck $id must have 12 cards.")
             if (houses.toSet().size != 1) error("Deck $id must have 1 house.")
-        } else if (expansion == Expansion.PROPHETIC_VISIONS) {
-            if (cards.size != 40) error("Deck $id must have 40 cards (four prophecies).")
-            if (houses.toSet().size != 3) error("Deck $id must have 3 houses.")
         } else  {
-            if (cards.size != 36) error("Deck $id must have 36 cards.")
             if (houses.toSet().size != 3) error("Deck $id must have 3 houses.")
         }
     }

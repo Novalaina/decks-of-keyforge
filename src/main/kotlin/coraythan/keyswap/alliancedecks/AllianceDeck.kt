@@ -197,7 +197,7 @@ data class AllianceDeck(
             sasRating = synergies?.sasRating ?: -1,
             synergyRating = synergies?.synergyRating ?: -1,
             antisynergyRating = synergies?.antisynergyRating ?: -1,
-            housesAndCards = housesAndCards?.filter { it.house != House.Prophecy }?.addBonusIcons(bonusIcons())
+            housesAndCards = housesAndCards?.filter { it.house.realHouse }?.addBonusIcons(bonusIcons())
                 ?: listOf(),
             prophecies = housesAndCards?.firstOrNull { it.house == House.Prophecy }?.cards,
             tokenInfo = token?.toTokenInfo(),

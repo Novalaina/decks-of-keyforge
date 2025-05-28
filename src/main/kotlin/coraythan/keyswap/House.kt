@@ -3,7 +3,7 @@ package coraythan.keyswap
 import coraythan.keyswap.generatets.GenerateTs
 
 @GenerateTs
-enum class House(val masterVaultValue: String) {
+enum class House(val masterVaultValue: String, val realHouse: Boolean = true) {
     Brobnar("Brobnar"),
     Dis("Dis"),
     Ekwidon("Ekwidon"),
@@ -23,7 +23,8 @@ enum class House(val masterVaultValue: String) {
     Untamed("Untamed"),
 
     // Keep Prophecy last for sorting purposes
-    Prophecy("Prophecy");
+    Prophecy("Prophecy", false),
+    ArchonPower("Archon Power", false);
 
     companion object {
         fun fromMasterVaultValue(value: String): House? {

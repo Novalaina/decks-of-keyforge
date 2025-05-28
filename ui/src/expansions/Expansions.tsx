@@ -11,6 +11,7 @@ export interface ExpansionInfo {
     backendEnum: Expansion
     hasTokens?: boolean
     tournamentIllegal?: boolean
+    fake?: boolean
 }
 
 export enum ExpansionNumber {
@@ -33,6 +34,7 @@ export enum ExpansionNumber {
     D = 907,
     VM25 = 939,
     PV = 886,
+    CC = 918,
 }
 
 export const displayMyDecksLinksFor = [
@@ -45,27 +47,6 @@ export const displayMyDecksLinksFor = [
     Expansion.GRIM_REMINDERS,
     Expansion.AEMBER_SKIES,
     Expansion.TOKENS_OF_CHANGE,
-    Expansion.PROPHETIC_VISIONS,
-]
-
-export const activeExpansions = [
-    Expansion.CALL_OF_THE_ARCHONS,
-    Expansion.AGE_OF_ASCENSION,
-    Expansion.WORLDS_COLLIDE,
-    Expansion.MASS_MUTATION,
-    Expansion.DARK_TIDINGS,
-    Expansion.WINDS_OF_EXCHANGE,
-    Expansion.GRIM_REMINDERS,
-    Expansion.VAULT_MASTERS_2023,
-    Expansion.VAULT_MASTERS_2024,
-    Expansion.VAULT_MASTERS_2025,
-    Expansion.UNCHAINED_2022,
-    Expansion.MENAGERIE_2024,
-    Expansion.MARTIAN_CIVIL_WAR,
-    Expansion.AEMBER_SKIES,
-    Expansion.MORE_MUTATION,
-    Expansion.TOKENS_OF_CHANGE,
-    Expansion.DISCOVERY,
     Expansion.PROPHETIC_VISIONS,
 ]
 
@@ -123,6 +104,7 @@ export const expansionsWithCards = [
     Expansion.TOKENS_OF_CHANGE,
     Expansion.DISCOVERY,
     Expansion.PROPHETIC_VISIONS,
+    Expansion.CRUCIBLE_CLASH,
 ]
 
 export const recentExpansions = [
@@ -161,7 +143,7 @@ export const expansionInfos: ExpansionInfo[] = [
     {expansionNumber: ExpansionNumber.COTA, name: "Call of the Archons", abbreviation: "CotA", backendEnum: Expansion.CALL_OF_THE_ARCHONS},
     {expansionNumber: ExpansionNumber.AOA, name: "Age of Ascension", abbreviation: "AoA", backendEnum: Expansion.AGE_OF_ASCENSION},
     {expansionNumber: ExpansionNumber.WC, name: "Worlds Collide", abbreviation: "WC", backendEnum: Expansion.WORLDS_COLLIDE},
-    {expansionNumber: ExpansionNumber.ANOM, name: "Anomalies", abbreviation: "ANOM", backendEnum: Expansion.ANOMALY_EXPANSION},
+    {expansionNumber: ExpansionNumber.ANOM, name: "Anomalies", abbreviation: "ANOM", backendEnum: Expansion.ANOMALY_EXPANSION, fake: true},
     {expansionNumber: ExpansionNumber.MM, name: "Mass Mutation", abbreviation: "MM", backendEnum: Expansion.MASS_MUTATION},
     {expansionNumber: ExpansionNumber.DT, name: "Dark Tidings", abbreviation: "DT", backendEnum: Expansion.DARK_TIDINGS},
     {expansionNumber: ExpansionNumber.WOE, name: "Winds of Exchange", abbreviation: "WoE", backendEnum: Expansion.WINDS_OF_EXCHANGE, hasTokens: true},
@@ -177,7 +159,12 @@ export const expansionInfos: ExpansionInfo[] = [
     {expansionNumber: ExpansionNumber.ToC, name: "Tokens of Change", abbreviation: "ToC", backendEnum: Expansion.TOKENS_OF_CHANGE, hasTokens: true},
     {expansionNumber: ExpansionNumber.D, name: "Discovery", abbreviation: "D", backendEnum: Expansion.DISCOVERY},
     {expansionNumber: ExpansionNumber.PV, name: "Prophetic Visions", abbreviation: "PV", backendEnum: Expansion.PROPHETIC_VISIONS},
+    {expansionNumber: ExpansionNumber.CC, name: "Crucible Clash", abbreviation: "CC", backendEnum: Expansion.CRUCIBLE_CLASH},
 ]
+
+export const activeExpansions: Expansion[] = expansionInfos
+    .filter(info => info.fake != true)
+    .map(info => info.backendEnum)
 
 export const activeExpansionInfos: ExpansionInfo[] = expansionInfos.filter(info => activeExpansions.includes(info.backendEnum))
 

@@ -198,7 +198,7 @@ class KeyLocalStorage {
     }
 
     addAllianceHouse = (deckId: string, deckName: string, house: House, expansion: Expansion, tokenName?: string) => {
-        const allianceDeckNameId: AllianceDeckNameId = {deckId, deckName, house, expansion, tokenName}
+        const allianceDeckNameId: AllianceDeckNameId = {deckId, deckName, house, expansion, tokenName }
         if (this.allianceDeckSaveInfo.tokenName == null && tokenName != null) {
             this.allianceDeckSaveInfo.tokenName = tokenName
         }

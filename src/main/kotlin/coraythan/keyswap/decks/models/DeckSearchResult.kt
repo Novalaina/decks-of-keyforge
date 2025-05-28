@@ -76,6 +76,7 @@ data class DeckSearchResult(
     val twinId: String? = null,
     val tokenInfo: TokenInfo? = null,
     val prophecies: List<SimpleCard>? = null,
+    val archonPower: SimpleCard? = null,
     val hauntingOdds: Int? = null,
 
     val allianceHouses: List<AllianceHouseInfo>? = null,
@@ -113,7 +114,7 @@ data class DeckSearchResult(
     fun toSimpleResult() = SimpleDeckSearchResult(
         name,
         keyforgeId,
-        housesAndCards.filter { it.house == House.Prophecy }.map { it.house },
+        housesAndCards.filter { it.house.realHouse }.map { it.house },
         sasRating
     )
 }

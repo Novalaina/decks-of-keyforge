@@ -29,6 +29,7 @@ export const DeckTopBanner = (props: BannerProps & { compact: boolean }) => {
 const DeckTopBannerFull = (props: BannerProps) => {
     const {deck, fullVersion, fake} = props
     const token = deck.tokenInfo
+    const archonPower = deck.archonPower
 
     let specialCard
     if (token != null) {
@@ -46,6 +47,15 @@ const DeckTopBannerFull = (props: BannerProps) => {
         specialCard = (
             <DeckTokenView
                 tokenNameUrl={"https://keyforge-card-images.s3.us-west-2.amazonaws.com/card-images-houses/tide-card.png"}
+            />
+        )
+    } else if (archonPower != null) {
+        specialCard = (
+            <CardAsLine
+                card={archonPower}
+                deck={deck}
+                width={deckTopTokenWidth}
+                img={true}
             />
         )
     }
