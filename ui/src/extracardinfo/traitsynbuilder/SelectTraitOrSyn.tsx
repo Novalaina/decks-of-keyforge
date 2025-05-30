@@ -80,7 +80,7 @@ export const synBuilderDialogStyle = () => {
     if (screenStore.screenSizeMd()) {
         return undefined
     }
-    return {width: 520, height: 336}
+    return {width: 540, height: 336}
 }
 
 export const DiplayTraitSelectGroup = (props: {

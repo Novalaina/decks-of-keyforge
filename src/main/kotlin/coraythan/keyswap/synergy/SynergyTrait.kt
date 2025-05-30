@@ -82,6 +82,8 @@ enum class SynergyTrait {
     replaysSelf,
     dangerousRandomPlay,
     prophecy,
+    earlyResolution,
+    lateResolution,
 
     // Automatically applied traits below here
 

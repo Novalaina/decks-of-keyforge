@@ -63,7 +63,8 @@ export const synergyAndTraitGroups: SynTraitDisplayGroup[] = [
         groupName: "Other",
         description: `Use "any" for a wild cart trait that matches anything applicable. Like all artifacts or all ` +
             "creatures with even power.",
-        traits: [SynergyTrait.any, SynergyTrait.scrapValue, SynergyTrait.preventsDamage],
+        traits: [SynergyTrait.earlyResolution, SynergyTrait.lateResolution, SynergyTrait.any, SynergyTrait.scrapValue,
+            SynergyTrait.preventsDamage],
         synergyTraitsOnly: [SynergyTrait.fate, SynergyTrait.haunted, SynergyTrait.alpha, SynergyTrait.omega],
         traitTraitsOnly: [SynergyTrait.makesTokens, SynergyTrait.prophecy]
     },
