@@ -9,6 +9,7 @@ import coraythan.keyswap.roundToTwoSigDig
 import coraythan.keyswap.synergy.*
 import coraythan.keyswap.synergy.synergysystem.GenerateDeckAndHouseTraits.addDeckTraits
 import coraythan.keyswap.synergy.synergysystem.HouseEnhancementAlgorithm.generateHouseEnhancementCombos
+import coraythan.keyswap.synergy.synergysystem.ProphecyValueAlgorithm.generateProphecyCombo
 import coraythan.keyswap.synergy.synergysystem.SelfEnhancementAlgorithm.generateSelfEnhancementCombos
 import coraythan.keyswap.synergy.synergysystem.TokenSynergyService.makeTokenValues
 import org.slf4j.LoggerFactory
@@ -350,28 +351,33 @@ object DeckSynergyService {
                 )
                 val synergyValues = synergizedValues.map { it.synergy }
 
-                SynergyCombo(
-                    house = card.house,
-                    cardName = card.card.cardTitle,
-                    synergies = matchedTraits.values.flatten()
-                        .sortedBy { it.trait.synergyGroup },
-                    netSynergy = synergyValues.sum(),
-                    aercScore = synergizedValues.sumOf { it.value } + (card.card.cardType.creatureBonus()),
+                if (deck.expansionEnum == Expansion.PROPHETIC_VISIONS && card.card.cardType == CardType.Prophecy) {
+                    // Prophecies have special combo rules for their efficiency and lack normal values
+                    generateProphecyCombo(card, cards)
+                } else {
+                    SynergyCombo(
+                        house = card.house,
+                        cardName = card.card.cardTitle,
+                        synergies = matchedTraits.values.flatten()
+                            .sortedBy { it.trait.synergyGroup },
+                        netSynergy = synergyValues.sum(),
+                        aercScore = synergizedValues.sumOf { it.value } + (card.card.cardType.creatureBonus()),
 
-                    amberControl = aValue.value,
-                    expectedAmber = eValue.value,
-                    artifactControl = rValue.value,
-                    creatureControl = cValue.value,
-                    efficiency = fValue.value,
-                    recursion = uValue.value,
-                    effectivePower = pValue.value.toInt(),
+                        amberControl = aValue.value,
+                        expectedAmber = eValue.value,
+                        artifactControl = rValue.value,
+                        creatureControl = cValue.value,
+                        efficiency = fValue.value,
+                        recursion = uValue.value,
+                        effectivePower = pValue.value.toInt(),
 
-                    disruption = dValue.value,
-                    creatureProtection = apValue.value,
-                    other = oValue.value,
-                    copies = count,
-                    synStart = cardInfo.baseSynPercent
-                )
+                        disruption = dValue.value,
+                        creatureProtection = apValue.value,
+                        other = oValue.value,
+                        copies = count,
+                        synStart = cardInfo.baseSynPercent
+                    )
+                }
             }
             .plus(generateSelfEnhancementCombos(cards))
             .plus(generateHouseEnhancementCombos(cards))

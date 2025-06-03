@@ -127,7 +127,7 @@ const AercScore = (props: {
     singleColumn?: boolean
 }) => {
     const {score, max, name, synergizedScore, singleColumn} = props
-    if (score === 0 && max == null) {
+    if (score === 0 && max == null && (synergizedScore == null || synergizedScore === 0)) {
         return null
     }
     let secondColumn
@@ -143,6 +143,11 @@ const AercScore = (props: {
         secondColumn = roundToHundreds(score)
     }
     let thirdColumn = max == null && synergizedScore != null ? score : synergizedScore
+
+    if (max == null && synergizedScore != null && score === 0) {
+        thirdColumn = synergizedScore
+    }
+
     if (thirdColumn != null) {
         thirdColumn = roundToHundreds(thirdColumn)
     } else if (singleColumn) {
