@@ -84,6 +84,7 @@ enum class SynergyTrait {
     prophecy,
     earlyResolution,
     lateResolution,
+    fate,
 
     // Automatically applied traits below here
 
@@ -108,7 +109,7 @@ enum class SynergyTrait {
     tokenCount,
     totalCreaturePower,
     totalArmor,
-    fate,
+    propheticOdds,
 
     // Special traits
     card,

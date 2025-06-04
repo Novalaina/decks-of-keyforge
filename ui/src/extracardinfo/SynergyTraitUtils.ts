@@ -65,8 +65,8 @@ export const synergyAndTraitGroups: SynTraitDisplayGroup[] = [
             "creatures with even power.",
         traits: [SynergyTrait.earlyResolution, SynergyTrait.lateResolution, SynergyTrait.any, SynergyTrait.scrapValue,
             SynergyTrait.preventsDamage],
-        synergyTraitsOnly: [SynergyTrait.fate, SynergyTrait.haunted, SynergyTrait.alpha, SynergyTrait.omega],
-        traitTraitsOnly: [SynergyTrait.makesTokens, SynergyTrait.prophecy]
+        synergyTraitsOnly: [SynergyTrait.propheticOdds, SynergyTrait.haunted, SynergyTrait.alpha, SynergyTrait.omega],
+        traitTraitsOnly: [SynergyTrait.makesTokens, SynergyTrait.fate, SynergyTrait.prophecy]
     },
     {
         groupName: "Single Card Enhancements",

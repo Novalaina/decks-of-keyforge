@@ -56,7 +56,7 @@ data class DeckSynergyStats(
             SynergyTrait.totalCreaturePower to TraitVals(100, 30, 30, 15),
             SynergyTrait.totalArmor to TraitVals(10, 5),
             SynergyTrait.haunted to (TraitVals(100, 0)),
-            SynergyTrait.fate to (TraitVals(100, 0)),
+            SynergyTrait.propheticOdds to (TraitVals(100, 0)),
             SynergyTrait.expectedAember to TraitVals(30, 12, 10, 3),
             SynergyTrait.capturedAmber to TraitVals(16, 8),
             SynergyTrait.targettedCapturedAmber to TraitVals(16, 8),
@@ -176,7 +176,7 @@ data class DeckSynergyStats(
                     expectedAemberMap.map { "${it.first} +${it.second} Aember" }
                 ),
                 SynergyTrait.haunted to calculateHauntingPercent(inputCards, player),
-                SynergyTrait.fate to calculateProphecyPercent(inputCards, expansion),
+                SynergyTrait.propheticOdds to calculateProphecyPercent(inputCards, expansion),
                 SynergyTrait.capturedAmber to calculateCapturePercentWithTraits(
                     inputCards, setOf(SynergyTrait.capturesAmber, SynergyTrait.exalt), player
                 ),

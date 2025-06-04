@@ -6,6 +6,7 @@ import coraythan.keyswap.synergy.SynTraitValue
 import coraythan.keyswap.synergy.SynergyCombo
 import coraythan.keyswap.synergy.SynergyMatch
 import coraythan.keyswap.synergy.SynergyTrait
+import coraythan.keyswap.synergy.TraitStrength
 
 object SelfEnhancementAlgorithm {
     fun generateSelfEnhancementCombos(cards: List<DokCardInDeck>): List<SynergyCombo> {
@@ -17,34 +18,38 @@ object SelfEnhancementAlgorithm {
                         ?: cardWithIcons.extraCardInfo.traits.firstOrNull { it.trait == SynergyTrait.dangerousRandomPlay }
                         ?: cardWithIcons.extraCardInfo.traits.firstOrNull { it.trait == SynergyTrait.scrapValue }
                     val comboTrait: SynTraitValue?
+                    val strength = trait?.strength() ?: TraitStrength.NORMAL
                     val multiplier = when {
                         trait?.trait == SynergyTrait.replaysSelf -> {
                             comboTrait = trait
-                            when (trait.rating) {
-                                4 -> 3.0
-                                3 -> 2.0
-                                2 -> 1.5
-                                else -> 1.25
+                            when (strength) {
+                                TraitStrength.EXTRA_STRONG -> 4.0
+                                TraitStrength.STRONG -> 3.0
+                                TraitStrength.NORMAL -> 2.0
+                                TraitStrength.WEAK -> 1.5
+                                TraitStrength.EXTRA_WEAK -> 1.25
                             }
                         }
 
                         trait?.trait == SynergyTrait.dangerousRandomPlay -> {
                             comboTrait = trait
-                            when (trait.rating) {
-                                4 -> 0.0
-                                3 -> 0.25
-                                2 -> 0.5
-                                else -> 0.75
+                            when (strength) {
+                                TraitStrength.EXTRA_STRONG -> 0.0
+                                TraitStrength.STRONG -> 0.1
+                                TraitStrength.NORMAL -> 0.25
+                                TraitStrength.WEAK -> 0.5
+                                TraitStrength.EXTRA_WEAK -> 0.75
                             }
                         }
 
-                        trait?.trait == SynergyTrait.scrapValue -> {
+                        (trait?.trait == SynergyTrait.scrapValue || trait?.trait == SynergyTrait.fate) -> {
                             comboTrait = trait
-                            when (trait.rating) {
-                                4 -> 0.25
-                                3 -> 0.5
-                                2 -> 0.75
-                                else -> 0.95
+                            when (strength) {
+                                TraitStrength.EXTRA_STRONG -> 0.1
+                                TraitStrength.STRONG -> 0.25
+                                TraitStrength.NORMAL -> 0.5
+                                TraitStrength.WEAK -> 0.75
+                                TraitStrength.EXTRA_WEAK -> 0.9
                             }
                         }
 

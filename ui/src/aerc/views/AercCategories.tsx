@@ -345,7 +345,7 @@ const expansionSpecificCounts = (props: AercCatProps, width: number | undefined)
         const prophecyOdds = prophecies.map(prophecy => prophecy.prophecyOdds)
             .reduce((a, b) => a + b, 0)
 
-        const fatesCheckCard = (card: FrontendCard) => card.extraCardInfo?.synergies?.find(synergy => synergy.trait === SynergyTrait.fate)
+        const fatesCheckCard = (card: FrontendCard) => card.extraCardInfo?.traits?.find(trait => trait.trait === SynergyTrait.fate)
         const fates = (cards: FrontendCard[]) => cards.filter(fatesCheckCard)
 
         return {
