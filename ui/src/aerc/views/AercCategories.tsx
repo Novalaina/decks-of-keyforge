@@ -328,15 +328,15 @@ const expansionSpecificCounts = (props: AercCatProps, width: number | undefined)
             }
 
             let value = 0
-            if (prophecy.rating === 0) {
+            if (prophecy.rating === 1) {
                 value = 5
-            } else if (prophecy.rating === 1) {
-                value = 10
             } else if (prophecy.rating === 2) {
-                value = 15
+                value = 10
             } else if (prophecy.rating === 3) {
-                value = 20
+                value = 15
             } else if (prophecy.rating === 4) {
+                value = 20
+            } else if (prophecy.rating === 6) {
                 value = 25
             }
             return {prophecyName: extraInfo.cardName, prophecyOdds: value}

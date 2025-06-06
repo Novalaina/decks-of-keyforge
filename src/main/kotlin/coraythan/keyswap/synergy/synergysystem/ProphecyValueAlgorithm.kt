@@ -12,14 +12,14 @@ object ProphecyValueAlgorithm {
             ?: TraitStrength.NORMAL
 
         val maxEff = when (prophecyStrength) {
-            TraitStrength.EXTRA_WEAK -> 0.5
-            TraitStrength.WEAK -> 0.75
+            TraitStrength.EXTRA_WEAK -> 0.25
+            TraitStrength.WEAK -> 0.5
             TraitStrength.NORMAL -> 1.0
-            TraitStrength.STRONG -> 1.25
-            TraitStrength.EXTRA_STRONG -> 1.5
+            TraitStrength.STRONG -> 1.5
+            TraitStrength.EXTRA_STRONG -> 2.0
         }
 
-        val fateModifier = 0.5 + (if (fateCount > 10) 10.0 else fateCount * 0.05)
+        val fateModifier = 0.5 + (if (fateCount > 10) 1.0 else fateCount * 0.1)
 
         val efficiency = maxEff * fateModifier
 

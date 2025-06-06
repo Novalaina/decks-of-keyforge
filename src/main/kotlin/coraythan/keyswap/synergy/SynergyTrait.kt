@@ -180,7 +180,7 @@ enum class SynergyTrait {
         fun fromTrait(trait: String): SynergyTrait? {
             return try {
                 valueOf(trait.lowercase())
-            } catch (e: IllegalArgumentException) {
+            } catch (_: IllegalArgumentException) {
                 null
             }
         }

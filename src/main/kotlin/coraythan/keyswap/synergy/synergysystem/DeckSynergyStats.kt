@@ -297,28 +297,31 @@ data class DeckSynergyStats(
             if (expansion != Expansion.PROPHETIC_VISIONS) {
                 return DeckSynStatValue.create(0)
             }
-            val prophecyScore = cards.mapNotNull { dokCardInDeck ->
+            val prophecyScore = cards
+                .filter { dokCardInDeck -> dokCardInDeck.card.cardType == CardType.Prophecy }
+                .mapNotNull { dokCardInDeck ->
 
-                val traitValues = dokCardInDeck.extraCardInfo.traits.map {
-                    if (it.trait == SynergyTrait.prophecy) {
-                        when (it.strength()) {
-                            TraitStrength.EXTRA_WEAK -> 5
-                            TraitStrength.WEAK -> 10
-                            TraitStrength.NORMAL -> 15
-                            TraitStrength.STRONG -> 20
-                            TraitStrength.EXTRA_STRONG -> 25
+                    val traitValues = dokCardInDeck.extraCardInfo.traits.map {
+                        if (it.trait == SynergyTrait.prophecy) {
+                            // When changing these, remember to change it in AercCategories too
+                            when (it.strength()) {
+                                TraitStrength.EXTRA_WEAK -> 5
+                                TraitStrength.WEAK -> 10
+                                TraitStrength.NORMAL -> 15
+                                TraitStrength.STRONG -> 20
+                                TraitStrength.EXTRA_STRONG -> 25
+                            }
+                        } else {
+                            0
                         }
-                    } else {
-                        0
-                    }
-                }.sum()
+                    }.sum()
 
-                if (traitValues == 0) {
-                    null
-                } else {
-                    traitValues to "${dokCardInDeck.card.cardTitle}: Frequency = $traitValues%"
+                    if (traitValues == 0) {
+                        null
+                    } else {
+                        traitValues to "${dokCardInDeck.card.cardTitle}: Frequency = $traitValues%"
+                    }
                 }
-            }
 
             return DeckSynStatValue.create(
                 prophecyScore.sumOf { it.first },
