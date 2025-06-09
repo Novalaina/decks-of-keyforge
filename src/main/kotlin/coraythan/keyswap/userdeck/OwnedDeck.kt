@@ -8,6 +8,7 @@ import jakarta.persistence.*
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
+import org.springframework.data.repository.CrudRepository
 import org.springframework.data.repository.PagingAndSortingRepository
 import java.time.LocalDateTime
 import java.util.*
@@ -36,9 +37,8 @@ data class OwnedDeck(
         val id: Long = -1
 )
 
-interface OwnedDeckRepo : PagingAndSortingRepository<OwnedDeck, Long> {
+interface OwnedDeckRepo : CrudRepository<OwnedDeck, Long> {
         fun findAllByOwnerId(ownerId: UUID): List<OwnedDeck>
-        fun findAllByOwnerId(ownerId: UUID, pageable: Pageable): List<OwnedDeck>
         fun existsByDeckIdAndOwnerId(deckId: Long, ownerId: UUID): Boolean
         fun deleteByDeckIdAndOwnerId(deckId: Long, ownerId: UUID)
 
@@ -55,4 +55,8 @@ interface OwnedDeckRepo : PagingAndSortingRepository<OwnedDeck, Long> {
         @Modifying
         @Query("UPDATE OwnedDeck ownedDeck SET ownedDeck.teamId = null WHERE ownedDeck.owner.id = ?1")
         fun removeTeamForUser(userId: UUID)
+}
+
+interface OwnedDeckPageableRepo : PagingAndSortingRepository<OwnedDeck, Long> {
+        fun findAllByOwnerId(ownerId: UUID, pageable: Pageable): List<OwnedDeck>
 }

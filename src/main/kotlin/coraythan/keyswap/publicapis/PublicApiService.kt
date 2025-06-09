@@ -11,6 +11,7 @@ import coraythan.keyswap.stats.StatsService
 import coraythan.keyswap.synergy.synergysystem.DeckSynergyService
 import coraythan.keyswap.userdeck.FavoritedDeckRepo
 import coraythan.keyswap.userdeck.FunnyDeckRepo
+import coraythan.keyswap.userdeck.OwnedDeckPageableRepo
 import coraythan.keyswap.userdeck.OwnedDeckRepo
 import coraythan.keyswap.userdeck.UserDeckRepo
 import coraythan.keyswap.users.CurrentUserService
@@ -31,6 +32,7 @@ class PublicApiService(
     private val statsService: StatsService,
     private val userDeckRepo: UserDeckRepo,
     private val ownedDeckRepo: OwnedDeckRepo,
+    private val ownedDeckPageableRepo: OwnedDeckPageableRepo,
     private val ownedAllianceDeckRepo: OwnedAllianceDeckRepo,
     private val favoritedDeckRepo: FavoritedDeckRepo,
     private val funnyDeckRepo: FunnyDeckRepo,
@@ -50,7 +52,7 @@ class PublicApiService(
             ownedDeckRepo.findAllByOwnerId(user.id)
         } else {
             // Page of 100 decks
-            ownedDeckRepo.findAllByOwnerId(user.id, PageRequest.of(page, 100))
+            ownedDeckPageableRepo.findAllByOwnerId(user.id, PageRequest.of(page, 100))
         }
 
         return userDecks
