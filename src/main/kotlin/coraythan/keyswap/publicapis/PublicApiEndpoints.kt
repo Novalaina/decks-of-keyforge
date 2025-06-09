@@ -100,11 +100,13 @@ class PublicApiEndpoints(
 
     @CrossOrigin
     @GetMapping("/v1/my-decks")
-    fun findMyDecks(@RequestHeader("Api-Key") apiKey: String): List<PublicMyDeckInfo> {
+    fun findMyDecks(
+        @RequestHeader("Api-Key") apiKey: String,
+        @RequestParam page: Int? = null
+    ): List<PublicMyDeckInfo> {
         this.rateLimit(apiKey)
         val user = publicApiService.userForApiKey(apiKey)
-
-        return publicApiService.findMyDecks(user)
+        return publicApiService.findMyDecks(user, page)
     }
 
     @CrossOrigin

@@ -114,7 +114,9 @@ export class SellersAndDevs extends React.Component {
                         "With this API you can get a list of all decks you own, or have added to favorites, funny, or notes.",
                         "Third party sites and tools may request their users' DoK API key. With it you can see the decks that user " +
                         "has listed as owned on DoK.",
-                        "https://decksofkeyforge.com/public-api/v1/my-decks",
+                        "https://decksofkeyforge.com/public-api/v1/my-decks?page=0",
+                        "(The 'page' query parameter is optional, and pages results by 100 decks at a time. This is " +
+                        "necessary if you have many decks.)",
                         "Or for alliance decks: ",
                         "https://decksofkeyforge.com/public-api/v1/my-alliances",
                         `You'll need to include the header "Api-Key: {your-api-key}`

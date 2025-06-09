@@ -17,6 +17,7 @@ import coraythan.keyswap.users.CurrentUserService
 import coraythan.keyswap.users.KeyUser
 import coraythan.keyswap.users.KeyUserRepo
 import org.slf4j.LoggerFactory
+import org.springframework.data.domain.PageRequest
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import java.util.*
@@ -43,8 +44,16 @@ class PublicApiService(
             .map { it.deck.keyforgeId }
     }
 
-    fun findMyDecks(user: KeyUser): List<PublicMyDeckInfo> {
-        return ownedDeckRepo.findAllByOwnerId(user.id)
+    fun findMyDecks(user: KeyUser, page: Int? = null): List<PublicMyDeckInfo> {
+        val userDecks = if (page == null) {
+            // All decks
+            ownedDeckRepo.findAllByOwnerId(user.id)
+        } else {
+            // Page of 100 decks
+            ownedDeckRepo.findAllByOwnerId(user.id, PageRequest.of(page, 100))
+        }
+
+        return userDecks
             .map {
                 val cards = cardCache.cardsForDeck(it.deck)
                 val token = cardCache.tokenForDeck(it.deck)

@@ -335,6 +335,7 @@ data class DeckSynergyStats(
 
         val vals = traits[trait.trait] ?: return null
         val multiplier = when (trait.rating) {
+            6 -> 3.0
             4 -> 2.0
             3 -> 1.0
             2 -> 0.5
@@ -343,6 +344,7 @@ data class DeckSynergyStats(
             -2 -> -0.5
             -3 -> -1.0
             -4 -> -2.0
+            -6 -> -3.0
             else -> throw IllegalStateException("Bad rating ${trait.rating} $trait")
         }
 
