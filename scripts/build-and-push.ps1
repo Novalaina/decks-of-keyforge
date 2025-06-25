@@ -1,6 +1,7 @@
 
 $ErrorActionPreference = "Stop"
 docker --version
+aws --version
 
 ./gradlew genSrc
 
@@ -8,7 +9,9 @@ cd ui
 
 npm run build
 cd ../src/main/resources
-rm static -r -Force
+if (test-path static) {
+  rm static -r -Force
+}
 xcopy ..\..\..\ui\build static /i /s
 cd ../../../
 
