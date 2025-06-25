@@ -106,6 +106,7 @@ export class Utils {
             return true
         }
         const cardNameClean = cardName
+            .trim()
             .toLowerCase()
             .replace(/æ/g, "ae")
             .replace(/\W+/g, "")
@@ -123,6 +124,7 @@ export class Utils {
 
     static tokenizeCardSearch = (search: string) => {
         return search
+            .trim()
             .toLowerCase()
             .replace(/\W+/g, " ")
             .split(" ")

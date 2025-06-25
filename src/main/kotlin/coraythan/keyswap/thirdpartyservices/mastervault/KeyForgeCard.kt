@@ -36,10 +36,11 @@ data class KeyForgeCard(
         val armorNumber = armor?.toIntOrNull() ?: 0
         val realCardType = theirCardTypeToReasonableOne(card_type) ?: return null
         val realRarity = theirRarityToReasonableOne(rarity) ?: return null
+        val titleCleaned = card_title.trim()
         val cardTitleFixed = if (realRarity == Rarity.EvilTwin) {
-            "$card_title$evilTwinCardName"
+            "$titleCleaned$evilTwinCardName"
         } else {
-            card_title
+            titleCleaned
         }
         return Card(
             id,

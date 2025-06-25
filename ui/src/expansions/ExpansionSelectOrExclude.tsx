@@ -9,6 +9,8 @@ import { spacing } from "../config/MuiConfig"
 import { Expansion } from "../generated-src/Expansion"
 import { CheckboxState, CheckboxThreeState } from "../mui-restyled/CheckboxThreeState"
 import { activeExpansions, expansionInfoMap, ExpansionLabel } from "./Expansions"
+import { Box, Button, Typography } from "@material-ui/core"
+import { log } from "../config/Utils"
 
 interface ExpansionSelectOrExcludeProps {
     selectedExpansions: SelectedOrExcludedExpansions
@@ -24,7 +26,49 @@ export class ExpansionSelectOrExclude extends React.Component<ExpansionSelectOrE
         const expansions = availableExpansions ?? activeExpansions
         return (
             <FormControl style={style}>
-                <FormLabel style={{marginBottom: spacing(1)}}>Expansions</FormLabel>
+                <FormLabel style={{marginBottom: spacing(1)}}>
+                    <Box display={"flex"} alignItems={"flex-end"}>
+                        <Typography style={{flexGrow: 1}}>Expansions</Typography>
+                        <Button
+                            style={{fontSize: "0.7rem"}}
+                            variant={"outlined"}
+                            size={"small"}
+                            onClick={() => {
+                                let allSelected = true
+                                let allExcluded = true
+                                // If all selected, toggle to none selected
+                                selectedExpansions.selectedExpansions.forEach(expansionSelection => {
+                                    log.info(`expansion state is: ${expansionSelection.state}`)
+                                    if (expansionSelection.state === CheckboxState.ON) {
+                                        allExcluded = false
+                                    } else if (expansionSelection.state === CheckboxState.EXCLUDED) {
+                                        allSelected = false
+                                    } else if (expansionSelection.state === CheckboxState.OFF) {
+                                        allExcluded = false
+                                        allSelected = false
+                                    }
+                                })
+                                let toPerform = CheckboxState.ON
+                                if (!allowExclusions) {
+                                    if (allSelected) {
+                                        toPerform = CheckboxState.OFF
+                                    }
+                                } else {
+                                    if (allSelected) {
+                                        toPerform = CheckboxState.EXCLUDED
+                                    } else if (allExcluded) {
+                                        toPerform = CheckboxState.OFF
+                                    }
+                                }
+                                expansions.forEach(expansion => {
+                                    selectedExpansions.onExpansionStateChange(expansion, toPerform)
+                                })
+                            }}
+                        >
+                            Toggle All
+                        </Button>
+                    </Box>
+                </FormLabel>
                 <FormGroup
                     row={true}
                 >
@@ -105,7 +149,10 @@ export class SelectedOrExcludedExpansions {
         toUpdate.state = state
     }
 
-    reset = () => this.selectedExpansions = this.availableExpansions.map(expansionValue => ({expansion: expansionValue, state: CheckboxState.OFF}))
+    reset = () => this.selectedExpansions = this.availableExpansions.map(expansionValue => ({
+        expansion: expansionValue,
+        state: CheckboxState.OFF
+    }))
 
     getExpansionsSelectedTrue = () => this.selectedExpansions.filter(expansion => expansion.state === CheckboxState.ON).map(expansion => expansion.expansion)
     getExpansionsExcludedTrue = () => this.selectedExpansions.filter(expansion => expansion.state === CheckboxState.EXCLUDED).map(expansion => expansion.expansion)

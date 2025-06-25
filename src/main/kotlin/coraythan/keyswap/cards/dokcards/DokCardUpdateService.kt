@@ -102,6 +102,7 @@ private val whitespaceRegex = "\\s+".toRegex()
 
 fun String.toLegacyUrlFriendlyCardTitle(): String {
     return this
+        .trim()
         .replace(cardNameUrlRegex, "")
         .replace(" ", "-")
         .lowercase()
@@ -110,6 +111,7 @@ fun String.toLegacyUrlFriendlyCardTitle(): String {
 fun cardUrl(cardTitle: String, house: House? = null, anomaly: Boolean = false): String {
     return "${if (anomaly) "anomaly" else house.toString().lowercase()}/${
         cardTitle
+            .trim()
             .replace("Æ", "ae", ignoreCase = true)
             .replace(cardNameUrlRegex, "")
             .replace(whitespaceRegex, "-")

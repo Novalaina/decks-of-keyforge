@@ -19,7 +19,9 @@ const spaceRegex = /\s/g
  * @param name
  */
 export const cardNameToCardNameKey = (name: string) => {
-    return name.replace(cardNameReplacementRegex, "")
+    return name
+        .trim()
+        .replace(cardNameReplacementRegex, "")
         .replace(spaceRegex, "-")
         .toLowerCase()
 }
