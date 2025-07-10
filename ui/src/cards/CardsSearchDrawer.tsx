@@ -315,18 +315,6 @@ export class CardsSearchDrawer extends React.Component<CardsSearchDrawerProps> {
                                     </ToggleButton>
                                 </ToggleButtonGroup>
                             </Tooltip>
-                            {userStore.isAdmin && (
-                                <FormControlLabel
-                                    control={
-                                        <Switch
-                                            checked={keyLocalStorage.showAllCards}
-                                            onChange={keyLocalStorage.toggleShowAllCards}
-                                        />
-                                    }
-                                    label={"All cards"}
-                                    style={{marginLeft: spacing(1)}}
-                                />
-                            )}
                         </ListItem>
                         {userStore.isAdmin && (
                             <ListItem>

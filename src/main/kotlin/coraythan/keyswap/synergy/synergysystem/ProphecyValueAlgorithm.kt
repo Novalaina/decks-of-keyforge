@@ -3,11 +3,20 @@ package coraythan.keyswap.synergy.synergysystem
 import coraythan.keyswap.House
 import coraythan.keyswap.cards.dokcards.DokCardInDeck
 import coraythan.keyswap.synergy.*
+import kotlin.math.roundToInt
 
 object ProphecyValueAlgorithm {
     fun generateProphecyCombo(card: DokCardInDeck, cards: List<DokCardInDeck>): SynergyCombo {
-        val fates = cards.filter { it.extraCardInfo.traits.any { trait -> trait.trait == SynergyTrait.fate } }
-        val fateCount = fates.count()
+        val fates = cards.mapNotNull {
+            val fate = it.extraCardInfo.traits.firstOrNull { trait -> trait.trait == SynergyTrait.fate }
+            if (fate == null) null else Pair(it, fate.strength())
+        }
+        val fateValue = fates.sumOf { fate ->
+            // We are multiplying each fate by 2x the likelihood it is used as a fate. This makes 50/50 fate cards worth 1
+            val usedAsFateLikelihood = 1 - traitStrengthToLikelihoodPlayed(fate.second)
+            usedAsFateLikelihood * 2
+        }
+
         val prophecyStrength = card.extraCardInfo.traits.firstOrNull { it.trait == SynergyTrait.prophecy }?.strength()
             ?: TraitStrength.NORMAL
 
@@ -19,7 +28,7 @@ object ProphecyValueAlgorithm {
             TraitStrength.EXTRA_STRONG -> 2.0
         }
 
-        val fateModifier = 0.5 + (if (fateCount > 10) 1.0 else fateCount * 0.1)
+        val fateModifier = 0.5 + (if (fateValue > 10.0) 1.0 else fateValue * 0.1)
 
         val efficiency = maxEff * fateModifier
 
@@ -29,8 +38,8 @@ object ProphecyValueAlgorithm {
             synergies = listOf(
                 SynergyMatch(
                     trait = SynTraitValue(SynergyTrait.fate),
-                    percentSynergized = if (fateCount > 10) 100 else fateCount * 10,
-                    traitCards = fates.map { fate -> fate.card.cardTitle }.toSet(),
+                    percentSynergized = if (fateValue > 10) 100 else (fateValue * 10).roundToInt(),
+                    traitCards = fates.map { fate -> fate.first.card.cardTitle }.toSet(),
                 )
             ),
             netSynergy = efficiency,

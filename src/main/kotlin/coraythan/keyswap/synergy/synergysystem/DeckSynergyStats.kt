@@ -308,8 +308,8 @@ data class DeckSynergyStats(
                                 TraitStrength.EXTRA_WEAK -> 5
                                 TraitStrength.WEAK -> 10
                                 TraitStrength.NORMAL -> 15
-                                TraitStrength.STRONG -> 20
-                                TraitStrength.EXTRA_STRONG -> 25
+                                TraitStrength.STRONG -> 25
+                                TraitStrength.EXTRA_STRONG -> 35
                             }
                         } else {
                             0

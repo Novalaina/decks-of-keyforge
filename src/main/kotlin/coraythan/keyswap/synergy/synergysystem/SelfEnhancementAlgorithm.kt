@@ -44,13 +44,7 @@ object SelfEnhancementAlgorithm {
 
                         (trait?.trait == SynergyTrait.scrapValue || trait?.trait == SynergyTrait.fate) -> {
                             comboTrait = trait
-                            when (strength) {
-                                TraitStrength.EXTRA_STRONG -> 0.1
-                                TraitStrength.STRONG -> 0.25
-                                TraitStrength.NORMAL -> 0.5
-                                TraitStrength.WEAK -> 0.75
-                                TraitStrength.EXTRA_WEAK -> 0.9
-                            }
+                            traitStrengthToLikelihoodPlayed(strength)
                         }
 
                         card.cardType == CardType.Artifact -> {
@@ -115,3 +109,11 @@ object SelfEnhancementAlgorithm {
         return multiplied - base
     }
 }
+
+fun traitStrengthToLikelihoodPlayed(strength: TraitStrength) = when (strength) {
+        TraitStrength.EXTRA_STRONG -> 0.1
+        TraitStrength.STRONG -> 0.25
+        TraitStrength.NORMAL -> 0.5
+        TraitStrength.WEAK -> 0.75
+        TraitStrength.EXTRA_WEAK -> 0.9
+    }

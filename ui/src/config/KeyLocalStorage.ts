@@ -9,7 +9,6 @@ import { AllianceDeckNameId, AllianceDeckSaveInfo } from "../alliancedecks/Allia
 enum Keys {
     AUTH = "AUTH",
     CARD_LIST_VIEW_TYPE = "CARD_LIST_VIEW_TYPE",
-    SHOW_ALL_CARDS = "SHOW_ALL_CARDS",
     DECK_PAGE_SIZE = "DECK_PAGE_SIZE",
     DISPLAY_EXTRA_DECK_STATS = "DISPLAY_EXTRA_DECK_STATS",
     SMALL_TABLE_VIEW = "SMALL_TABLE_VIEW",
@@ -53,9 +52,6 @@ class KeyLocalStorage {
     cardListViewType: CardViewType = "full"
 
     @observable
-    showAllCards = false
-
-    @observable
     deckPageSize = 20
 
     @observable
@@ -84,7 +80,6 @@ class KeyLocalStorage {
         this.loadDeckPageSize()
         this.loadDisplayExtraDeckStats()
         this.loadSmallTableView()
-        this.loadShowAllCards()
         this.loadCardListViewType()
         this.loadSaleDefaults()
         this.loadDecksToCompare()
@@ -122,11 +117,6 @@ class KeyLocalStorage {
     setCardListViewType = (type: CardViewType) => {
         this.cardListViewType = type
         this.localStorage.setItem(Keys.CARD_LIST_VIEW_TYPE, type)
-    }
-
-    toggleShowAllCards = () => {
-        this.showAllCards = !this.showAllCards
-        this.localStorage.setItem(Keys.SHOW_ALL_CARDS, String(this.showAllCards))
     }
 
     toggleDisplayExtraDeckStats = () => {
@@ -311,10 +301,6 @@ class KeyLocalStorage {
 
     private loadSmallTableView = () => {
         this.smallTableView = this.localStorage.getItem(Keys.SMALL_TABLE_VIEW) === "true"
-    }
-
-    private loadShowAllCards = () => {
-        this.showAllCards = this.localStorage.getItem(Keys.SHOW_ALL_CARDS) === "true"
     }
 
     private loadAddBonusIcons = () => {
