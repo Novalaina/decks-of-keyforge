@@ -57,7 +57,7 @@ export const synergyAndTraitGroups: SynTraitDisplayGroup[] = [
         traits: [SynergyTrait.uses, SynergyTrait.readies, SynergyTrait.causesFighting, SynergyTrait.causesReaping,
             SynergyTrait.goodReap, SynergyTrait.goodAction, SynergyTrait.goodPlay, SynergyTrait.goodFight,
             SynergyTrait.goodDestroyed, SynergyTrait.protectsCreatures, SynergyTrait.increasesCreaturePower,
-            SynergyTrait.moves],
+            SynergyTrait.addsPowerTokens, SynergyTrait.moves],
     },
     {
         groupName: "Other",

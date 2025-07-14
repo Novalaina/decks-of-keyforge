@@ -41,7 +41,7 @@
     "analyze": "source-map-explorer 'build/static/js/*.js'"
   },
   "devDependencies": {
-    "@babel/plugin-proposal-private-property-in-object":  "^7.21.11",
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@types/browser-image-compression": "^1.0.1",
     "@types/lodash": "^4.14.168",
     "@types/node": "^18.16.17",
@@ -70,5 +70,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "packageManager": "yarn@1.22.19+sha1.4ba7fc5c6e704fce2066ecbfb0b0d8976fe62447"
 }

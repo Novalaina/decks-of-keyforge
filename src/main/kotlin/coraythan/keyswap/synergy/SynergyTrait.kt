@@ -68,6 +68,7 @@ enum class SynergyTrait {
     goodDestroyed,
     protectsCreatures,
     increasesCreaturePower,
+    addsPowerTokens,
     moves,
 
     // Other Traits
@@ -163,7 +164,6 @@ enum class SynergyTrait {
     distributableDamage,
     stuns,
     sacrificesCreatures,
-    addsPowerTokens,
     discardsFromDeck,
     addsArmor,
     usableArtifact,

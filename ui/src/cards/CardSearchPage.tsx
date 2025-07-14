@@ -10,7 +10,6 @@ import { spacing } from "../config/MuiConfig"
 import { log } from "../config/Utils"
 import { Loader } from "../mui-restyled/Loader"
 import { uiStore } from "../ui/UiStore"
-import { userStore } from "../user/UserStore"
 import { CardFilters } from "./CardFilters"
 import { CardsSearchDrawer } from "./CardsSearchDrawer"
 import { cardStore } from "./CardStore"
@@ -106,7 +105,7 @@ class CardSearchContainer extends React.Component<CardSearchContainerProps> {
             )
         } else {
             cardsDisplay = (
-                <CardsContainerWithScroll allCards={cards} showAllCards={keyLocalStorage.showAllCards && userStore.isAdmin} showHistory={filters.aercHistory}/>
+                <CardsContainerWithScroll allCards={cards} showHistory={filters.aercHistory}/>
             )
         }
 
@@ -127,7 +126,6 @@ class CardSearchContainer extends React.Component<CardSearchContainerProps> {
 
 interface CardsContainerWithScrollProps {
     allCards: FrontendCard[]
-    showAllCards: boolean
     showHistory?: boolean
 }
 
@@ -163,7 +161,7 @@ export class CardsContainerWithScroll extends React.Component<CardsContainerWith
         log.debug("Reset cards to display.")
         this.pageQuantity = 1
         log.debug(`All cards length: ${props.allCards.length}`)
-        if (props.allCards.length < 101 || props.showAllCards) {
+        if (props.allCards.length < 101) {
             this.cardsToDisplay = props.allCards.slice()
         } else {
             this.cardsToDisplay = props.allCards.slice(0, 40 * this.pageQuantity)
