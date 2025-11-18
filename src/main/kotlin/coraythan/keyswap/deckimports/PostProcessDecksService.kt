@@ -22,7 +22,7 @@ import org.springframework.scheduling.annotation.Scheduled
 import coraythan.keyswap.config.SchedulingConfig
 import java.util.*
 
-private const val lockPostProcessDecksFor = "PT10S"
+private const val lockPostProcessDecksFor = "PT1H"
 
 @Transactional
 @Service
