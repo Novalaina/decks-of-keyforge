@@ -189,6 +189,7 @@ enum class Expansion(
             House.Untamed,
         ),
         expectedCardCount = 40,
+        includeInStatistics = true,
     );
 
     companion object {

@@ -72,7 +72,7 @@ export const AercCategoryExtras = (props: AercCatProps) => {
                 matches2: card => CardUtils.cardMatchesFriendlyTrait(card, SynergyTrait.archivesRandom),
                 cards,
                 title: "Archives",
-                subtitle1: "Archives Targetted",
+                subtitle1: "Archives Targeted",
                 subtitle2: "Archives Random"
             }
         },

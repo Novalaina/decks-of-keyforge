@@ -22,6 +22,7 @@ import * as React from "react"
 import { CardSimpleView } from "./CardSimpleView"
 import { CardSetsFromCard, CardSynergies, CardTraits } from "./CardSupplementalViews"
 import { FrontendCard } from "../../generated-src/FrontendCard"
+import { CardType } from "../../generated-src/CardType"
 
 interface CardViewProps {
     card: FrontendCard
@@ -117,6 +118,14 @@ export const CardView = observer((props: CardViewProps) => {
                 </div>
                 <Typography color={"textPrimary"} variant={"body2"}>{cardText}</Typography>
                 <CardWinsDisplay card={card}/>
+                {card.cardType === CardType.ArchonPower && (
+                    <>
+                        <Divider style={{marginTop: spacing(1), marginBottom: spacing(1)}}/>
+                        <Typography color={"textPrimary"} variant={"subtitle2"} style={{fontStyle: "italic"}}>
+                        Archon Powers are not included in SAS Scores
+                    </Typography>
+                    </>
+                )}
                 {props.history == null ? (
                     <>
                         {futureCard && (

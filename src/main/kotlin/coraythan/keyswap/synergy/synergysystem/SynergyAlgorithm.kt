@@ -93,6 +93,12 @@ object DeckSynergyService {
                 }
         } else {
             inputCards
+        }.let {
+            if (deck.expansionEnum == Expansion.CRUCIBLE_CLASH) {
+                it.filter { card -> card.card.cardType != CardType.ArchonPower }
+            } else {
+                it
+            }
         }
 
         val tokenValues = makeTokenValues(cardsNoToken, token)

@@ -14,7 +14,7 @@ import { UserLink } from "../user/UserLink"
 import { AboutGridItem } from "./AboutPage"
 import { DokLink } from "../generic/DokLink"
 
-export const latestVersion = "7.6"
+export const latestVersion = "7.7"
 
 const decFirstUpdateCards = new CardFilters()
 decFirstUpdateCards.aercHistory = true
@@ -46,6 +46,21 @@ export class ReleaseNotes extends React.Component {
                     </Typography>
                     {cardsUpdateLink}
                 </Paper>
+                <ReleaseNote
+                    releaseNumber={"7.7"}
+                    date={"7/16/2025"}
+                    expanded={true}
+                    releaseNotesWithHighlights={[
+                        {
+                            highlight: "Prophetic Visions & Crucible Clash SAS Release!",
+                            note: "We've released the initial SAS scores for Prophetic Visions and Crucible Clash! " +
+                                "I don't have strict plans for when we'll release another updates for these. If you " +
+                                "have feedback just head to the DoK Discord server and we'll work on evaluating it! " +
+                                "Also, I want to give thanks to PlayerHurp and jfilipeg for helping create this new " +
+                                "round of SAS scores."
+                        },
+                    ]}
+                />
                 <ReleaseNote
                     releaseNumber={"7.6"}
                     date={"5/27/2025"}

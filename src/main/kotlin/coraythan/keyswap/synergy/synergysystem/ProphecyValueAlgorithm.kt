@@ -24,8 +24,8 @@ object ProphecyValueAlgorithm {
             TraitStrength.EXTRA_WEAK -> 0.25
             TraitStrength.WEAK -> 0.5
             TraitStrength.NORMAL -> 1.0
-            TraitStrength.STRONG -> 1.5
-            TraitStrength.EXTRA_STRONG -> 2.0
+            TraitStrength.STRONG -> 2.0
+            TraitStrength.EXTRA_STRONG -> 2.5
         }
 
         val fateModifier = 0.5 + (if (fateValue > 10.0) 1.0 else fateValue * 0.1)

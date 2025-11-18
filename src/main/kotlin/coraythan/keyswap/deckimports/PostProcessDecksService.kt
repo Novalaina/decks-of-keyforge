@@ -18,9 +18,11 @@ import org.springframework.data.repository.CrudRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.scheduling.annotation.Scheduled
+import coraythan.keyswap.config.SchedulingConfig
 import java.util.*
 
-private const val lockPostProcessDecksFor = "PT3M"
+private const val lockPostProcessDecksFor = "PT10S"
 
 @Transactional
 @Service
@@ -33,18 +35,15 @@ class PostProcessDecksService(
 
     private val log = LoggerFactory.getLogger(this::class.java)
 
-    // todo fix
-//    @Scheduled(fixedDelayString = lockPostProcessDecksFor, initialDelayString = SchedulingConfig.postProcessDecksDelay)
+    @Scheduled(fixedDelayString = lockPostProcessDecksFor, initialDelayString = SchedulingConfig.postProcessDecksDelay)
     fun postProcessDecks() {
-        log.info("$scheduledStart post process decks.")
 
         var twins = 0
 
         val process = repo.findAllLimit100()
+        log.info("$scheduledStart post process ${process.size} decks.")
 
         val processed = mutableListOf<UUID>()
-
-        log.info("Process ${process.size} decks.")
 
         for (toProcess in process) {
             val deck = deckRepo.findByIdOrNull(toProcess.deckId)

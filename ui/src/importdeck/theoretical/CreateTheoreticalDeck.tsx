@@ -27,6 +27,7 @@ import { EnhancementIcon } from "../../generic/icons/EnhancementIcon"
 import { CardAsLine } from "../../cards/views/CardAsLine"
 import IconButton from "@material-ui/core/IconButton/IconButton"
 import { Add, Remove } from "@material-ui/icons"
+import { Alert } from "@material-ui/lab"
 
 export const CreateTheoreticalDeck = observer(() => {
 
@@ -109,6 +110,11 @@ export const CreateTheoreticalDeck = observer(() => {
                 <div style={{maxWidth: 784}}>
                     <HouseSelect style={{marginBottom: spacing(4)}} selectedHouses={housesStore}/>
                 </div>
+
+                {expansionStore.currentExpansion() === Expansion.PROPHETIC_VISIONS && (
+                    <Alert color={"info"} style={{marginBottom: spacing(2)}}>For Prophetic Visions include 36 normal cards and four Prophecies.</Alert>
+                )}
+
                 <CreateTheoreticalDeckBuilder
                     expansion={expansionStore.currentExpansionOrDefault()}
                     houses={selectedHouses}

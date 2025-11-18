@@ -131,7 +131,7 @@ class  DokCardCacheService(
 
     fun findByCardName(cardName: String) =
         if (!loaded) throw IllegalStateException("Site still loading cards") else cardsCachedByUrlName[cardName.toLegacyUrlFriendlyCardTitle()]
-            ?: error("No card for ${cardName.toLegacyUrlFriendlyCardTitle()}")
+            ?: error("No card for '${cardName.toLegacyUrlFriendlyCardTitle()}'")
 
     fun findByCardNameUrlOrNull(cardNameUrl: String) =
         if (!loaded) throw IllegalStateException("Site still loading cards") else cardsCachedByUrlName[cardNameUrl]
@@ -142,14 +142,14 @@ class  DokCardCacheService(
 
     fun twinnedCardsForDeck(deck: Deck): List<DokCardInDeck> {
         if (!loaded) throw IllegalStateException("Site still loading cards")
-        return cardsForDeck(deck).map {
-            val twin = if (it.card.cardTitle.contains(evilTwinCardName)) {
-                val goodTwinName = it.card.cardTitle.dropLast(evilTwinCardName.length)
+        return cardsForDeck(deck).map { dokCardInDeck ->
+            val twin = if (dokCardInDeck.card.cardTitle.contains(evilTwinCardName)) {
+                val goodTwinName = dokCardInDeck.card.cardTitle.dropLast(evilTwinCardName.length)
                 findByCardName(goodTwinName)
             } else {
-                findByCardName(it.card.cardTitle + evilTwinCardName)
+                findByCardNameUrlOrNull((dokCardInDeck.card.cardTitle + evilTwinCardName).toLegacyUrlFriendlyCardTitle()) ?: dokCardInDeck.extraCardInfo
             }
-            it.copy(card = twin.dokCard, extraCardInfo = twin)
+            dokCardInDeck.copy(card = twin.dokCard, extraCardInfo = twin)
         }
     }
 

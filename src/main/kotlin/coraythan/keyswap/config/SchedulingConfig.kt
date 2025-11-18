@@ -6,7 +6,7 @@ object SchedulingConfig {
     const val rateDecksInitialDelay = "PT45S"
     const val importNewDecksInitialDelay = "PT1M"
     const val purchasesInitialDelay = "PT1M"
-    const val postProcessDecksDelay = "PT3M"
+    const val postProcessDecksDelay = "PT20S"
     const val unexpiredDecksInitialDelay = "PT5M"
     const val expireOffersInitialDelay = "PT6M"
     const val publishNewSasInitialDelay = "PT10M"

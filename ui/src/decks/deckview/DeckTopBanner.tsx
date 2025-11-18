@@ -92,17 +92,28 @@ const DeckTopBannerFull = (props: BannerProps) => {
 const DeckTopBannerCompact = (props: BannerProps) => {
     const {deck, fake, fullVersion} = props
     const token = deck.tokenInfo
+    const archonPower = deck.archonPower
 
     let specialCard
+    const compactSpecialCardWidth = 80
     if (token != null) {
         specialCard = (
             <CardAsLine
                 card={{cardTitle: token.name, cardTitleUrl: token.nameUrl}}
                 deck={deck}
-                width={80}
+                width={compactSpecialCardWidth}
                 img={true}
                 cardActualHouse={token.house}
                 copies={deck.tokenCreationValues?.tokensPerGame}
+            />
+        )
+    } else if (archonPower != null) {
+        specialCard = (
+            <CardAsLine
+                card={archonPower}
+                deck={deck}
+                width={compactSpecialCardWidth}
+                img={true}
             />
         )
     }
