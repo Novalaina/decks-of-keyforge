@@ -73,19 +73,6 @@ export class SellersAndDevs extends React.Component {
                     ]}/>
                 </AboutGridItem>
                 <AboutGridItem>
-                    <InfoListCard title={"File with all SAS and AERC"} infos={[
-                        "Please use this instead of the API if it fits your needs to help conserve DoK's server resources.",
-                        "I've created csv files (spreadsheets) with the deck info for all decks up to the time they were generated.",
-                        <DokLink
-                            href={"https://drive.google.com/drive/folders/1Yk4x221rqeIr32WrC5hkMXyBmWC311rS?usp=sharing"}
-                            target={"_blank"} rel={"noopener noreferrer"} key={"sas-link4"}>
-                            Folder with deck csv files
-                        </DokLink>,
-                        "Like with the API, if you use this please attribute decksofkeyforge.com on your site / material.",
-                        "I plan to create a new file whenever I update SAS or AERC."
-                    ]}/>
-                </AboutGridItem>
-                <AboutGridItem>
                     <InfoListCard title={"Rules to use the APIs in general"} infos={[
                         "1. Please do not spam requests. Use the all decks CSV above when appropriate. The site has been brought down " +
                         "due to improper use of these APIs.",
