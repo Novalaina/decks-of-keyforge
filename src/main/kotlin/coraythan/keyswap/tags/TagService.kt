@@ -6,11 +6,13 @@ import com.querydsl.jpa.impl.JPAQueryFactory
 import coraythan.keyswap.auctions.DeckListingRepo
 import coraythan.keyswap.config.UnauthorizedException
 import coraythan.keyswap.decks.DeckRepo
+import coraythan.keyswap.decks.models.Deck
 import coraythan.keyswap.nowLocal
 import coraythan.keyswap.patreon.PatreonRewardsTier
 import coraythan.keyswap.scheduledStart
 import coraythan.keyswap.scheduledStop
 import coraythan.keyswap.users.CurrentUserService
+import coraythan.keyswap.users.KeyUser
 import jakarta.persistence.EntityManager
 import org.slf4j.LoggerFactory
 import org.springframework.data.repository.findByIdOrNull
@@ -142,5 +144,48 @@ class TagService(
             throw UnauthorizedException("User ${user.username} does not own tag with id $tagId")
         }
         return tag
+    }
+
+    // Methods for API-key-authenticated callers (user already resolved, no SecurityContext)
+
+    fun createTagForUser(createTag: CreateTag, user: KeyUser): TagDto {
+        return tagRepo.save(
+            KTag(
+                createTag.name,
+                user,
+                createTag.public,
+                archived = createTag.archived,
+            )
+        ).toDto(0)
+    }
+
+    fun findTagsByUser(user: KeyUser): List<TagDto> {
+        return tagRepo.findByCreatorId(user.id)
+            .map { it.toDto() }
+            .sortedWith(compareBy({ it.publicityType }, { it.name }))
+    }
+
+    fun deleteTagForUser(tagId: Long, user: KeyUser) {
+        val tag = tagRepo.findByIdOrNull(tagId) ?: throw IllegalStateException("No tag with id $tagId")
+        if (tag.creator.id != user.id) throw UnauthorizedException("User ${user.username} does not own tag with id $tagId")
+
+        if (tag.publicityType == PublicityType.BULK_SALE) {
+            val toUpdate = deckListingRepo.findByTagId(tagId)
+            deckListingRepo.saveAll(toUpdate.map { it.copy(tag = null) })
+        }
+
+        tagRepo.delete(tag)
+    }
+
+    fun tagDeckForUser(tagId: Long, deck: Deck, user: KeyUser) {
+        val tag = tagRepo.findByIdOrNull(tagId) ?: throw IllegalStateException("No tag with id $tagId")
+        if (tag.creator.id != user.id) throw UnauthorizedException("User ${user.username} does not own tag with id $tagId")
+        deckTagRepo.save(DeckTag(tag, deck))
+    }
+
+    fun untagDeckForUser(tagId: Long, deck: Deck, user: KeyUser) {
+        val tag = tagRepo.findByIdOrNull(tagId) ?: throw IllegalStateException("No tag with id $tagId")
+        if (tag.creator.id != user.id) throw UnauthorizedException("User ${user.username} does not own tag with id $tagId")
+        deckTagRepo.deleteByDeckIdAndTagId(deck.id, tagId)
     }
 }
