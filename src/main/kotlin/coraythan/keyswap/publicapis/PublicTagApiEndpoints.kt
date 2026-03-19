@@ -11,6 +11,8 @@ import coraythan.keyswap.tags.TagService
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.*
 
+data class BulkDeckRequest(val deckIds: List<String>)
+
 @Transactional
 @RestController
 @RequestMapping("/public-api/v1/tags")
@@ -57,28 +59,34 @@ class PublicTagApiEndpoints(
     }
 
     @CrossOrigin
-    @PostMapping("/{tagId}/deck/{kfId}")
-    fun tagDeck(
+    @PostMapping("/{tagId}/decks")
+    fun tagDecks(
         @RequestHeader("Api-Key") apiKey: String,
         @PathVariable tagId: Long,
-        @PathVariable kfId: String,
+        @RequestBody request: BulkDeckRequest,
     ) {
         publicApiService.rateLimit(apiKey)
         val user = publicApiService.userForApiKey(apiKey)
-        val deck = deckRepo.findByKeyforgeId(kfId) ?: throw BadRequestException("Deck not found: $kfId")
-        tagService.tagDeckForUser(tagId, deck, user)
+        val decks = deckRepo.findAllByKeyforgeIdIn(request.deckIds)
+        val foundIds = decks.map { it.keyforgeId }.toSet()
+        val missingIds = request.deckIds.filter { it !in foundIds }
+        if (missingIds.isNotEmpty()) throw BadRequestException("Decks not found: ${missingIds.joinToString()}")
+        tagService.tagDecksForUser(tagId, decks, user)
     }
 
     @CrossOrigin
-    @DeleteMapping("/{tagId}/deck/{kfId}")
-    fun untagDeck(
+    @DeleteMapping("/{tagId}/decks")
+    fun untagDecks(
         @RequestHeader("Api-Key") apiKey: String,
         @PathVariable tagId: Long,
-        @PathVariable kfId: String,
+        @RequestBody request: BulkDeckRequest,
     ) {
         publicApiService.rateLimit(apiKey)
         val user = publicApiService.userForApiKey(apiKey)
-        val deck = deckRepo.findByKeyforgeId(kfId) ?: throw BadRequestException("Deck not found: $kfId")
-        tagService.untagDeckForUser(tagId, deck, user)
+        val decks = deckRepo.findAllByKeyforgeIdIn(request.deckIds)
+        val foundIds = decks.map { it.keyforgeId }.toSet()
+        val missingIds = request.deckIds.filter { it !in foundIds }
+        if (missingIds.isNotEmpty()) throw BadRequestException("Decks not found: ${missingIds.joinToString()}")
+        tagService.untagDecksForUser(tagId, decks, user)
     }
 }

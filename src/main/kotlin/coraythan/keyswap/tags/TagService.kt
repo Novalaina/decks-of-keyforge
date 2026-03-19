@@ -177,15 +177,15 @@ class TagService(
         tagRepo.delete(tag)
     }
 
-    fun tagDeckForUser(tagId: Long, deck: Deck, user: KeyUser) {
+    fun tagDecksForUser(tagId: Long, decks: List<Deck>, user: KeyUser) {
         val tag = tagRepo.findByIdOrNull(tagId) ?: throw IllegalStateException("No tag with id $tagId")
         if (tag.creator.id != user.id) throw UnauthorizedException("User ${user.username} does not own tag with id $tagId")
-        deckTagRepo.save(DeckTag(tag, deck))
+        deckTagRepo.saveAll(decks.map { DeckTag(tag, it) })
     }
 
-    fun untagDeckForUser(tagId: Long, deck: Deck, user: KeyUser) {
+    fun untagDecksForUser(tagId: Long, decks: List<Deck>, user: KeyUser) {
         val tag = tagRepo.findByIdOrNull(tagId) ?: throw IllegalStateException("No tag with id $tagId")
         if (tag.creator.id != user.id) throw UnauthorizedException("User ${user.username} does not own tag with id $tagId")
-        deckTagRepo.deleteByDeckIdAndTagId(deck.id, tagId)
+        decks.forEach { deckTagRepo.deleteByDeckIdAndTagId(it.id, tagId) }
     }
 }
