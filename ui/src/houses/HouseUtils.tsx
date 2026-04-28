@@ -19,6 +19,7 @@ import untamedImg from "./imgs/untamed.png"
 import redemptionImg from "./imgs/redemption.png"
 import prophecyImg from "./imgs/prophecy.svg"
 import skybornImg from "./imgs/skyborn.png"
+import ouborosImg from "./imgs/ouboros.png"
 import { SynergyCombo } from "../generated-src/SynergyCombo"
 import { AercForCombos } from "../aerc/AercForCombos"
 import { Box } from "@material-ui/core"
@@ -104,6 +105,11 @@ export const houseValuesArray: HouseValue[] = [
         house: House.Skyborn,
         img: skybornImg,
         displayName: "Skyborn"
+    },
+    {
+        house: House.Ouboros,
+        img: ouborosImg,
+        displayName: "Ouboros"
     },
     {
         house: House.Prophecy,

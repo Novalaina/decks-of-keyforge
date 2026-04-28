@@ -14,7 +14,7 @@ import { UserLink } from "../user/UserLink"
 import { AboutGridItem } from "./AboutPage"
 import { DokLink } from "../generic/DokLink"
 
-export const latestVersion = "7.7"
+export const latestVersion = "7.8"
 
 const decFirstUpdateCards = new CardFilters()
 decFirstUpdateCards.aercHistory = true
@@ -46,6 +46,20 @@ export class ReleaseNotes extends React.Component {
                     </Typography>
                     {cardsUpdateLink}
                 </Paper>
+                <ReleaseNote
+                    releaseNumber={"7.8"}
+                    date={"4/28/2026"}
+                    expanded={true}
+                    releaseNotesWithHighlights={[
+                        {
+                            highlight: "Initial Release for Draconian Measures!",
+                            note: "We've added Draconian Measures to expansions you can import in DoK! We'll be " +
+                                "spending the coming weeks rating the cards pending a release of a first version of " +
+                                "SAS for this new set. If you are a $6+ patron you will also be able to view the " +
+                                "SAS scores as we create them! Just turn on SAS Preview mode in your profile."
+                        },
+                    ]}
+                />
                 <ReleaseNote
                     releaseNumber={"7.7"}
                     date={"7/16/2025"}

@@ -6,5 +6,6 @@ object StaticAercValues {
     val capture = 0.33
     val draw = 0.75
     val discard = 0.5
+    val power = 0.1
     val amber = 1.0
 }

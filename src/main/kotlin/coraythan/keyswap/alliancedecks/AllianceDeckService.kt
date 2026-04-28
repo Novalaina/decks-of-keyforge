@@ -154,6 +154,7 @@ class AllianceDeckService(
                                 bonusDamage = it.bonusDamage,
                                 bonusDraw = it.bonusDraw,
                                 bonusDiscard = it.bonusDiscard,
+                                bonusPower = it.bonusPower,
                                 bonusHouses = it.bonusHouses,
                             )
                         }

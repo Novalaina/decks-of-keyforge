@@ -101,6 +101,9 @@ class DeckBuilderStore {
             case EnhancementType.DISCARD:
                 enhanceThis.bonusDiscard += change
                 break
+            case EnhancementType.POWER:
+                enhanceThis.bonusPower += change
+                break
             case EnhancementType.DRAW:
                 enhanceThis.bonusDraw += change
                 break
@@ -138,6 +141,7 @@ class DeckBuilderStore {
                     bonusCapture: 0,
                     bonusDamage: 0,
                     bonusDiscard: 0,
+                    bonusPower: 0,
                     bonusDraw: 0,
                     bonusHouses: [],
                 })
@@ -160,6 +164,7 @@ class DeckBuilderStore {
                 bonusCapture: card.bonusCapture ?? 0,
                 bonusDamage: card.bonusDamage ?? 0,
                 bonusDiscard: card.bonusDiscard ?? 0,
+                bonusPower: card.bonusPower ?? 0,
                 bonusDraw: card.bonusDraw ?? 0,
                 bonusHouses: card.bonusHouses ?? [],
             }))

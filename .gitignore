@@ -33,3 +33,6 @@ scripts-local/
 
 version.txt
 /docker/Dockerrun.aws.json
+
+# Kotlin
+.kotlin

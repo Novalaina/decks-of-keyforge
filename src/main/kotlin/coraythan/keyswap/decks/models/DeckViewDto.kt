@@ -35,6 +35,7 @@ fun List<HouseAndCards>.addBonusIcons(bonusIcons: DeckBonusIcons): List<HouseAnd
                             bonusDamage = iconsForCard.bonusDamage,
                             bonusDraw = iconsForCard.bonusDraw,
                             bonusDiscard = iconsForCard.bonusDiscard,
+                            bonusPower = iconsForCard.bonusPower,
                             bonusHouses = iconsForCard.bonusHouses(),
                         )
                     }
@@ -60,5 +61,6 @@ data class SimpleCard(
     val bonusDamage: Int? = null,
     val bonusDraw: Int? = null,
     val bonusDiscard: Int? = null,
+    val bonusPower: Int? = null,
     val bonusHouses: Set<House>? = emptySet(),
 )

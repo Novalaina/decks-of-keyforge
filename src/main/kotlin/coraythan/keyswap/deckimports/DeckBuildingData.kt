@@ -29,6 +29,7 @@ data class DeckBuildingData(
                                 bonusDamage = theoryCard.bonusDamage,
                                 bonusDraw = theoryCard.bonusDraw,
                                 bonusDiscard = theoryCard.bonusDiscard,
+                                bonusPower = theoryCard.bonusPower,
                                 bonusBobnar = theoryCard.bonusHouses.contains(House.Brobnar),
                                 bonusDis = theoryCard.bonusHouses.contains(House.Dis),
                                 bonusEkwidon = theoryCard.bonusHouses.contains(House.Ekwidon),
@@ -42,6 +43,7 @@ data class DeckBuildingData(
                                 bonusShadows = theoryCard.bonusHouses.contains(House.Shadows),
                                 bonusStarAlliance = theoryCard.bonusHouses.contains(House.StarAlliance),
                                 bonusUntamed = theoryCard.bonusHouses.contains(House.Untamed),
+                                bonusOuboros = theoryCard.bonusHouses.contains(House.Ouboros),
                             )
                         }
                 )
@@ -57,5 +59,6 @@ data class TheoryCard(
     val bonusDamage: Int = 0,
     val bonusDraw: Int = 0,
     val bonusDiscard: Int = 0,
+    val bonusPower: Int = 0,
     val bonusHouses: Set<House> = emptySet(),
 )

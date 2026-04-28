@@ -99,6 +99,7 @@ enum class SynergyTrait {
     bonusDamage,
     bonusCapture,
     bonusDiscard,
+    bonusPower,
     expectedAember,
     capturedAmber,
     targettedCapturedAmber,

@@ -167,6 +167,7 @@ export class DeckUtils {
                 cards.reduce((prev, next) => prev + (next.bonusDamage ?? 0), 0),
                 cards.reduce((prev, next) => prev + (next.bonusDraw ?? 0), 0),
                 cards.reduce((prev, next) => prev + (next.bonusDiscard ?? 0), 0),
+                cards.reduce((prev, next) => prev + (next.bonusPower ?? 0), 0),
                 cards.flatMap(card => card.bonusHouses ?? []).join(", "),
 
                 deck.keyCheatCount,

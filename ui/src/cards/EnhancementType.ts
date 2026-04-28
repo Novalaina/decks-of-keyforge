@@ -5,4 +5,5 @@ export enum EnhancementType {
     DAMAGE = "DAMAGE",
     DRAW = "DRAW",
     DISCARD = "DISCARD",
+    POWER = "POWER",
 }

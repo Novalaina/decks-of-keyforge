@@ -153,6 +153,10 @@ export const CreateTheoreticalDeck = observer(() => {
                                 hasBonus={(currentCardToEnhance?.bonusDiscard ?? 0) > 0}
                             />
                             <AddEnhanceIcon
+                                type={EnhancementType.POWER}
+                                hasBonus={(currentCardToEnhance?.bonusPower ?? 0) > 0}
+                            />
+                            <AddEnhanceIcon
                                 type={EnhancementType.DRAW}
                                 hasBonus={(currentCardToEnhance?.bonusDraw ?? 0) > 0}
                             />
@@ -206,6 +210,7 @@ export const CreateTheoreticalDeck = observer(() => {
                                     bonusCapture: 0,
                                     bonusDamage: 0,
                                     bonusDiscard: 0,
+                                    bonusPower: 0,
                                     bonusDraw: 0,
                                     bonusHouses: [],
                                 }))
@@ -219,6 +224,7 @@ export const CreateTheoreticalDeck = observer(() => {
                                     bonusDamage: 0,
                                     bonusDiscard: 0,
                                     bonusDraw: 0,
+                                    bonusPower: 0,
                                     bonusHouses: [],
                                 }))
                             deckBuilderStore.currentDeck!.cards["Logos"] = cardStore.allCards
@@ -231,6 +237,7 @@ export const CreateTheoreticalDeck = observer(() => {
                                     bonusDamage: 0,
                                     bonusDiscard: 0,
                                     bonusDraw: 0,
+                                    bonusPower: 0,
                                     bonusHouses: [],
                                 }))
 
@@ -244,6 +251,7 @@ export const CreateTheoreticalDeck = observer(() => {
                                     bonusDamage: 0,
                                     bonusDiscard: 0,
                                     bonusDraw: 0,
+                                    bonusPower: 0,
                                     bonusHouses: [],
                                 }))
 
@@ -256,6 +264,7 @@ export const CreateTheoreticalDeck = observer(() => {
                                     bonusDamage: 0,
                                     bonusDiscard: 0,
                                     bonusDraw: 0,
+                                    bonusPower: 0,
                                     bonusHouses: [],
                                 }))
                             }

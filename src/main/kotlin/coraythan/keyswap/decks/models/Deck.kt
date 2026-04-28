@@ -296,6 +296,7 @@ data class BonusIconsCard(
     val bonusDamage: Int = 0,
     val bonusDraw: Int = 0,
     val bonusDiscard: Int = 0,
+    val bonusPower: Int = 0,
     val bonusBobnar: Boolean = false,
     val bonusDis: Boolean = false,
     val bonusEkwidon: Boolean = false,
@@ -309,6 +310,7 @@ data class BonusIconsCard(
     val bonusShadows: Boolean = false,
     val bonusStarAlliance: Boolean = false,
     val bonusUntamed: Boolean = false,
+    val bonusOuboros: Boolean = false,
 ) {
     fun bonusHouses() = setOfNotNull(
         if (bonusBobnar) House.Brobnar else null,
@@ -324,6 +326,7 @@ data class BonusIconsCard(
         if (bonusShadows) House.Shadows else null,
         if (bonusStarAlliance) House.StarAlliance else null,
         if (bonusUntamed) House.Untamed else null,
+        if (bonusOuboros) House.Ouboros else null,
     )
 }
 
@@ -343,6 +346,7 @@ fun List<DokCardInDeck>.withBonusIcons(icons: DeckBonusIcons): List<DokCardInDec
                     bonusDamage = bonusIcons?.bonusDamage ?: 0,
                     bonusDraw = bonusIcons?.bonusDraw ?: 0,
                     bonusDiscard = bonusIcons?.bonusDiscard ?: 0,
+                    bonusPower = bonusIcons?.bonusPower ?: 0,
                     bonusHouses = bonusIcons?.bonusHouses() ?: emptySet(),
                 )
             }

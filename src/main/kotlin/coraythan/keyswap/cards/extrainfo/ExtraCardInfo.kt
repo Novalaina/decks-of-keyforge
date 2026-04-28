@@ -74,6 +74,7 @@ data class ExtraCardInfo(
     val enhancementDraw: Int = 0,
     val enhancementDamage: Int = 0,
     val enhancementDiscard: Int = 0,
+    val enhancementPower: Int = 0,
 
     /**
      * Changes the starting base match strength. For example, starts at -50 for Grumpy Buggy. This means you need
@@ -182,6 +183,7 @@ data class ExtraCardInfo(
             enhancementDamage = info.enhancementDamage,
             enhancementDraw = info.enhancementDraw,
             enhancementDiscard = info.enhancementDiscard,
+            enhancementPower = info.enhancementPower,
             baseSynPercent = info.baseSynPercent,
             traits = mutableListOf(),
             synergies = mutableListOf()

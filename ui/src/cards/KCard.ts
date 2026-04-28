@@ -41,6 +41,7 @@ export class CardUtils {
     static bonusIconCount = (card: SimpleCard): number => {
         return (card.bonusAember ?? 0) + (card.bonusDamage ?? 0) + (card.bonusDraw ?? 0) + (card.bonusCapture ?? 0)
             + (card.bonusDiscard ?? 0)
+            + (card.bonusPower ?? 0)
             + (card.bonusHouses?.length ?? 0)
     }
 

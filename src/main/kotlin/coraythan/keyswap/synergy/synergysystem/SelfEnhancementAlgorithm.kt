@@ -67,12 +67,14 @@ object SelfEnhancementAlgorithm {
                         val drawPipsMod = calculateModifier(cardWithIcons.bonusDraw, StaticAercValues.draw, multiplier)
                         val discardPipsMod =
                             calculateModifier(cardWithIcons.bonusDiscard, StaticAercValues.discard, multiplier)
+                        val powerPipsMod =
+                            calculateModifier(cardWithIcons.bonusPower, StaticAercValues.power, multiplier)
                         val amberMod = calculateModifier(cardWithIcons.bonusAember, StaticAercValues.amber, multiplier)
                         val amberControlMod =
                             calculateModifier(cardWithIcons.bonusCapture, StaticAercValues.capture, multiplier)
                         val creatureControlMod =
                             calculateModifier(cardWithIcons.bonusDamage, StaticAercValues.damage, multiplier)
-                        val total = drawPipsMod + amberMod + amberControlMod + creatureControlMod + discardPipsMod
+                        val total = drawPipsMod + amberMod + amberControlMod + creatureControlMod + discardPipsMod + powerPipsMod
 
                         SynergyCombo(
                             house = cardWithIcons.house,

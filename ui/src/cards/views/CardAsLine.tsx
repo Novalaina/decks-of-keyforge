@@ -252,6 +252,9 @@ const CardLine = observer((props: CardAsLineProps & { fullCard: FrontendCard }) 
                     {[...Array(card.bonusDiscard ?? 0)].map((n, idx) => (
                         <EnhancementIcon type={EnhancementType.DISCARD} key={idx}/>
                     ))}
+                    {[...Array(card.bonusPower ?? 0)].map((n, idx) => (
+                        <EnhancementIcon type={EnhancementType.POWER} key={idx}/>
+                    ))}
                     {card.bonusHouses?.map((house) => (
                         <EnhancementIcon type={house} key={house}/>
                     ))}

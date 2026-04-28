@@ -18,6 +18,7 @@ enum class House(val masterVaultValue: String, val realHouse: Boolean = true) {
     Saurian("Saurian"),
     Shadows("Shadows"),
     Skyborn("Skyborn"),
+    Ouboros("Ouboros"),
     StarAlliance("Star Alliance"),
     Unfathomable("Unfathomable"),
     Untamed("Untamed"),

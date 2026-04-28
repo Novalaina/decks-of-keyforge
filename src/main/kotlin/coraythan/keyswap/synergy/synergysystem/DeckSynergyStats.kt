@@ -53,6 +53,7 @@ data class DeckSynergyStats(
             SynergyTrait.bonusDamage to bonusIconBaseTraitStrengths,
             SynergyTrait.bonusDraw to bonusIconBaseTraitStrengths,
             SynergyTrait.bonusDiscard to bonusIconBaseTraitStrengths,
+            SynergyTrait.bonusPower to bonusIconBaseTraitStrengths,
             SynergyTrait.totalCreaturePower to TraitVals(100, 30, 30, 15),
             SynergyTrait.totalArmor to TraitVals(10, 5),
             SynergyTrait.haunted to (TraitVals(100, 0)),
@@ -131,7 +132,7 @@ data class DeckSynergyStats(
                 val increasesPowerTrait =
                     card.extraCardInfo.traits.firstOrNull { it.trait == SynergyTrait.increasesCreaturePower && it.player != SynTraitPlayer.ENEMY }
                 val power =
-                    card.card.power + (if (increasesPowerTrait == null) 0 else when (increasesPowerTrait.rating) {
+                    card.card.power + card.bonusPower + (if (increasesPowerTrait == null) 0 else when (increasesPowerTrait.rating) {
                         TraitStrength.EXTRA_WEAK.value -> 1
                         TraitStrength.WEAK.value -> 2
                         TraitStrength.NORMAL.value -> 3
@@ -165,6 +166,7 @@ data class DeckSynergyStats(
                 SynergyTrait.bonusDamage to DeckSynStatValue.create(inputCards.sumOf { it.bonusDamage }),
                 SynergyTrait.bonusDraw to DeckSynStatValue.create(inputCards.sumOf { it.bonusDraw }),
                 SynergyTrait.bonusDiscard to DeckSynStatValue.create(inputCards.sumOf { it.bonusDiscard }),
+                SynergyTrait.bonusPower to DeckSynStatValue.create(inputCards.sumOf { it.bonusPower }),
                 SynergyTrait.totalCreaturePower to DeckSynStatValue.create(
                     powerValueMap.sumOf { it.second },
                     powerValueMap.map { "${it.first} +${it.second} Power" }

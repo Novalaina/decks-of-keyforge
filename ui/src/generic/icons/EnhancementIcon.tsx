@@ -5,6 +5,7 @@ import EnhancedCapture from "../imgs/enhancements/enhanced-capture.png"
 import EnhancedDamage from "../imgs/enhancements/enhanced-damage.png"
 import EnhancedDraw from "../imgs/enhancements/enhanced-draw.png"
 import EnhancedDiscard from "../imgs/enhancements/enhanced-discard.png"
+import EnhancedPower from "../imgs/enhancements/enhanced-power.png"
 import EnhancedBrobnar from "../imgs/enhancements/brobnar.svg"
 import EnhancedDis from "../imgs/enhancements/dis.svg"
 import EnhancedEkwidon from "../imgs/enhancements/ekwidon.svg"
@@ -12,6 +13,7 @@ import EnhancedGeistoid from "../imgs/enhancements/geistoid.svg"
 import EnhancedLogos from "../imgs/enhancements/logos.svg"
 import EnhancedMars from "../imgs/enhancements/mars.svg"
 import EnhancedSkyborn from "../imgs/enhancements/skyborn.svg"
+import EnhancedOuboros from "../imgs/enhancements/ouboros.svg"
 import { House } from "../../generated-src/House"
 import { RedemptionEnhancedIcon } from "../imgs/enhancements/RedemptionEnhancedIcon"
 import { StarAllianceEnhancedIcon } from "../imgs/enhancements/StarAllianceEnhancedIcon"
@@ -35,6 +37,8 @@ export const EnhancementIcon = (props: { type: EnhancementType | House }) => {
         iconSrc = EnhancedDraw
     } else if (props.type === EnhancementType.DISCARD) {
         iconSrc = EnhancedDiscard
+    } else if (props.type === EnhancementType.POWER) {
+        iconSrc = EnhancedPower
     } else if (props.type === House.Brobnar) {
         iconSrc = EnhancedBrobnar
     } else if (props.type === House.Dis) {
@@ -61,6 +65,8 @@ export const EnhancementIcon = (props: { type: EnhancementType | House }) => {
         return <StarAllianceEnhancedIcon/>
     } else if (props.type === House.Untamed) {
         return <UntamedEnhancedIcon/>
+    } else if (props.type === House.Ouboros) {
+        iconSrc = EnhancedOuboros
     } else {
         throw new Error(`No enhancement icon for ${props.type}`)
     }

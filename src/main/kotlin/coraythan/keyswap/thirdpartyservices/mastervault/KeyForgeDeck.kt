@@ -29,6 +29,7 @@ data class KeyForgeDeck(
             "draw",
             "damage",
             "discard",
+            "power",
             "brobnar",
             "dis",
             "ekwidon",
@@ -42,6 +43,7 @@ data class KeyForgeDeck(
             "shadows",
             "star alliance",
             "untamed",
+            "ouboros",
         )
     }
 
@@ -80,6 +82,7 @@ data class KeyForgeDeck(
                                     bonusDamage = iconsForCard.second.count { icon -> icon == "damage" },
                                     bonusDraw = iconsForCard.second.count { icon -> icon == "draw" },
                                     bonusDiscard = iconsForCard.second.count { icon -> icon == "discard" },
+                                    bonusPower = iconsForCard.second.count { icon -> icon == "power" },
                                     bonusBobnar = iconsForCard.second.any { icon -> icon == House.Brobnar.masterVaultValue.lowercase() },
                                     bonusDis = iconsForCard.second.any { icon -> icon == House.Dis.masterVaultValue.lowercase() },
                                     bonusEkwidon = iconsForCard.second.any { icon -> icon == House.Ekwidon.masterVaultValue.lowercase() },
@@ -93,6 +96,7 @@ data class KeyForgeDeck(
                                     bonusShadows = iconsForCard.second.any { icon -> icon == House.Shadows.masterVaultValue.lowercase() },
                                     bonusStarAlliance = iconsForCard.second.any { icon -> icon == House.StarAlliance.masterVaultValue.lowercase() },
                                     bonusUntamed = iconsForCard.second.any { icon -> icon == House.Untamed.masterVaultValue.lowercase() },
+                                    bonusOuboros = iconsForCard.second.any { icon -> icon == House.Ouboros.masterVaultValue.lowercase() },
                                 )
                             }
                         }

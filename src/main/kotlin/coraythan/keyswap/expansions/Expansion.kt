@@ -190,6 +190,20 @@ enum class Expansion(
         ),
         expectedCardCount = 40,
         includeInStatistics = true,
+    ),
+    DRACONIAN_MEASURES(
+        928,
+        "DM",
+        setOf(
+            House.Ekwidon,
+            House.Geistoid,
+            House.Mars,
+            House.Ouboros,
+            House.Shadows,
+            House.Skyborn,
+            House.Unfathomable,
+        ),
+        includeInStatistics = false,
     );
 
     companion object {

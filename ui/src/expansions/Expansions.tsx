@@ -35,6 +35,7 @@ export enum ExpansionNumber {
     VM25 = 939,
     PV = 886,
     CC = 918,
+    DM = 928,
 }
 
 export const displayMyDecksLinksFor = [
@@ -48,6 +49,7 @@ export const displayMyDecksLinksFor = [
     Expansion.AEMBER_SKIES,
     Expansion.TOKENS_OF_CHANGE,
     Expansion.PROPHETIC_VISIONS,
+    Expansion.DRACONIAN_MEASURES,
 ]
 
 export const activeSasExpansions = [
@@ -70,6 +72,7 @@ export const activeSasExpansions = [
     Expansion.VAULT_MASTERS_2025,
     Expansion.PROPHETIC_VISIONS,
     Expansion.CRUCIBLE_CLASH,
+    // Expansion.DRACONIAN_MEASURES
 ]
 
 export const activeCardExpansions = [
@@ -86,6 +89,7 @@ export const activeCardExpansions = [
     ExpansionNumber.MoM,
     ExpansionNumber.D,
     ExpansionNumber.PV,
+    ExpansionNumber.DM,
 ]
 
 export const expansionsWithCards = [
@@ -107,13 +111,14 @@ export const expansionsWithCards = [
     Expansion.DISCOVERY,
     Expansion.PROPHETIC_VISIONS,
     Expansion.CRUCIBLE_CLASH,
+    Expansion.DRACONIAN_MEASURES,
 ]
 
 export const recentExpansions = [
-    Expansion.PROPHETIC_VISIONS,
     Expansion.AEMBER_SKIES,
     Expansion.GRIM_REMINDERS,
     Expansion.TOKENS_OF_CHANGE,
+    Expansion.DRACONIAN_MEASURES,
 ]
 
 export const activeCardLinksExpansions = [
@@ -128,6 +133,7 @@ export const activeCardLinksExpansions = [
     Expansion.TOKENS_OF_CHANGE,
     Expansion.MORE_MUTATION,
     Expansion.PROPHETIC_VISIONS,
+    Expansion.DRACONIAN_MEASURES,
 ]
 
 export const possibleCardExpansionsForExpansion = (exp: ExpansionNumber): ExpansionNumber[] => {
@@ -162,6 +168,7 @@ export const expansionInfos: ExpansionInfo[] = [
     {expansionNumber: ExpansionNumber.D, name: "Discovery", abbreviation: "D", backendEnum: Expansion.DISCOVERY},
     {expansionNumber: ExpansionNumber.PV, name: "Prophetic Visions", abbreviation: "PV", backendEnum: Expansion.PROPHETIC_VISIONS},
     {expansionNumber: ExpansionNumber.CC, name: "Crucible Clash", abbreviation: "CC", backendEnum: Expansion.CRUCIBLE_CLASH},
+    {expansionNumber: ExpansionNumber.DM, name: "Draconian Measures", abbreviation: "DM", backendEnum: Expansion.DRACONIAN_MEASURES},
 ]
 
 export const activeExpansions: Expansion[] = expansionInfos

@@ -25,6 +25,7 @@ data class DokCardInDeck(
     val bonusDamage: Int = 0,
     val bonusDraw: Int = 0,
     val bonusDiscard: Int = 0,
+    val bonusPower: Int = 0,
     val bonusHouses: Set<House> = emptySet(),
 ) : Comparable<DokCardInDeck> {
     constructor(deck: GenericDeck, card: ExtraCardInfo, cardHouse: House, cardExpansion: Expansion) : this(
@@ -51,14 +52,16 @@ data class DokCardInDeck(
     ).plus(bonusHouses)
 
     val pipEnhanced: Boolean
-        get() = bonusAember > 0 || bonusCapture > 0 || bonusDamage > 0 || bonusDraw > 0 || bonusDiscard > 0
+        get() = bonusAember > 0 || bonusCapture > 0 || bonusDamage > 0 || bonusDraw > 0 || bonusDiscard > 0 || bonusPower > 0
 
     val enhanced: Boolean
         get() = bonusAember > 0 || bonusCapture > 0 || bonusDamage > 0 || bonusDraw > 0 || bonusDiscard > 0
-                || bonusHouses.isNotEmpty()
+                || bonusPower > 0 || bonusHouses.isNotEmpty()
 
     val totalAmber: Int
         get() = this.bonusAember + this.card.amber
+    val totalPower: Int
+        get() = this.bonusPower + this.card.power
 
     fun toTokenInfo() = TokenInfo(
         name = card.cardTitle,
@@ -85,6 +88,7 @@ data class DokCardInDeck(
             bonusAember = bonusAember,
             bonusDamage = bonusDamage,
             bonusDiscard = bonusDiscard,
+            bonusPower = bonusPower,
             bonusHouses = bonusHouses,
         )
     }
