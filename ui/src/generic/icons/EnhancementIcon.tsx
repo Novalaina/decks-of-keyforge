@@ -14,6 +14,7 @@ import EnhancedLogos from "../imgs/enhancements/logos.svg"
 import EnhancedMars from "../imgs/enhancements/mars.svg"
 import EnhancedSkyborn from "../imgs/enhancements/skyborn.svg"
 import EnhancedOuboros from "../imgs/enhancements/ouboros.svg"
+import EnhancedUnfathomable from "../imgs/enhancements/unfathomable.png"
 import { House } from "../../generated-src/House"
 import { RedemptionEnhancedIcon } from "../imgs/enhancements/RedemptionEnhancedIcon"
 import { StarAllianceEnhancedIcon } from "../imgs/enhancements/StarAllianceEnhancedIcon"
@@ -67,6 +68,8 @@ export const EnhancementIcon = (props: { type: EnhancementType | House }) => {
         return <UntamedEnhancedIcon/>
     } else if (props.type === House.Ouboros) {
         iconSrc = EnhancedOuboros
+    } else if (props.type === House.Unfathomable) {
+        iconSrc = EnhancedUnfathomable
     } else {
         throw new Error(`No enhancement icon for ${props.type}`)
     }

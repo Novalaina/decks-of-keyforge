@@ -311,6 +311,7 @@ data class BonusIconsCard(
     val bonusStarAlliance: Boolean = false,
     val bonusUntamed: Boolean = false,
     val bonusOuboros: Boolean = false,
+    val bonusUnfathomable: Boolean = false,
 ) {
     fun bonusHouses() = setOfNotNull(
         if (bonusBobnar) House.Brobnar else null,
@@ -327,6 +328,7 @@ data class BonusIconsCard(
         if (bonusStarAlliance) House.StarAlliance else null,
         if (bonusUntamed) House.Untamed else null,
         if (bonusOuboros) House.Ouboros else null,
+        if (bonusUnfathomable) House.Unfathomable else null,
     )
 }
 

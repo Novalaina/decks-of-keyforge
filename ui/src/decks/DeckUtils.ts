@@ -230,6 +230,7 @@ export class DeckUtils {
             "Bonus Damage",
             "Bonus Draw",
             "Bonus Discard",
+            "Bonus Power",
             "Bonus Houses",
 
             "Key Cheat Count",

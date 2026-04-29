@@ -44,6 +44,7 @@ data class DeckBuildingData(
                                 bonusStarAlliance = theoryCard.bonusHouses.contains(House.StarAlliance),
                                 bonusUntamed = theoryCard.bonusHouses.contains(House.Untamed),
                                 bonusOuboros = theoryCard.bonusHouses.contains(House.Ouboros),
+                                bonusUnfathomable = theoryCard.bonusHouses.contains(House.Unfathomable),
                             )
                         }
                 )

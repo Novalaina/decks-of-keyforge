@@ -44,6 +44,7 @@ data class KeyForgeDeck(
             "star alliance",
             "untamed",
             "ouboros",
+            "unfathomable",
         )
     }
 
@@ -97,6 +98,7 @@ data class KeyForgeDeck(
                                     bonusStarAlliance = iconsForCard.second.any { icon -> icon == House.StarAlliance.masterVaultValue.lowercase() },
                                     bonusUntamed = iconsForCard.second.any { icon -> icon == House.Untamed.masterVaultValue.lowercase() },
                                     bonusOuboros = iconsForCard.second.any { icon -> icon == House.Ouboros.masterVaultValue.lowercase() },
+                                    bonusUnfathomable = iconsForCard.second.any { icon -> icon == House.Unfathomable.masterVaultValue.lowercase() },
                                 )
                             }
                         }
