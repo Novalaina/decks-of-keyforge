@@ -39,6 +39,8 @@ import pv from "./imgs/pv.svg"
 import pvDark from "./imgs/pv-dark.svg"
 import cc from "./imgs/cc.svg"
 import ccDark from "./imgs/cc-dark.svg"
+import dm from "./imgs/dm.svg"
+import dmDark from "./imgs/dm-dark.svg"
 
 export const ExpansionIcon = observer((props: {
     expansion: Expansion,
@@ -123,6 +125,10 @@ export const ExpansionIcon = observer((props: {
         case Expansion.CRUCIBLE_CLASH:
             lightSrc = cc
             darkSrc = ccDark
+            break
+        case Expansion.DRACONIAN_MEASURES:
+            lightSrc = dm
+            darkSrc = dmDark
             break
     }
     let src
