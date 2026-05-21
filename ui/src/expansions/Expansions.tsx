@@ -91,8 +91,8 @@ export const activeCardExpansions = [
     ExpansionNumber.MoM,
     ExpansionNumber.D,
     ExpansionNumber.PV,
+    ExpansionNumber.CC,
     ExpansionNumber.DM,
-    ExpansionNumber.VM26,
 ]
 
 export const expansionsWithCards = [
