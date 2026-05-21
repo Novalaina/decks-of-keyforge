@@ -74,7 +74,7 @@ export class SellersAndDevs extends React.Component {
                 </AboutGridItem>
                 <AboutGridItem>
                     <InfoListCard title={"Rules to use the APIs in general"} infos={[
-                        "1. Please do not spam requests. Use the all decks CSV above when appropriate. The site has been brought down " +
+                        "1. Please do not spam requests. The site has been brought down " +
                         "due to improper use of these APIs.",
                         "2. You can make a maximum of 25 requests per minute. If you need more, please become a patron! Patrons have " +
                         "increased request limits. $6 a month = 50 per min, $12 a month = 100 per min, and $25+ a month = 250 per min.",
@@ -87,7 +87,7 @@ export class SellersAndDevs extends React.Component {
                 <AboutGridItem>
                     <InfoListCard title={"SAS and AERC API"} infos={[
                         "I've created a simple API you can use to get SAS and AERC ratings for a deck",
-                        "1. First off, if you want all the decks, use the Decks CSV above. Don't request every deck that exists from DoK!",
+                        "1. Please don't request every deck that exists from DoK.",
                         "2. I've included the version of SAS used. If possible, please cache or persist SAS scores until a new version is released.",
                         "The url to request deck info is:",
                         "https://decksofkeyforge.com/public-api/v3/decks/{deck-id-from-master-vault}",

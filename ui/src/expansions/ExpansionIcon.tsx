@@ -91,6 +91,7 @@ export const ExpansionIcon = observer((props: {
         case Expansion.VAULT_MASTERS_2023:
         case Expansion.VAULT_MASTERS_2024:
         case Expansion.VAULT_MASTERS_2025:
+        case Expansion.VAULT_MASTERS_2026:
             lightSrc = vm
             darkSrc = vmDark
             break

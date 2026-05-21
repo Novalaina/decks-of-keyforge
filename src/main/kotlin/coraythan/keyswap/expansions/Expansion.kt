@@ -203,7 +203,21 @@ enum class Expansion(
             House.Skyborn,
             House.Unfathomable,
         ),
-        includeInStatistics = false,
+        includeInStatistics = true,
+    ),
+    VAULT_MASTERS_2026(
+        964,
+        "VM26",
+        setOf(
+            House.Brobnar,
+            House.Dis,
+            House.Saurian,
+            House.Shadows,
+            House.Skyborn,
+            House.Unfathomable,
+            House.Untamed,
+        ),
+        includeInStatistics = true
     );
 
     companion object {

@@ -36,6 +36,7 @@ export enum ExpansionNumber {
     PV = 886,
     CC = 918,
     DM = 928,
+    VM26 = 964,
 }
 
 export const displayMyDecksLinksFor = [
@@ -72,6 +73,7 @@ export const activeSasExpansions = [
     Expansion.VAULT_MASTERS_2025,
     Expansion.PROPHETIC_VISIONS,
     Expansion.CRUCIBLE_CLASH,
+    // Expansion.VAULT_MASTERS_2026,
     // Expansion.DRACONIAN_MEASURES
 ]
 
@@ -90,6 +92,7 @@ export const activeCardExpansions = [
     ExpansionNumber.D,
     ExpansionNumber.PV,
     ExpansionNumber.DM,
+    ExpansionNumber.VM26,
 ]
 
 export const expansionsWithCards = [
@@ -101,9 +104,9 @@ export const expansionsWithCards = [
     Expansion.WINDS_OF_EXCHANGE,
     Expansion.GRIM_REMINDERS,
     Expansion.VAULT_MASTERS_2023,
+    Expansion.MENAGERIE_2024,
     Expansion.VAULT_MASTERS_2024,
     Expansion.VAULT_MASTERS_2025,
-    Expansion.MENAGERIE_2024,
     Expansion.MARTIAN_CIVIL_WAR,
     Expansion.AEMBER_SKIES,
     Expansion.MORE_MUTATION,
@@ -112,6 +115,7 @@ export const expansionsWithCards = [
     Expansion.PROPHETIC_VISIONS,
     Expansion.CRUCIBLE_CLASH,
     Expansion.DRACONIAN_MEASURES,
+    Expansion.VAULT_MASTERS_2026,
 ]
 
 export const recentExpansions = [
@@ -155,20 +159,21 @@ export const expansionInfos: ExpansionInfo[] = [
     {expansionNumber: ExpansionNumber.MM, name: "Mass Mutation", abbreviation: "MM", backendEnum: Expansion.MASS_MUTATION},
     {expansionNumber: ExpansionNumber.DT, name: "Dark Tidings", abbreviation: "DT", backendEnum: Expansion.DARK_TIDINGS},
     {expansionNumber: ExpansionNumber.WOE, name: "Winds of Exchange", abbreviation: "WoE", backendEnum: Expansion.WINDS_OF_EXCHANGE, hasTokens: true},
-    {expansionNumber: ExpansionNumber.UC22, name: "Unchained", abbreviation: "UC22", backendEnum: Expansion.UNCHAINED_2022, hasTokens: true, tournamentIllegal: true},
+    {expansionNumber: ExpansionNumber.GR, name: "Grim Reminders", abbreviation: "GR", backendEnum: Expansion.GRIM_REMINDERS},
+    {expansionNumber: ExpansionNumber.AS, name: "Aember Skies", abbreviation: "AS", backendEnum: Expansion.AEMBER_SKIES},
+    {expansionNumber: ExpansionNumber.PV, name: "Prophetic Visions", abbreviation: "PV", backendEnum: Expansion.PROPHETIC_VISIONS},
+    {expansionNumber: ExpansionNumber.DM, name: "Draconian Measures", abbreviation: "DM", backendEnum: Expansion.DRACONIAN_MEASURES},
     {expansionNumber: ExpansionNumber.VM23, name: "Vault M 23", abbreviation: "VM23", backendEnum: Expansion.VAULT_MASTERS_2023},
     {expansionNumber: ExpansionNumber.VM24, name: "Vault M 24", abbreviation: "VM24", backendEnum: Expansion.VAULT_MASTERS_2024},
     {expansionNumber: ExpansionNumber.VM25, name: "Vault M 25", abbreviation: "VM25", backendEnum: Expansion.VAULT_MASTERS_2025},
-    {expansionNumber: ExpansionNumber.GR, name: "Grim Reminders", abbreviation: "GR", backendEnum: Expansion.GRIM_REMINDERS},
-    {expansionNumber: ExpansionNumber.MN24, name: "Menagerie", abbreviation: "MN24", backendEnum: Expansion.MENAGERIE_2024, hasTokens: true, tournamentIllegal: true},
-    {expansionNumber: ExpansionNumber.MCW, name: "Martian Civil War", abbreviation: "MCW", backendEnum: Expansion.MARTIAN_CIVIL_WAR, hasTokens: true, tournamentIllegal: true},
-    {expansionNumber: ExpansionNumber.AS, name: "Aember Skies", abbreviation: "AS", backendEnum: Expansion.AEMBER_SKIES},
+    {expansionNumber: ExpansionNumber.VM26, name: "Vault M 26", abbreviation: "VM26", backendEnum: Expansion.VAULT_MASTERS_2026},
     {expansionNumber: ExpansionNumber.MoM, name: "More Mutation", abbreviation: "MoM", backendEnum: Expansion.MORE_MUTATION},
     {expansionNumber: ExpansionNumber.ToC, name: "Tokens of Change", abbreviation: "ToC", backendEnum: Expansion.TOKENS_OF_CHANGE, hasTokens: true},
     {expansionNumber: ExpansionNumber.D, name: "Discovery", abbreviation: "D", backendEnum: Expansion.DISCOVERY},
-    {expansionNumber: ExpansionNumber.PV, name: "Prophetic Visions", abbreviation: "PV", backendEnum: Expansion.PROPHETIC_VISIONS},
     {expansionNumber: ExpansionNumber.CC, name: "Crucible Clash", abbreviation: "CC", backendEnum: Expansion.CRUCIBLE_CLASH},
-    {expansionNumber: ExpansionNumber.DM, name: "Draconian Measures", abbreviation: "DM", backendEnum: Expansion.DRACONIAN_MEASURES},
+    {expansionNumber: ExpansionNumber.MCW, name: "Martian Civil War", abbreviation: "MCW", backendEnum: Expansion.MARTIAN_CIVIL_WAR, hasTokens: true, tournamentIllegal: true},
+    {expansionNumber: ExpansionNumber.UC22, name: "Unchained", abbreviation: "UC22", backendEnum: Expansion.UNCHAINED_2022, hasTokens: true, tournamentIllegal: true},
+    {expansionNumber: ExpansionNumber.MN24, name: "Menagerie", abbreviation: "MN24", backendEnum: Expansion.MENAGERIE_2024, hasTokens: true, tournamentIllegal: true},
 ]
 
 export const activeExpansions: Expansion[] = expansionInfos

@@ -468,6 +468,11 @@ export class UpdateExtraCardInfo extends React.Component<UpdateExtraCardInfoProp
                                         value={this.enhancementDamage}
                                         update={(event: EventValue) => this.enhancementDamage = event.target.value}
                                     />
+                                    <InfoInput
+                                        name={"bonus power"}
+                                        value={this.enhancementPower}
+                                        update={(event: EventValue) => this.enhancementPower = event.target.value}
+                                    />
                                 </>
                             )}
                             <Grid item={true} xs={6} sm={2}>

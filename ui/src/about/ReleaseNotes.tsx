@@ -14,7 +14,7 @@ import { UserLink } from "../user/UserLink"
 import { AboutGridItem } from "./AboutPage"
 import { DokLink } from "../generic/DokLink"
 
-export const latestVersion = "7.8"
+export const latestVersion = "7.9"
 
 const decFirstUpdateCards = new CardFilters()
 decFirstUpdateCards.aercHistory = true
@@ -46,6 +46,18 @@ export class ReleaseNotes extends React.Component {
                     </Typography>
                     {cardsUpdateLink}
                 </Paper>
+
+                <ReleaseNote
+                    releaseNumber={"7.9"}
+                    date={"5/20/2026"}
+                    expanded={true}
+                    releaseNotesWithHighlights={[
+                        {
+                            highlight: "Added Vault Masters 2026",
+                            note: "Just threw importing Vault Masters 2026 decks onto DoK!"
+                        },
+                    ]}
+                />
                 <ReleaseNote
                     releaseNumber={"7.8"}
                     date={"4/28/2026"}
