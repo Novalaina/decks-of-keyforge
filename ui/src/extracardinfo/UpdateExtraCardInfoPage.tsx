@@ -459,11 +459,6 @@ export class UpdateExtraCardInfo extends React.Component<UpdateExtraCardInfoProp
                                         update={(event: EventValue) => this.enhancementDiscard = event.target.value}
                                     />
                                     <InfoInput
-                                        name={"bonus power"}
-                                        value={this.enhancementPower}
-                                        update={(event: EventValue) => this.enhancementPower = event.target.value}
-                                    />
-                                    <InfoInput
                                         name={"bonus damage"}
                                         value={this.enhancementDamage}
                                         update={(event: EventValue) => this.enhancementDamage = event.target.value}

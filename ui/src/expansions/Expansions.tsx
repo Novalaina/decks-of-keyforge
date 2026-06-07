@@ -119,9 +119,9 @@ export const expansionsWithCards = [
 ]
 
 export const recentExpansions = [
-    Expansion.AEMBER_SKIES,
     Expansion.GRIM_REMINDERS,
-    Expansion.TOKENS_OF_CHANGE,
+    Expansion.AEMBER_SKIES,
+    Expansion.PROPHETIC_VISIONS,
     Expansion.DRACONIAN_MEASURES,
 ]
 

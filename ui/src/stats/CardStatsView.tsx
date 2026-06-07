@@ -11,6 +11,7 @@ import { Expansion } from "../generated-src/Expansion"
 import { Loader } from "../mui-restyled/Loader"
 import { uiStore } from "../ui/UiStore"
 import { statsStore } from "./StatsStore"
+import { screenStore } from "../ui/ScreenStore"
 
 @observer
 export class CardStatsView extends React.Component<{}> {
@@ -43,6 +44,8 @@ export class CardStatsView extends React.Component<{}> {
             return <Typography>Stats not yet calculated</Typography>
         }
 
+        const chartWidth = (64 * activeSasExpansions.length)
+
         return (
             <div style={{display: "flex", flexWrap: "wrap", justifyContent: "center"}}>
                 <AercBySetBar
@@ -57,7 +60,7 @@ export class CardStatsView extends React.Component<{}> {
                             })
                     }
                     indexBy={"expansion"}
-                    width={(102 * activeSasExpansions.length)}
+                    width={chartWidth}
                 />
 
                 {activeSasExpansions.filter((expansion: Expansion) => {
@@ -86,11 +89,28 @@ export class CardStatsView extends React.Component<{}> {
     }
 }
 
-const AercBySetBar = (props: { name: string, data: AercData[], indexBy: string, width: number, gridXValues?: string[] }) => {
+const AercBySetBar = (props: {
+    name: string,
+    data: AercData[],
+    indexBy: string,
+    width: number,
+    gridXValues?: string[]
+}) => {
+
+    const avScreenWidth = screenStore.screenWidth - 32
+    const realWidth = props.width > avScreenWidth ? avScreenWidth : props.width
+
     return (
-        <Card style={{margin: spacing(2), padding: spacing(2), display: "flex", flexDirection: "column", alignItems: "center"}}>
+        <Card style={{
+            margin: spacing(2),
+            padding: spacing(2),
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            overflowX: "auto",
+        }}>
             <Typography variant={"h4"} color={"primary"}>{props.name}</Typography>
-            <div style={{width: props.width, height: 560}}>
+            <div style={{width: realWidth, height: 560, flexShrink: 0}}>
                 <ResponsiveBar
                     data={props.data}
                     keys={aercProperties}
