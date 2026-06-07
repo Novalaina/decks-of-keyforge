@@ -57,10 +57,13 @@ export class CardStatsView extends React.Component<{}> {
                             })
                     }
                     indexBy={"expansion"}
-                    width={64 + (104 * activeSasExpansions.length)}
+                    width={(102 * activeSasExpansions.length)}
                 />
 
-                {activeSasExpansions.map((expansion: Expansion) => {
+                {activeSasExpansions.filter((expansion: Expansion) => {
+                    const tournamentIllegal = expansionInfoMap.get(expansion)?.tournamentIllegal
+                    return tournamentIllegal == null || !tournamentIllegal
+                }).map((expansion: Expansion) => {
 
                     const expansionDatas = datas?.filter(data => data.expansion === expansion && data.house != null)
 

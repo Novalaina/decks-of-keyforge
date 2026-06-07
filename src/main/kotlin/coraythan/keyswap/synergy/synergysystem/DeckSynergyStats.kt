@@ -53,7 +53,7 @@ data class DeckSynergyStats(
             SynergyTrait.bonusDamage to bonusIconBaseTraitStrengths,
             SynergyTrait.bonusDraw to bonusIconBaseTraitStrengths,
             SynergyTrait.bonusDiscard to bonusIconBaseTraitStrengths,
-            SynergyTrait.bonusPower to bonusIconBaseTraitStrengths,
+             SynergyTrait.bonusPower to TraitVals(20, 8),
             SynergyTrait.totalCreaturePower to TraitVals(100, 30, 30, 15),
             SynergyTrait.totalArmor to TraitVals(10, 5),
             SynergyTrait.haunted to (TraitVals(100, 0)),
@@ -166,7 +166,21 @@ data class DeckSynergyStats(
                 SynergyTrait.bonusDamage to DeckSynStatValue.create(inputCards.sumOf { it.bonusDamage }),
                 SynergyTrait.bonusDraw to DeckSynStatValue.create(inputCards.sumOf { it.bonusDraw }),
                 SynergyTrait.bonusDiscard to DeckSynStatValue.create(inputCards.sumOf { it.bonusDiscard }),
-                SynergyTrait.bonusPower to DeckSynStatValue.create(inputCards.sumOf { it.bonusPower }),
+                SynergyTrait.bonusPower to DeckSynStatValue.create(inputCards.sumOf {
+                    it.bonusPower + it.extraCardInfo.traits.sumOf { trait ->
+                        if (trait.trait == SynergyTrait.addsPowerTokens && trait.player != SynTraitPlayer.ENEMY) {
+                            when (trait.strength()) {
+                                TraitStrength.EXTRA_WEAK -> 1
+                                TraitStrength.WEAK -> 2
+                                TraitStrength.NORMAL -> 3
+                                TraitStrength.STRONG -> 4
+                                TraitStrength.EXTRA_STRONG -> 6
+                            }
+                        } else {
+                            0
+                        } as Int
+                    }
+                }),
                 SynergyTrait.totalCreaturePower to DeckSynStatValue.create(
                     powerValueMap.sumOf { it.second },
                     powerValueMap.map { "${it.first} +${it.second} Power" }

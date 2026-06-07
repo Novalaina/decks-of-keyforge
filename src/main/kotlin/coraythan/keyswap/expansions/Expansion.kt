@@ -147,6 +147,7 @@ enum class Expansion(
         tournamentLegal = false,
         singleHouse = true,
         expectedCardCount = 12,
+        includeInStatistics = false,
     ),
     DISCOVERY(
         907,
@@ -158,7 +159,7 @@ enum class Expansion(
         918,
         "CC",
         setOf(House.Dis, House.Skyborn, House.Untamed),
-        includeInStatistics = false,
+        includeInStatistics = true,
         expectedCardCount = 37,
     ),
     VAULT_MASTERS_2025(
