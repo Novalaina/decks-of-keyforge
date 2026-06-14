@@ -73,8 +73,8 @@ export const activeSasExpansions = [
     Expansion.VAULT_MASTERS_2025,
     Expansion.PROPHETIC_VISIONS,
     Expansion.CRUCIBLE_CLASH,
-    // Expansion.VAULT_MASTERS_2026,
-    // Expansion.DRACONIAN_MEASURES
+    Expansion.VAULT_MASTERS_2026,
+    Expansion.DRACONIAN_MEASURES
 ]
 
 export const activeCardExpansions = [
