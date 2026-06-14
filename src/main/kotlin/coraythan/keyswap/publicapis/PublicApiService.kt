@@ -4,6 +4,8 @@ import coraythan.keyswap.alliancedecks.AllianceDeckRepo
 import coraythan.keyswap.alliancedecks.OwnedAllianceDeckRepo
 import coraythan.keyswap.cards.dokcards.DokCardCacheService
 import coraythan.keyswap.config.BadRequestException
+import coraythan.keyswap.config.RateExceededException
+import coraythan.keyswap.config.UnauthorizedException
 import coraythan.keyswap.decks.DeckRepo
 import coraythan.keyswap.decks.models.DeckSearchResult
 import coraythan.keyswap.decks.models.GenericDeck
@@ -22,6 +24,7 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import java.util.*
+import java.util.concurrent.ConcurrentHashMap
 
 @Service
 class PublicApiService(
@@ -40,6 +43,39 @@ class PublicApiService(
 ) {
 
     private val log = LoggerFactory.getLogger(this::class.java)
+
+    private val rateLimiters = ConcurrentHashMap<String, Int>()
+
+    private val dontRateLimitEmails = listOf("detour27@gmail.com", "skyjedi@gmail.com")
+
+    fun clearRateLimiters() {
+        rateLimiters.clear()
+    }
+
+    fun rateLimit(apiKey: String) {
+        if (!rateLimiters.containsKey(apiKey) && !keyUserRepo.existsByApiKey(apiKey)) {
+            throw UnauthorizedException("Your API key does not exist.")
+        }
+
+        val requests = rateLimiters.getOrPut(apiKey, { 0 }) + 1
+        rateLimiters[apiKey] = requests
+
+        if (requests > maxApiRequests) {
+            val user = userForApiKey(apiKey)
+            val realMaxRequests = user.realPatreonTier()?.maxApiRequests ?: maxApiRequests
+            if (requests > realMaxRequests) {
+                val userEmail = user.email
+                if (realMaxRequests + 1 == requests) log.warn("The user $userEmail sent too many requests.")
+                if (!dontRateLimitEmails.contains(userEmail)) {
+                    throw RateExceededException(
+                        "You've sent too many requests in the last minute. You've sent $requests in the last minute. Decks of KeyForge has been taken down " +
+                                "by this type of activity in the past. If you need to know the SAS for all decks, I provide a CSV file you should use for " +
+                                "that purpose. Otherwise, please contact me on discord, or at decksofkeyforge@gmail.com"
+                    )
+                }
+            }
+        }
+    }
 
     fun findMyDeckIds(user: KeyUser): List<String> {
         return ownedDeckRepo.findAllByOwnerId(user.id)
