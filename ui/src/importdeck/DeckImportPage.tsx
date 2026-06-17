@@ -1,4 +1,4 @@
-import { Box, Card, TextField, Tooltip, Typography } from "@material-ui/core"
+import { Box, Card, Link, TextField, Tooltip, Typography } from "@material-ui/core"
 import * as React from "react"
 import { useEffect, useState } from "react"
 import { spacing, themeStore } from "../config/MuiConfig"
@@ -92,7 +92,15 @@ export const DeckImportPage = observer(() => {
                         {error.length > 0 && (
                             <Box mb={2}>
                                 <Alert severity={"warning"}>
-                                    {error}
+                                    {error === "Not all houses have 12 cards." ? (
+                                        <Box display={"flex"} flexDirection={"column"} style={{gap: 16}}>
+                                            <Typography>This deck has invalid card counts in Master Vault. Please send
+                                                feedback to request that Ghost Galaxy fix this deck on Master
+                                                Vault.</Typography>
+                                            <Link href={"https://keyforging.com/contact-us/"} target={"_blank"}>KeyForge
+                                                Master Vault Feedback Form</Link>
+                                        </Box>
+                                    ) : error}
                                 </Alert>
                             </Box>
                         )}

@@ -96,6 +96,11 @@ class UserDeckService(
         deckRepo.save(deck.copy(funnyCount = deck.funnyCount + (if (mark) 1 else -1)))
     }
 
+    fun markAsOwned(deckKeyforgeId: String, mark: Boolean = true) {
+        val id = deckRepo.findByKeyforgeId(deckKeyforgeId)?.id ?: throw BadRequestException("No deck with keyforge ID: $deckKeyforgeId")
+        return this.markAsOwned(id, mark)
+    }
+
     fun markAsOwned(deckId: Long, mark: Boolean = true) {
 
         val user = currentUserService.loggedInUserOrUnauthorized()

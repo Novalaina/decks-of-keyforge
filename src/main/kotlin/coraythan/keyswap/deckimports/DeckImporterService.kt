@@ -138,14 +138,21 @@ class DeckImporterService(
 
         val process = importSkippedDeckRepo.findAllLimit1()
 
-        val processed = mutableListOf<UUID>()
+        val processed = mutableListOf<String>()
 
         for (toProcess in process) {
-            importDeck(toProcess.deckKeyforgeId)
+            try {
+                val result = importDeck(toProcess.deckKeyforgeId)
+                if (result != null) {
+                    processed.add(result)
+                }
+            } catch (e: Exception) {
+                // Couldn't process the skipped deck, keep it in the skip list
+            }
         }
 
         processed.forEach {
-            importSkippedDeckRepo.deleteById(it)
+            importSkippedDeckRepo.deleteById(UUID.fromString(it))
         }
 
         log.info("$scheduledStop Imported ${processed.size} skipped decks.")
@@ -157,10 +164,10 @@ class DeckImporterService(
         deckCreationService.updateDeck(deck)
     }
 
-    fun importDeck(deckId: String): Long? {
+    fun importDeck(deckId: String): String? {
         val preExistingDeck = deckRepo.findByKeyforgeId(deckId)
         if (preExistingDeck != null) {
-            return preExistingDeck.id
+            return preExistingDeck.keyforgeId
         } else {
             val deck = keyforgeApi.findDeckToImport(deckId)?.deck
             if (deck != null) {
@@ -174,12 +181,14 @@ class DeckImporterService(
                 val deckList = listOf(deck.data.copy(cards = deck.data._links?.cards))
 
                 return try {
-                    deckCreationService.saveDecks(deckList).first()
+                    val result = deckCreationService.saveDecks(deckList).first()
+                    val keyforgeId = result.keyforgeId
+                    keyforgeId ?: throw BadRequestException(result.error ?: "Couldn't import deck.")
                 } catch (e: RuntimeException) {
                     if (e::class.java == DataIntegrityViolationException::class.java || e::class.java == ConstraintViolationException::class.java) {
                         // We must have a pre-existing deck now
                         log.info("Encountered exception saving deck to import, but it was just the deck already being saved")
-                        deckRepo.findByKeyforgeId(deckId)?.id
+                        deckId
                     } else {
                         throw e
                     }

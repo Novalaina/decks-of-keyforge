@@ -25,6 +25,12 @@ import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
 
+data class SavedDeckResult(
+    val id: Long? = null,
+    val keyforgeId: String? = null,
+    val error: String? = null,
+)
+
 @Transactional
 @Service
 class DeckCreationService(
@@ -54,8 +60,8 @@ class DeckCreationService(
      * returns Pair(count, newCard)
      */
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    fun saveDecks(deck: List<KeyForgeDeck>): List<Long> {
-        val savedIds = mutableListOf<Long>()
+    fun saveDecks(deck: List<KeyForgeDeck>): List<SavedDeckResult> {
+        val savedIds = mutableListOf<SavedDeckResult>()
         deck
             .forEach { keyforgeDeck ->
                 val savedId = if (deckRepo.findByKeyforgeId(keyforgeDeck.id) == null) saveKeyForgeDeck(
@@ -71,7 +77,7 @@ class DeckCreationService(
     private fun saveKeyForgeDeck(
         keyforgeDeck: KeyForgeDeck,
         updateDeck: Deck? = null,
-    ): Long? {
+    ): SavedDeckResult {
 
         val checkCards =
             (keyforgeDeck.cards ?: keyforgeDeck._links?.cards)
@@ -140,24 +146,24 @@ class DeckCreationService(
                         token
                     )
                 }
-                return savedDeck.id
+                return SavedDeckResult(savedDeck.id, savedDeck.keyforgeId)
             } catch (e: DataIntegrityViolationException) {
                 if (e.message?.contains("deck_keyforge_id_uk") == true) {
                     log.info("Ignoring unique key exception adding deck with id ${keyforgeDeck.id}.")
+                    return SavedDeckResult(error = "Unique key exception adding deck, ignore.")
                 } else {
                     throw e
                 }
             }
         } else {
-
             if (!importSkippedDeckRepo.existsByDeckKeyforgeId(keyforgeDeck.id)) {
                 log.warn("Saving deck: ${keyforgeDeck.id} for later. Not all houses have 12 cards. Cards: ${cardsList.groupBy { it.house }.map { it.value.map { card -> card.cardTitle } }}")
                 importSkippedDeckRepo.save(ImportSkippedDeck(keyforgeDeck.id))
             } else {
                 log.warn("Deck: ${keyforgeDeck.id} was already saved for later. Don't import it.")
             }
+            return SavedDeckResult(error = "Not all houses have 12 cards.")
         }
-        return null
     }
 
     fun viewTheoreticalDeck(deck: DeckBuildingData): Deck {
