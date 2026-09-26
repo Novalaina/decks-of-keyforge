@@ -146,7 +146,8 @@ class DeckListingService(
 
         listingInfo.expireInDays ?: throw BadRequestException("Must include expires in days for auctions.")
 
-        val deck = deckRepo.findByIdOrNull(listingInfo.deckId)
+        val deckId = listingInfo.deckId ?: throw BadRequestException("Must include a deck id for listings.")
+        val deck = deckRepo.findByIdOrNull(deckId)
             ?: throw IllegalStateException("No deck with id ${listingInfo.deckId}")
 
         if (!ownedDeckRepo.existsByDeckIdAndOwnerId(
