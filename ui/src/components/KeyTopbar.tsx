@@ -449,6 +449,11 @@ const AppLinks = observer(() => (
                             primary={"Tournaments"}
                         />
                         <ListItemLink
+                            to={Routes.contentCreators}
+                            onClick={rightMenuStore.close}
+                            primary={"Content Creators"}
+                        />
+                        <ListItemLink
                             to={Routes.thirdPartyTools}
                             onClick={rightMenuStore.close}
                             primary={"3rd Party Tools"}
@@ -464,6 +469,7 @@ const AppLinks = observer(() => (
                     {to: Routes.users, text: "Users", mobileActive: true},
                     {to: Routes.tags, text: "Tagged Decks", mobileActive: true},
                     {to: Routes.tournaments, text: "Tournaments", mobileActive: true},
+                    {to: Routes.contentCreators, text: "Content Creators", mobileActive: true},
                     {to: Routes.thirdPartyTools, text: "3rd Party Tools", mobileActive: false},
                 ]}
                 linkMenuStore={communityMenuStore}

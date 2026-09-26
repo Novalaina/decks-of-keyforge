@@ -40,6 +40,13 @@ export class ThirdPartyIntegrations extends React.Component {
                 </Box>
                 <Grid container={true} spacing={4} justify={"center"}>
                     <DisplayIntegration
+                        name={"Ammasser"}
+                        description={"An unofficial browser extension that collects KeyForge decks from your Master Vault account and syncs them to Decks of KeyForge or The Crucible Online."}
+                        url={"https://amasser.keyforge.cards/"}
+                        urlName={"Amasser · keyforge.cards"}
+                        discord={"dmikalova"}
+                    />
+                    <DisplayIntegration
                         name={"keyforj"}
                         description={"Printable boxes for your KeyForge decks and Adventure Decks."}
                         url={"https://kf.sirjorj.com/"}

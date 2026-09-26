@@ -132,6 +132,7 @@ export class PatreonRewards extends React.Component {
                             "Search team decks",
                             "Create Theoretical Decks",
                             "Add notes to decks",
+                            "Add splash images to your content creator listings",
                             "That warm and fuzzy feeling that comes from supporting something cool",
                         ]}
                     />

@@ -11,6 +11,7 @@ import { UnstyledLink } from "../generic/UnstyledLink"
 import { LinkButton } from "../mui-restyled/LinkButton"
 import { Loader } from "../mui-restyled/Loader"
 import { FeaturedSellersView } from "../sellers/FeaturedSellersView"
+import { FeaturedContentView } from "../contentcreators/FeaturedContentView"
 import { statsStore } from "../stats/StatsStore"
 import { WinRateBar } from "../stats/WinRateStatsView"
 import { DiscordButton } from "../thirdpartysites/discord/DiscordButton"
@@ -22,6 +23,7 @@ import { AlliancesSearchLink, DeckSearchLink, LandingPageLink } from "./DeckSear
 import { AllianceDeckFiltersUtils } from "../alliancedecks/AllianceDeckFiltersUtils"
 import { SortDirection } from "../generated-src/SortDirection"
 import { DokLink } from "../generic/DokLink"
+import { AnnouncementPaper } from "../generic/AnnouncementPaper"
 
 const topSas = new DeckFilters()
 
@@ -124,6 +126,12 @@ export class LandingPage extends React.Component<{}> {
                                     color={"secondary"}
                                     style={{marginBottom: spacing(2)}}
                                 />
+                                <LandingPageLink
+                                    name={"Content"}
+                                    to={Routes.contentCreators}
+                                    color={"secondary"}
+                                    style={{marginBottom: spacing(2)}}
+                                />
                             </div>
                             <Divider/>
                             <ListSubheader>
@@ -153,22 +161,23 @@ export class LandingPage extends React.Component<{}> {
                     </KeyDrawer>
                     <Box style={{flexGrow: 1}}>
 
-                        {/*<AnnouncementPaper maxWidth={800} style={{margin: spacing(4), marginBottom: spacing(2)}}>*/}
-                        {/*    <Typography variant={"h5"} gutterBottom={true}>*/}
-                        {/*        Aember Skies SAS Release Plan*/}
-                        {/*    </Typography>*/}
-                        {/*    <Typography variant={"body1"} style={{marginBottom: spacing(1)}}>*/}
-                        {/*        The Keepers of SAS and I are hard at work rating cards for the three new sets, Aember*/}
-                        {/*        Skies, Tokens of Change and More Mutation! All cards have preliminary scores in the*/}
-                        {/*        works, and we'll be working to improve and refine those scores for the next few weeks*/}
-                        {/*        in order to officially release the new SAS Scores.*/}
-                        {/*    </Typography>*/}
-                        {/*    <Typography variant={"body1"} style={{marginBottom: spacing(1)}}>*/}
-                        {/*        For anyone who would like to follow along and see these SAS scores as we work on them,*/}
-                        {/*        please consider becoming a 2nd level tier patron. Those patrons can turn on SAS*/}
-                        {/*        Preview Mode from their DoK profile and see the preliminary scores.*/}
-                        {/*    </Typography>*/}
-                        {/*</AnnouncementPaper>*/}
+                        <AnnouncementPaper maxWidth={800} style={{margin: spacing(4), marginBottom: spacing(2)}}>
+                            <Typography variant={"h5"} gutterBottom={true}>
+                                Calling all Creators!
+                            </Typography>
+                            <Typography variant={"body1"} style={{marginBottom: spacing(1)}}>
+                                We've added a new feature to Decks of KeyForge so that community content creators can
+                                list links to their content on the app!
+                            </Typography>
+                            <LinkButton variant={"outlined"} href={Routes.contentCreators} color={"primary"} style={{marginBottom: spacing(1)}}>
+                                Check it out!
+                            </LinkButton>
+                            <Typography variant={"body1"} style={{marginBottom: spacing(1)}}>
+                                Anyone can create a content creator listing, and we will feature both popular content
+                                creators, as well as random new creators, on the landing page of the site. If you are a
+                                patron, you may also upload an splash image for your content.
+                            </Typography>
+                        </AnnouncementPaper>
                         {screenStore.screenSizeSm() ? (
                             <div style={{display: "flex", flexWrap: "wrap", justifyContent: "center"}}>
                                 <DeckSearchLink name={"Search"} filters={topSas} style={{marginTop: spacing(2)}}/>
@@ -176,6 +185,7 @@ export class LandingPage extends React.Component<{}> {
                             </div>
                         ) : null}
                         <FeaturedSellersView/>
+                        <FeaturedContentView/>
                         <div style={{marginLeft: spacing(2)}}>
                             <div style={{marginLeft: spacing(2)}}>
                                 <UnstyledLink to={StatsSubPaths.winRates}>

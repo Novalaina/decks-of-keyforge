@@ -11,6 +11,7 @@ import { TextConfig } from "./config/TextConfig"
 import { userMessageStore } from "./messages/UserMessageStore"
 import { sellerRatingsStore } from "./sellerratings/SellerRatingsStore"
 import { sellerStore } from "./sellers/SellerStore"
+import { contentCreatorStore } from "./contentcreators/ContentCreatorStore"
 import { statsStore } from "./stats/StatsStore"
 import { teamStore } from "./teams/TeamStore"
 import { userStore } from "./user/UserStore"
@@ -24,6 +25,7 @@ const load = async () => {
     serverStatusStore.checkIfUpdating()
     sellerRatingsStore.findSellerRatings()
     sellerStore.findFeaturedSellers()
+    contentCreatorStore.findFeaturedContent()
     userStore.loadUserInfo()
     teamStore.findAllTeamNames()
     userMessageStore.checkUnreadMessages()

@@ -69,6 +69,10 @@ class S3Service(
         return addImage(img, "teams", teamId.toString(), extension)
     }
 
+    fun addContentCreatorPromoImage(img: MultipartFile, contentCreatorId: UUID, extension: String): String {
+        return addImage(img, "content-creators", "$contentCreatorId-promo", extension)
+    }
+
     fun deleteUserContent(objKey: String) {
         runBlocking {
             s3Client().use { s3 ->

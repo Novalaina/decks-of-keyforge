@@ -57,12 +57,15 @@ import { DeckNameId } from "../decks/comparison/CompareDecks"
 import { DeckType } from "../generated-src/DeckType"
 import { CardHistoryPage } from "../cards/views/CardHistoryPage"
 import { DeckImportPage } from "../importdeck/DeckImportPage"
+import { ContentCreatorSearchPage } from "../contentcreators/ContentCreatorSearchPage"
+import { CreateContentCreatorPage } from "../contentcreators/CreateContentCreatorPage"
 
 class Routes {
 
     static landing = ""
     static users = "/users"
     static community = "/community"
+    static contentCreators = "/content-creators"
     static myDok = "/my-dok"
     static tournaments = "/tournaments"
     static messages = "/messages"
@@ -90,6 +93,8 @@ class Routes {
     static myTheoreticalDecks = `${Routes.theoreticalDecks}/mine`
     static oldMyAllianceDecks = `${Routes.oldAlliancesRoute}/mine`
     static createTheoreticalDeck = `${Routes.theoreticalDecks}/create`
+    static createContentCreator = `${Routes.contentCreators}/create`
+    static editContentCreator = (id?: string) => `${Routes.contentCreators}/edit/${id == null ? ":id" : id}`
     static searchGames = `${Routes.gamesTracker}/search`
     static validAlliances = () => `${Routes.allianceDecks}?validOnly=true`
     static myAllianceDecks = () => `${Routes.allianceDecks}?owners=${userStore.username}&validOnly=true`
@@ -391,6 +396,21 @@ const KeyRouter = observer(() => {
                     <Route
                         path={Routes.tags}
                         component={TagSearchPage}
+                    />
+                    <Route
+                        exact={true}
+                        path={Routes.createContentCreator}
+                        component={CreateContentCreatorPage}
+                    />
+                    <Route
+                        exact={true}
+                        path={Routes.editContentCreator()}
+                        component={CreateContentCreatorPage}
+                    />
+                    <Route
+                        exact={true}
+                        path={Routes.contentCreators}
+                        component={ContentCreatorSearchPage}
                     />
                     <Route
                         path={Routes.community}
