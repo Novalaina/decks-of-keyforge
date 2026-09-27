@@ -14,6 +14,7 @@ import { userStore } from "../user/UserStore"
 import { contentCreatorTypeName } from "./ContentCreatorCard"
 import { contentCreatorStore } from "./ContentCreatorStore"
 import { UploadPromoImage } from "./UploadPromoImage"
+import { log } from "../config/Utils"
 
 const maxContentNameLength = 255
 const maxDescriptionLength = 2000
@@ -59,7 +60,10 @@ class CreateContentCreatorStore {
 
     discordServerValid = () => {
         const trimmed = this.discordServer.trim()
-        return trimmed.length === 0 || CreateContentCreatorStore.urlValid(trimmed)
+        if (trimmed.length === 0) {
+            return true
+        }
+        return CreateContentCreatorStore.urlValid(trimmed) && trimmed.startsWith("https://discord.gg/")
     }
 
     hasALink = () => this.link.trim().length > 0 || this.discordServer.trim().length > 0
@@ -176,7 +180,7 @@ export const CreateContentCreatorPage = observer(() => {
                                 value={store.link}
                                 onChange={(event) => store.link = event.target.value}
                                 fullWidth={true}
-                                error={store.saveAttempted && (!store.linkValid() || !store.hasALink())}
+                                error={!store.linkValid()}
                                 helperText={"Link to your content. URL, e.g. https://my-keyforge-podcast.com"}
                             />
                         </Grid>
@@ -186,7 +190,7 @@ export const CreateContentCreatorPage = observer(() => {
                                 value={store.discordServer}
                                 onChange={(event) => store.discordServer = event.target.value}
                                 fullWidth={true}
-                                error={store.saveAttempted && (!store.discordServerValid() || !store.hasALink())}
+                                error={!store.discordServerValid()}
                                 helperText={"An invite to your Discord server, e.g. https://discord.gg/sNkHD7k. A Link or Discord Server Link is required."}
                             />
                         </Grid>
@@ -216,6 +220,7 @@ export const CreateContentCreatorPage = observer(() => {
                             variant={"contained"}
                             color={"primary"}
                             loading={contentCreatorStore.saving}
+                            disabled={!store.discordServerValid() || !store.linkValid() || !store.hasALink()}
                             onClick={async () => {
                                 store.saveAttempted = true
                                 if (!store.valid()) {

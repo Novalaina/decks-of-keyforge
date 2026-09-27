@@ -51,8 +51,8 @@ export const ContentCreatorCard = observer((props: {
                     padding: spacing(2, 2, 0, 2)
                 }}
             >
-                <Typography variant={"h5"} noWrap={true}>{contentName}</Typography>
-                <Box display={"flex"} justifyContent={"space-between"} mt={1}>
+                <Typography variant={"h5"} noWrap={true} style={{flexShrink: 0}}>{contentName}</Typography>
+                <Box display={"flex"} justifyContent={"space-between"} mt={1} flexShrink={0}>
                     <Typography variant={"subtitle2"} color={"textSecondary"}>
                         {contentCreatorTypeName(contentCreatorType)}
                     </Typography>
@@ -60,9 +60,9 @@ export const ContentCreatorCard = observer((props: {
                         <Typography variant={"subtitle2"} color={"textSecondary"}>{username}</Typography>
                     </KeyLink>
                 </Box>
-                <Divider style={{marginTop: spacing(1), marginBottom: spacing(1)}}/>
-                <div style={{overflowY: "auto", flexGrow: 1}}>
-                    <WhiteSpaceTypography variant={"body1"}>{description}</WhiteSpaceTypography>
+                <Divider style={{marginTop: spacing(1), marginBottom: spacing(1), flexShrink: 0}}/>
+                <div style={{overflowY: "auto", flexGrow: 1, flexShrink: 1, minHeight: 0}}>
+                    <WhiteSpaceTypography variant={"body2"}>{description}</WhiteSpaceTypography>
                 </div>
             </CardContent>
             <div style={{flexGrow: 1}}/>
@@ -86,14 +86,14 @@ export const ContentCreatorCard = observer((props: {
                     </LinkButtonSafe>
                 )}
                 {discordServer != null && (
-                    <LinkButtonSafe
+                    <LinkButton
                         color={themeStore.darkMode ? "secondary" : "primary"}
                         href={discordServer}
                         onClick={() => link == null && contentCreatorStore.recordClick(id)}
                     >
                         <DiscordIcon height={24} style={{marginRight: spacing(0.5)}}/>
                         Discord
-                    </LinkButtonSafe>
+                    </LinkButton>
                 )}
             </CardActions>
         </Card>
