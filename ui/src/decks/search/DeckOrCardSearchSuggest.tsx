@@ -38,7 +38,11 @@ class SearchDeckNameStore {
     inputRef: React.RefObject<HTMLDivElement> = React.createRef<HTMLDivElement>()
 
     handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        this.searchValue = event.target.value
+        if (Number.isFinite(event.target.value)) {
+            this.searchValue = event.target.value.toString()
+        } else {
+            this.searchValue = event.target.value
+        }
 
         if (this.quietPeriodTimeoutId != null) {
             window.clearTimeout(this.quietPeriodTimeoutId)

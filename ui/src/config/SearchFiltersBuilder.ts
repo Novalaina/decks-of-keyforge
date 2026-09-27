@@ -22,6 +22,16 @@ export class SearchFiltersBuilder<T extends object> {
         return this
     }
 
+    stringValue = (name: string) => {
+        if (this.searchParams.has(name)) {
+            const val = this.searchParams.get(name)!
+            if (val != null) {
+                (this.filters as any)[name] = val
+            }
+        }
+        return this
+    }
+
     stringArrayValue = (name: string) => {
         if (this.searchParams.has(name) && this.searchParams.getAll(name).length > 0) {
             (this.filters as any)[name] = this.searchParams.getAll(name)

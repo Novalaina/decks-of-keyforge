@@ -30,8 +30,8 @@ export class CardFilters {
 
         const builtFilters = new SearchFiltersBuilder(params, new CardFilters())
             .value("sort")
-            .value("title")
-            .value("description")
+            .stringValue("title")
+            .stringValue("description")
             .value("trait")
             .value("synergy")
             .value("aercHistoryDate")
