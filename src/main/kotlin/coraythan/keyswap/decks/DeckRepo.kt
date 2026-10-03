@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional
 interface DeckRepo : JpaRepository<Deck, Long>, QuerydslPredicateExecutor<Deck> {
     fun findByKeyforgeId(keyforgeId: String): Deck?
     fun existsByKeyforgeId(keyforgeId: String): Boolean
+    fun findAllByKeyforgeIdIn(kfIds: Collection<String>): List<Deck>
 
     fun findByWinsGreaterThanOrLossesGreaterThan(wins: Int, losses: Int): List<Deck>
 
