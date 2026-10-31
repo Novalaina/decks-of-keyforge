@@ -27,7 +27,7 @@ object HouseEnhancementAlgorithm {
                         else -> 0.0
                     }
 
-                    val effMod = 0.5
+                    val effMod = 1.0
 
                     val total = amberMod + creatureControlMod + effMod
 
